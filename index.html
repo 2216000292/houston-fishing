@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f7fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0f14" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Galveston 钓鱼人</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #0b1220;
+    --muted: #667085;
+    --line: #e7ebf0;
+    --primary: #0a7cff;
+    --primary-soft: #e6f1ff;
+    --teal: #12b5a6;
+    --warn: #e5484d;
+    --warn-soft: #fff0f0;
+    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 4px 16px rgba(16,24,40,.06);
+    --tabbar: rgba(255,255,255,.82);
+    --radius: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0f14;
+      --card: #151b23;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --line: #232c38;
+      --primary: #4da3ff;
+      --primary-soft: #14263d;
+      --teal: #2dd4bf;
+      --warn: #ff6b6b;
+      --warn-soft: #2a1618;
+      --shadow: none;
+      --tabbar: rgba(21,27,35,.82);
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    font-size: 17px; line-height: 1.55;
+    background: var(--bg); color: var(--text);
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+  a { color: var(--primary); }
+
+  /* ---------- 页面 ---------- */
+  .view { display: none; max-width: 640px; margin: 0 auto; padding: 0 16px; }
+  .view.active { display: block; animation: fade .2s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .page-head { padding: calc(14px + env(safe-area-inset-top)) 2px 6px; }
+  .eyebrow { font-size: 13px; font-weight: 600; color: var(--primary); letter-spacing: .02em; }
+  .page-head h1 { margin: 2px 0 0; font-size: 32px; font-weight: 800; letter-spacing: -.02em; }
+  .page-head p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  @media (prefers-color-scheme: light) { .card { border-color: transparent; } }
+  .muted { color: var(--muted); font-size: 15px; }
+
+  /* ---------- 筛选（吸顶） ---------- */
+  .filters-wrap {
+    position: sticky; top: 0; z-index: 5;
+    margin: 0 -16px 8px; padding: 10px 16px;
+    background: var(--bg);
+  }
+  .filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button {
+    flex: 0 0 auto; min-height: 38px; padding: 0 16px;
+    border: 0; border-radius: 999px;
+    background: var(--card); color: var(--text);
+    font: inherit; font-size: 15px; font-weight: 600;
+    box-shadow: var(--shadow);
+    transition: background .15s, color .15s;
+  }
+  .filters button.on { background: var(--text); color: var(--bg); }
+
+  /* ---------- 鱼种卡片 ---------- */
+  .fish-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .avatar {
+    flex: 0 0 48px; height: 48px; border-radius: 14px;
+    display: grid; place-items: center; font-size: 24px;
+    background: linear-gradient(135deg, #5ec8ff, #0a7cff);
+  }
+  .fish h3 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3; }
+  .fish .en { font-size: 14px; color: var(--muted); line-height: 1.3; }
+  .tag {
+    display: inline-block; margin: 0 6px 8px 0; padding: 3px 10px;
+    border-radius: 999px; font-size: 13px; font-weight: 600;
+    background: var(--primary-soft); color: var(--primary);
+  }
+  .fish .intro { margin: 2px 0 12px; font-size: 16px; }
+  .fish dl {
+    margin: 0; display: grid; grid-template-columns: 44px 1fr;
+    font-size: 15px; border-top: 1px solid var(--line);
+  }
+  .fish dt, .fish dd { padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .fish dt { color: var(--muted); font-weight: 600; }
+  .fish dd { margin: 0; }
+  .alert {
+    margin-top: 12px; padding: 10px 12px; border-radius: 12px;
+    background: var(--warn-soft); color: var(--warn);
+    font-size: 14px; font-weight: 600;
+  }
+
+
+  /* ---------- 鱼种 v2 ---------- */
+  .search { width: 100%; min-height: 44px; margin-bottom: 10px; padding: 0 14px;
+    border: 0; border-radius: 12px; background: var(--card); color: var(--text);
+    font: inherit; font-size: 16px; box-shadow: var(--shadow); outline: none; -webkit-appearance: none; }
+  .search:focus { box-shadow: 0 0 0 2px var(--primary); }
+  .group-title { font-size: 15px; font-weight: 700; color: var(--muted); margin: 14px 2px 10px; }
+  .group-title span { font-weight: 500; }
+  .limits { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .lim { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 8px;
+    background: var(--bg); color: var(--muted); }
+  .lim.on { background: var(--primary-soft); color: var(--primary); }
+  .fish .row { display: grid; grid-template-columns: 40px 1fr; gap: 8px; padding: 9px 0;
+    border-top: 1px solid var(--line); font-size: 15px; }
+  .fish .lbl { color: var(--muted); font-weight: 700; font-size: 14px; }
+  .special { margin-top: 4px; padding: 10px 12px; border-radius: 12px; font-size: 14px;
+    background: #fff6e6; color: #9a5b00; }
+  .special span { display: inline-block; margin-right: 8px; padding: 1px 8px; border-radius: 6px;
+    background: #f5a524; color: #fff; font-weight: 700; font-size: 12px; }
+  @media (prefers-color-scheme: dark) { .special { background: #2b2210; color: #f5c46b; } }
+  .layer { margin-top: 12px; font-size: 15px; }
+  .how { margin: 8px 0 2px; font-size: 15px; }
+  .empty { text-align: center; color: var(--muted); }
+
+
+  /* ---------- 鱼照片 + 大图 ---------- */
+  .avatar { position: relative; flex: 0 0 72px !important; height: 72px !important; padding: 0; border: 0;
+    overflow: hidden; cursor: zoom-in; border-radius: 16px; }
+  .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #fff; opacity: 0; transition: opacity .25s; }
+  .avatar.has-img img { opacity: 1; }
+  .avatar .ph { font-size: 28px; }
+  .avatar .zoom { position: absolute; right: 4px; bottom: 4px; width: 20px; height: 20px; border-radius: 6px;
+    display: none; place-items: center; font-size: 12px; color: #fff; background: rgba(0,0,0,.45); }
+  .avatar.has-img .zoom { display: grid; }
+  .avatar:active { transform: scale(.96); }
+
+  .lightbox { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column;
+    background: #000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: calc(10px + env(safe-area-inset-top)) 16px 10px; color: #fff; }
+  .lb-title { font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .lb-title small { display: block; font-size: 13px; font-weight: 500; opacity: .7; }
+  .lb-close { flex: 0 0 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.16);
+    color: #fff; font-size: 22px; }
+  .lb-img { flex: 1; display: grid; place-items: center; overflow: auto; padding: 0 8px; touch-action: pinch-zoom; }
+  .lb-img img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+  .lb-credit { padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); text-align: center;
+    font-size: 12px; color: rgba(255,255,255,.65); }
+  .lb-credit a { color: #9ccbff; }
+  .lb-loading { color: #fff; opacity: .7; }
+
+
+  /* ---------- 钓法页 ---------- */
+  .how-icon { flex: 0 0 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+    font-size: 24px; background: var(--primary-soft); }
+  .how-desc { margin: 2px 0 10px; font-size: 15px; }
+  .rig-parts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 10px 12px;
+    border-radius: 12px; background: var(--bg); font-size: 13px; font-weight: 600; }
+  .rig-parts .part { padding: 2px 8px; border-radius: 6px; background: var(--card); border: 1px solid var(--line); }
+  .rig-parts .arr { color: var(--muted); }
+  .how-card h3 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3; }
+  .how-card .en { font-size: 14px; color: var(--muted); line-height: 1.3; }
+  .method .steps li { padding: 0 0 0 2px; counter-increment: none; }
+  .method .steps li::before { content: none; }
+  .steps { margin: 12px 0 0; padding-left: 22px; font-size: 15px; }
+  .steps li { margin-bottom: 8px; padding-left: 2px; }
+  .steps li::marker { color: var(--teal); font-weight: 700; }
+
+  /* 更多：做小一点 */
+  .spot .method.more { margin-top: 6px; }
+  .spot .method.more summary { min-height: 36px; font-size: 14px; font-weight: 600;
+    background: transparent; color: var(--muted); gap: 6px; }
+  .spot .method.more summary::after { width: 6px; height: 6px; border-width: 0 1.5px 1.5px 0; margin-top: -3px; }
+  .spot .method.more[open]:not(.closing) summary::after { margin-top: 3px; }
+  .spot .method.more summary:active { background: var(--bg); }
+  .more-body { margin-top: 4px !important; }
+  /* 下拉动画 */
+  .method .dc { overflow: hidden; }
+  .method summary::after { transition: transform .28s cubic-bezier(.2,.8,.2,1), margin .28s; }
+  .method summary { transition: transform .1s, background .2s; }
+
+  /* 钓法下拉 */
+  .method { margin-top: 12px; }
+  .method summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; justify-content: center; align-items: center; gap: 6px;
+    min-height: 46px; border-radius: 12px;
+    background: var(--primary-soft); color: var(--primary);
+    font-weight: 700; font-size: 16px;
+    transition: transform .1s;
+  }
+  .method summary:active { transform: scale(.98); }
+  .method summary::-webkit-details-marker { display: none; }
+  .method summary::after {
+    content: ""; width: 8px; height: 8px;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg); margin-top: -4px; transition: transform .2s;
+  }
+  .method[open]:not(.closing) summary::after { transform: rotate(-135deg); margin-top: 4px; }
+  .method ul { list-style: none; margin: 12px 0 0; padding: 0; counter-reset: step; }
+  .method li {
+    position: relative; padding: 0 0 12px 34px; font-size: 15px;
+    counter-increment: step;
+  }
+  .method li::before {
+    content: counter(step); position: absolute; left: 0; top: 1px;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--teal); color: #fff; font-size: 12px; font-weight: 700;
+  }
+  .method li b { display: block; }
+
+  /* ---------- 天气 ---------- */
+  .hero {
+    border-radius: 24px; padding: 20px; color: #fff; margin-bottom: 12px;
+    background: linear-gradient(160deg, #38bdf8 0%, #0a7cff 55%, #1e40af 100%);
+    box-shadow: 0 10px 30px rgba(10,124,255,.25);
+  }
+  .hero .place { font-size: 15px; opacity: .9; font-weight: 600; }
+  .hero .temp { font-size: 64px; font-weight: 300; line-height: 1.1; letter-spacing: -.03em; }
+  .hero .score { margin-top: 8px; display: inline-block; padding: 6px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.2); font-weight: 700; font-size: 15px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { margin: 0; }
+  .stat .label { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .stat .num { font-size: 26px; font-weight: 700; margin-top: 2px; }
+  .stat .sub { font-size: 13px; color: var(--muted); }
+  .btn {
+    width: 100%; min-height: 50px; border: 0; border-radius: 14px;
+    font: inherit; font-weight: 700; font-size: 16px;
+    background: var(--primary); color: #fff;
+    transition: transform .1s;
+  }
+  .btn.ghost { background: var(--card); color: var(--primary); box-shadow: var(--shadow); }
+  .btn:active { transform: scale(.98); }
+  .skeleton { height: 180px; border-radius: 24px; background: var(--line); animation: pulse 1.2s infinite; }
+  @keyframes pulse { 50% { opacity: .5; } }
+
+
+  /* ---------- 钓点卡片 ---------- */
+  .spot-area { font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: .03em; text-transform: uppercase; }
+  .spot h3 { margin: 0; font-size: 22px; font-weight: 800; }
+  .spot .en { font-size: 15px; color: var(--muted); margin-bottom: 12px; }
+  .aliases { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 12px; }
+  .alias-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .alias { font-size: 13px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--line); }
+  .addr { display: flex; gap: 10px; padding: 12px; border-radius: 12px; background: var(--bg); font-size: 15px; font-weight: 600; }
+  .addr svg { flex: 0 0 20px; height: 20px; color: var(--primary); margin-top: 2px; }
+  .addr-sub { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .fees { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .fee { font-size: 14px; font-weight: 700; padding: 5px 10px; border-radius: 8px;
+    background: #e8f8ef; color: #12804a; }
+  @media (prefers-color-scheme: dark) { .fee { background: #12301f; color: #5ee09a; } }
+  .spot-note { margin: 12px 0 10px; font-size: 15px; color: var(--text); }
+  .spot-fish { margin-bottom: 4px; }
+  .spot-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .spot-actions .btn { min-height: 46px; display: grid; place-items: center; text-decoration: none; font-size: 15px; }
+  .more-body { display: grid; gap: 8px; margin-top: 10px; }
+  .more-body .btn.live { min-height: 46px; display: flex; gap: 8px; justify-content: center; align-items: center;
+    text-decoration: none; font-size: 15px; background: linear-gradient(135deg, #ff5f6d, #e5484d); color: #fff; }
+  .spot .method.more { margin-top: 8px; }
+  .spot-title { display: flex; align-items: center; gap: 10px; }
+  .cam { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto;
+    height: 28px; padding: 0 11px; border-radius: 999px; text-decoration: none;
+    background: #ffeceb; color: #e5484d; font-size: 13px; font-weight: 700; transition: transform .1s; }
+  .cam:active { transform: scale(.95); }
+  .cam .live-dot { width: 7px; height: 7px; background: #e5484d; animation: livered 1.6s infinite; }
+  @keyframes livered { 0% { box-shadow: 0 0 0 0 rgba(229,72,77,.55); } 70% { box-shadow: 0 0 0 6px rgba(229,72,77,0); } 100% { box-shadow: 0 0 0 0 rgba(229,72,77,0); } }
+  @media (prefers-color-scheme: dark) { .cam { background: #3a1517; color: #ff8a8d; } .cam .live-dot { background: #ff6b6b; } }
+  .wx { margin-left: auto; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px;
+    height: 30px; padding: 0 10px; border-radius: 999px; text-decoration: none;
+    background: var(--primary-soft); color: var(--primary); font-size: 14px; font-weight: 700; transition: transform .1s; }
+  .wx:active { transform: scale(.95); }
+  .wx-i { font-size: 15px; }
+  /* ---------- 导航选择面板 ---------- */
+  .spot-actions .sheet-btn { min-height: 48px; font-size: 16px; }
+  .sheet-mask { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.35);
+    opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .sheet-mask.open { opacity: 1; pointer-events: auto; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; max-width: 640px; margin: 0 auto;
+    padding: 8px 16px calc(16px + env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0;
+    background: var(--card); box-shadow: 0 -8px 30px rgba(0,0,0,.15);
+    transform: translateY(105%); transition: transform .32s cubic-bezier(.2,.8,.2,1); }
+  .sheet.open { transform: none; }
+  .sheet-grip { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 2px auto 12px; }
+  .sheet-title { text-align: center; font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 12px; }
+  .sheet-opt { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; margin-bottom: 8px;
+    border-radius: 14px; background: var(--bg); color: var(--text); text-decoration: none; font-size: 17px; font-weight: 600; }
+  .sheet-opt:active { transform: scale(.98); }
+  .sheet-ic { font-size: 20px; }
+  .sheet-cancel { width: 100%; min-height: 50px; margin-top: 4px; border: 0; border-radius: 14px;
+    background: transparent; color: var(--primary); font: inherit; font-size: 17px; font-weight: 700; }
+  .mini-actions { grid-column: 1 / -1; display: flex; gap: 8px; }
+  .mini { flex: 1; min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 6px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--card);
+    color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none; transition: transform .1s; }
+  .mini:active { transform: scale(.97); background: var(--bg); }
+  .spot-actions .live { grid-column: 1 / -1; display: flex; gap: 8px; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #ff5f6d, #e5484d); color: #fff; }
+  .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.8);
+    animation: live 1.6s infinite; }
+  @keyframes live { 70% { box-shadow: 0 0 0 7px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+  .spot-actions .copy { grid-column: 1 / -1; }
+  .toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+    background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 600;
+    opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 30; }
+  .toast.show { opacity: 1; }
+
+  /* ---------- 钓点 / 须知 ---------- */
+  .row-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .row-actions .btn { min-height: 44px; display: grid; place-items: center; text-decoration: none; font-size: 15px; }
+  .list-row { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .list-row:last-child { border-bottom: 0; }
+  .list-row .ic { flex: 0 0 32px; height: 32px; border-radius: 10px; display: grid; place-items: center;
+    background: var(--primary-soft); font-size: 17px; }
+
+  /* ---------- 底部 Tab 栏 ---------- */
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    display: flex; justify-content: space-around;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    background: var(--tabbar);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-top: 1px solid var(--line);
+  }
+  .tabbar a {
+    flex: 1; max-width: 120px;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 6px 0; min-height: 52px;
+    color: var(--muted); text-decoration: none;
+    font-size: 11px; font-weight: 600;
+  }
+  .tabbar svg { width: 26px; height: 26px; transition: transform .15s; }
+  .tabbar a.active { color: var(--primary); }
+  .tabbar a.active svg { transform: translateY(-1px); }
+  .tabbar a:active svg { transform: scale(.9); }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 16px 0 8px; }
+</style>
+</head>
+<body>
+
+<!-- ============ 鱼种 ============ -->
+<main class="view" id="fish">
+  <div class="page-head">
+    <div class="eyebrow">GALVESTON 海钓</div>
+    <h1>鱼种</h1>
+    <p>休斯顿周边海边常见的鱼和蟹，点「钓法」看怎么钓</p>
+  </div>
+
+  <div class="filters-wrap">
+    <input id="fish-search" class="search" type="search" placeholder="搜鱼名，中英文都行" autocomplete="off">
+    <div class="filters" id="filters">
+      <button class="on" data-f="all">全部</button>
+      <button data-f="limited">有限制</button>
+      <button data-f="free">无限制</button>
+      <button data-f="上层">上层</button>
+      <button data-f="中层">中层</button>
+      <button data-f="底层">底层</button>
+      <button data-f="结构">结构处</button>
+    </div>
+  </div>
+
+  <div id="fish-list">
+      <div class="group" data-group="limited"><h2 class="group-title">有数量 / 尺寸限制 <span>15 种</span></h2>
+      <div class="card fish" data-wiki="Black drum" data-photo="Pogonias_cromis_-_SERC.jpg" data-group="limited" data-layer="底层" data-name="黑鼓鱼 black drum">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>黑鼓鱼</h3><div class="en">Black drum</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 5 条</span><span class="lim on">📏 14–30 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>体呈黑灰色、体型粗壮，一般在桥上钓到的都是20 寸以上的</div></div>
+        <div class="row"><div class="lbl">评价</div><div>15 inch 切开后有惊喜</div></div>
+        <div class="special"><span>特例</span>每天最多可留一条大于52 inch者</div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">沉底钓</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Red drum" data-photo="Red_Drum_(Sciaenops_ocellatus).jpg" data-group="limited" data-layer="上层 底层" data-name="红鼓鱼 / 红鱼 red drum / red fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>红鼓鱼 / 红鱼</h3><div class="en">Red drum / Red fish</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 3 条</span><span class="lim on">📏 20–28 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>背部深红、腹部渐白，尾基上部有一枚醒目的大黑斑</div></div>
+        <div class="row"><div class="lbl">评价</div><div>越大越不好吃</div></div>
+        <div class="special"><span>特例</span>每人每年可保留一条28 inch以上（用tag，填信息绑鱼尾）</div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层和底层</b></div>
+          <p class="how">各种鱼饵（死虾活虾死鱼活鱼，死螃蟹活螃蟹，鱿鱼）沉底。有概率会出现在水上，所以亮片也有机会</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Southern flounder" data-group="limited" data-layer="底层" data-name="皇帝鱼 / 比目鱼 flounder">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>皇帝鱼 / 比目鱼</h3><div class="en">Flounder</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 5 条</span><span class="lim on">📏 最小 15 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>扁平，两只眼睛在上面，布满弥散的深色斑点和斑块下面是白色。</div></div>
+        <div class="row"><div class="lbl">评价</div><div>我认为休斯顿最好吃的，没有刺，并且烤着更好吃</div></div>
+        <div class="special"><span>特例</span>11月1日-12月14日只能保留0条</div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">活虾，活Mullet最佳。死的有概率。铅头钩带软饵在底层跳动也有概率</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Gafftopsail catfish" data-photo="Bagre_marinus_62524575.jpg" data-group="limited" data-layer="底层" data-name="斜帆鲶鱼 / 猫鱼 gafftopsail catfish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>斜帆鲶鱼 / 猫鱼</h3><div class="en">Gafftopsail Catfish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim on">📏 最小 14 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>体蓝灰至深褐、腹浅灰，背鳍有一条帆状肉质延伸，具毒锯齿状鳍棘和长须建议用钳子抓</div></div>
+        <div class="row"><div class="lbl">评价</div><div>垃圾</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">死虾或死鱼块沉底，浮标，以及自由线都可以</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Sheepshead (fish)" data-photo="Archosargus_probatocephalus_-_Sträflings-Meerbrasse,_juvenil_7583195.jpg" data-group="limited" data-layer="结构" data-name="羊头鱼 sheepshead">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>羊头鱼</h3><div class="en">Sheepshead</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 5 条</span><span class="lim on">📏 最小 15 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>黑白相间条纹，鱼体较宽，体侧有五至六条深色竖纹，牙齿像人的牙齿</div></div>
+        <div class="row"><div class="lbl">评价</div><div>人牙，肉质还不错</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>结构处（木桥下，石头边）</b></div>
+          <p class="how">活虾浮漂，活虾自由线，靠近岩石处易钓</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Atlantic Spanish mackerel" data-photo="Scomberomorus_maculatus.jpg" data-group="limited" data-layer="上层" data-name="马鲛鱼 / 鲅鱼 spanish mackerel">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>马鲛鱼 / 鲅鱼</h3><div class="en">Spanish mackerel</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 15 条</span><span class="lim on">📏 最小 14 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>会切线！会切线！会切线！带黄点的长型鱼，手感很好，带尖牙</div></div>
+        <div class="row"><div class="lbl">评价</div><div>休斯顿最爱的手感鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层，清水</b></div>
+          <p class="how">只在清晨和早上，水面系，亮片，浮标以及假饵都能上</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Spotted seatrout" data-photo="Spotted_seatrout_fish_cynoscion_nebulosus.jpg" data-group="limited" data-layer="上层 中层" data-name="斑点鳟鱼 speckled trout">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>斑点鳟鱼</h3><div class="en">Speckled trout</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 3 条</span><span class="lim on">📏 15–20 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>身上有斑点的鳟鱼，口内有发达犬牙</div></div>
+        <div class="row"><div class="lbl">评价</div><div>手感不错，15寸的肉最嫩，不够尺希望大家能放回去</div></div>
+        <div class="special"><span>特例</span>注：TPWD 2026-2027现行规则为凭tag每证年可各保留一条超28 inch者</div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>中层以及上层</b></div>
+          <p class="how">夜晚偏多。活虾自由线，活虾浮漂，亮片以及双Jig都能上</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Flathead grey mullet" data-photo="Mugil_cephalus.jpg" data-group="limited" data-layer="上层" data-name="乌头鱼 mullet">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>乌头鱼</h3><div class="en">Mullet</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim on">📏 ≤ 12 inch（10–1 月）</span></div>
+        <div class="row"><div class="lbl">特点</div><div>背部橄榄绿到白色的鱼。多用于鱼饵</div></div>
+        <div class="row"><div class="lbl">评价</div><div>饵鱼，撒网，91街经常看到的街溜子</div></div>
+        <div class="special"><span>特例</span>仅10-1月有尺寸限制，其他月份无尺寸限制</div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层</b></div>
+          <p class="how">撒网，做鱼饵，钓大鱼</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Northern red snapper" data-photo="Lutjanus_campechanus.jpg" data-group="limited" data-layer="底层" data-name="红衫鱼 red snapper">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>红衫鱼</h3><div class="en">Red snapper</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 4 条</span><span class="lim on">📏 最小 14 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>通体红色，背鳍多棘，具短而尖的针状牙，幼鱼体侧有随年龄消退的黑斑。</div></div>
+        <div class="row"><div class="lbl">评价</div><div>出海的鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">出海沉底钓。深海鱼</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Tripletail" data-photo="Lobotes_surinamensis.jpg" data-group="limited" data-layer="上层" data-name="松鲷 atlantic tripletail">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>松鲷</h3><div class="en">Atlantic tripletail</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 3 条</span><span class="lim on">📏 最小 17 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>黑色椭圆侧扁，喜欢躲在水面漂浮物下面，幼鱼像一片枯叶</div></div>
+        <div class="row"><div class="lbl">评价</div><div>休斯顿目前为止最漂亮的鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层</b></div>
+          <p class="how">活虾浮漂，专找浮标、漂浮物边上</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Callinectes sapidus" data-photo="Callinectes_sapidus_1.jpg" data-group="limited" data-layer="" data-name="蓝蟹 blue crab">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦀</span><span class="zoom">⤢</span></button><div><h3>蓝蟹</h3><div class="en">Blue crab</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim on">📏 壳宽 ≥ 5 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>身体蓝色和青色，红色小钳子，鸡腿钓组</div></div>
+        <div class="row"><div class="lbl">评价</div><div>小的记得放回去，一年四季都不缺</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>水里</b></div>
+          <p class="how">棉线绑鸡腿丢下去，然后线变直线后开始慢慢拉上来，然后用抄网捞。或者直接 用螃蟹笼</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Menippe mercenaria" data-photo="Juvenile_Stone_Crab_(_Menippe_mercenaria_)_-_Flickr_-_Andrea_Westmoreland.jpg" data-group="limited" data-layer="结构" data-name="石蟹 stone crab">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦀</span><span class="zoom">⤢</span></button><div><h3>石蟹</h3><div class="en">Stone crab</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim on">📏 右螯 ≥ 2.5 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>圆圆的螃蟹，咖啡色。出现在石头边缘，带大钳子</div></div>
+        <div class="row"><div class="lbl">评价</div><div>千万不要硬拔，容易把内脏拔出来，如果不会拔就算了，拍个照就好了</div></div>
+        <div class="special"><span>特例</span>只能取右螯并立即放生，不能带走身体和左螯</div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>石头边</b></div>
+          <p class="how">17街石头边用夹子</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="King mackerel" data-photo="King_mackerel_(_Scomberomorus_cavalla_).jpg" data-group="limited" data-layer="上层 中层" data-name="king马鲛 king mackerel">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>king马鲛</h3><div class="en">King mackerel</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 3 条</span><span class="lim on">📏 最小 27 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>西班牙马鲛的放大版，体型更大，牙利，会切线</div></div>
+        <div class="row"><div class="lbl">评价</div><div>休斯顿手感最佳鱼种。60lb碳线——100lb，子线30lb以上，亮片，假饵活虾都有概率。</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层和中层</b></div>
+          <p class="how">出海船钓，活鱼拖钓，亮片或活虾自由线以及红头白身假饵</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Greater amberjack" data-photo="Seriola_dumerili_-_Sanc2431.jpg" data-group="limited" data-layer="中层 底层" data-name="king jack greater amberjack">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>king jack</h3><div class="en">Greater amberjack</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 1 条</span><span class="lim on">📏 最小 38 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>黄色的，银底。鲹科里最大，体高力气极大，沉船礁石边多</div></div>
+        <div class="row"><div class="lbl">评价</div><div>除king外最佳手感的鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>中层和底层</b></div>
+          <p class="how">活饵沉底，沉船礁石边，会出现。炸水亮片丢下去就咬</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Atlantic tarpon" data-photo="Atlantic_tarpon.jpg" data-group="limited" data-layer="上层 中层" data-name="king大海鲢 tarpon">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>king大海鲢</h3><div class="en">Tarpon</div></div></div>
+        <div class="limits"><span class="lim on">🧺 每天 1 条</span><span class="lim on">📏 最小 85 inch</span></div>
+        <div class="row"><div class="lbl">特点</div><div>海鲢的放大版，鳞大体壮，中钩爱跳出水面洗鳃</div></div>
+        <div class="row"><div class="lbl">评价</div><div>手感极佳，几乎拿不走</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层和中层</b></div>
+          <p class="how">活虾活鱼浮漂，中鱼别松线，假饵也有概率</p>
+        </details>
+      </div>
+      </div>
+      <div class="group" data-group="free"><h2 class="group-title">没有限制 <span>17 种</span></h2>
+      <div class="card fish" data-wiki="Largehead hairtail" data-photo="Trichiurus_lepturus.jpg" data-group="free" data-layer="上层" data-name="带鱼 / 白带鱼 ribbon fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>带鱼 / 白带鱼</h3><div class="en">Ribbon fish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>银色长条像带子，牙锋利会咬线，夜里多</div></div>
+        <div class="row"><div class="lbl">评价</div><div>夏季偏多（休斯顿欧阳应该是最厉害的，其次是虎鲨钩群主）</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层</b></div>
+          <p class="how">夜里浮漂挂虾，路亚亮片也行，注意防咬</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Atlantic croaker" data-group="free" data-layer="底层" data-name="大西洋黄花鱼 croaker">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>大西洋黄花鱼</h3><div class="en">Croaker</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>后背拱起，嘴在下方，钓上来呱呱叫，不是中国的黄花鱼</div></div>
+        <div class="row"><div class="lbl">评价</div><div>串钩钓组第二鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">虾肉沉底，啥饵都吃</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Cynoscion arenarius" data-photo="Cynoscion_arenarius.jpg" data-group="free" data-layer="中层 底层" data-name="沙鳟鱼 sand trout">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>沙鳟鱼</h3><div class="en">Sand trout</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>嘴大身上没斑点，别认成斑点鳟鱼</div></div>
+        <div class="row"><div class="lbl">评价</div><div>串钩钓组第一鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层和中层</b></div>
+          <p class="how">双Jig或串钩底层跳</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Gulf kingfish" data-group="free" data-layer="底层" data-name="沙鮻 whiting">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>沙鮻</h3><div class="en">Whiting</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>细长条，嘴朝下，像鲨鱼有牙齿</div></div>
+        <div class="row"><div class="lbl">评价</div><div>手感倒五</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">虾肉沉底，沙滩浪口多</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Elops saurus" data-photo="Ladyfish_Tampa_Bay_2016.jpg" data-group="free" data-layer="上层 中层" data-name="海鲢鱼 / 公主鱼 lady fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>海鲢鱼 / 公主鱼</h3><div class="en">Lady fish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>长条鱼，上钩后挣扎特别凶，手感极佳，经常会误认为马鲛刺多</div></div>
+        <div class="row"><div class="lbl">评价</div><div>因为抱着钓马鲛的心，一般直接放</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层和中层</b></div>
+          <p class="how">浮漂挂虾，路亚也追</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Atlantic stingray" data-group="free" data-layer="底层" data-name="鳐鱼 / 老板鱼 stingray">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>鳐鱼 / 老板鱼</h3><div class="en">Stingray</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>扁片身体，尾巴细长带毒刺！剧毒，切记</div></div>
+        <div class="row"><div class="lbl">评价</div><div>尾巴有毒，上岸就切尾巴</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">虾肉沉底，常误钓上来</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Pinfish" data-photo="Lagodon_rhomboides_342995251.jpg" data-group="free" data-layer="底层" data-name="菱体兔牙鲷 pinfish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>菱体兔牙鲷</h3><div class="en">Pinfish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>扁平鱼，背鳍扎手，一般比较小</div></div>
+        <div class="row"><div class="lbl">评价</div><div>俗称小杂鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">小钩挂虾沉底</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Atlantic spadefish" data-photo="Chaetodipterus_faber.jpg" data-group="free" data-layer="中层" data-name="石鲳 / 燕鱼 / 天使鱼（错误叫法） atlantic spadefish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>石鲳 / 燕鱼 / 天使鱼（错误叫法）</h3><div class="en">Atlantic spadefish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>扁圆像盘子，黑白条纹，嘴小</div></div>
+        <div class="row"><div class="lbl">评价</div><div>91街桥下有巨物</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>中层</b></div>
+          <p class="how">小钩挂虾，码头礁石边</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Florida pompano" data-photo="Pompano_common.jpg" data-group="free" data-layer="底层" data-name="金鲳鱼 pompano">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>金鲳鱼</h3><div class="en">Pompano</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>椭圆扁平，嘴短圆，肚子下面发黄</div></div>
+        <div class="row"><div class="lbl">评价</div><div>亮片概率出</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">浮漂挂虾肉，沙滩浪口</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Opsanus beta" data-photo="Gulf_toadfish_aka_Opsanus_beta.jpg" data-group="free" data-layer="底层" data-name="石头鱼 toad fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>石头鱼</h3><div class="en">Toad fish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>大头大嘴像癞蛤蟆，皮黏滑，刺有剧毒别用手抓</div></div>
+        <div class="row"><div class="lbl">评价</div><div>17街石头边有概率刷新</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">虾肉沉底，石头缝里多</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Lutjanus griseus" data-photo="Mangrove_snapper,_Lutjanus_griseus.jpg" data-group="free" data-layer="结构" data-name="芒果鱼 / 灰笛鲷 mangrove snapper">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>芒果鱼 / 灰笛鲷</h3><div class="en">Mangrove snapper</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>灰红色，体宽嘴长，爱躲石头缝</div></div>
+        <div class="row"><div class="lbl">评价</div><div>礁石沉底鱼</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>结构处（石头缝）</b></div>
+          <p class="how">jetty石头缝虾肉自由线，很难钓</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Myrophis punctatus" data-group="free" data-layer="底层" data-name="海鳝鱼 / 鳗鱼 sea eel">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>海鳝鱼 / 鳗鱼</h3><div class="en">Sea eel</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>细长像蛇，浑身黏液爱打卷，拇指粗细</div></div>
+        <div class="row"><div class="lbl">评价</div><div>据群友英伦风提供线索，TCD出现</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">虾肉沉底，夜里多</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Hardhead catfish" data-photo="Arius_felis.jpg" data-group="free" data-layer="底层" data-name="硬头鲶鱼 / 硬头猫鱼 hardhead catfish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>硬头鲶鱼 / 硬头猫鱼</h3><div class="en">Hardhead catfish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>体偏黑，背鳍没帆状延伸，别认成斜帆鲶鱼，鳍棘有毒</div></div>
+        <div class="row"><div class="lbl">评价</div><div>垃圾</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">沉底，抓鱼用钳子</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Bairdiella chrysoura" data-photo="Silver_perch_(_Bairdiella_chrysoura_).jpg" data-group="free" data-layer="底层" data-name="银色贝氏石首鱼 silver perch">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>银色贝氏石首鱼</h3><div class="en">Silver perch</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>像小号沙鳟，口小体宽，嘴里没牙</div></div>
+        <div class="row"><div class="lbl">评价</div><div>当个图鉴收集</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>底层</b></div>
+          <p class="how">小Jig或沉底</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Flying fish" data-photo="Sailfin_flyingfish.jpg" data-group="free" data-layer="上层" data-name="飞鱼 flying fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>飞鱼</h3><div class="en">Flying fish</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>胸鳍大像翅膀，能跃出水面滑翔一段</div></div>
+        <div class="row"><div class="lbl">评价</div><div>难遇到，但坐邮轮上能看到（八年来就钓过一次）</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层</b></div>
+          <p class="how">基本不上钩，曾经沉底钓比目鱼时拉了一条上来</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Remora" data-photo="Remora_remora.jpg" data-group="free" data-layer="上层" data-name="吸盘鱼 remora">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>吸盘鱼</h3><div class="en">Remora</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>头顶有吸盘，爱吸在鲨鱼鳐鱼海龟身上搭便车</div></div>
+        <div class="row"><div class="lbl">评价</div><div>难遇到，图鉴品种（来源休斯顿四哥）</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层</b></div>
+          <p class="how">不专门钓，常跟着大鱼一起误钓上来</p>
+        </details>
+      </div>
+      <div class="card fish" data-wiki="Little tunny" data-photo="Euthynnus_alletteratus_Italy_01.JPG" data-group="free" data-layer="上层 中层" data-name="小金枪鱼 little tunny">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div><h3>小金枪鱼</h3><div class="en">Little tunny</div></div></div>
+        <div class="limits"><span class="lim">🧺 数量不限</span><span class="lim">📏 尺寸不限</span></div>
+        <div class="row"><div class="lbl">特点</div><div>纺锤形，背部深蓝有波浪断纹，肚子银白带黑点，游得飞快</div></div>
+        <div class="row"><div class="lbl">评价</div><div>难遇到，图鉴品种（来源休斯顿四哥）</div></div>
+        <details class="method">
+          <summary>钓法</summary>
+          <div class="layer">🌊 水层：<b>上层和中层</b></div>
+          <p class="how">亮片铁板快抽，水面炸水时扔</p>
+        </details>
+      </div>
+      </div>
+    <div class="card empty" id="fish-empty" hidden>没找到这种鱼，换个名字试试</div>
+  </div>
+  <p class="muted" style="padding:0 2px">数量为每人每天可带走的条数。规定每年可能调整，以 TPWD 官方为准。</p>
+  <footer>祝你爆护 🎣</footer>
+</main>
+
+<!-- ============ 天气 ============ -->
+<main class="view" id="howto">
+  <div class="page-head">
+    <h1>钓法</h1>
+    <p>绑钩和钓组分享</p>
+  </div>
+  <div class="filters-wrap">
+    <div class="filters" id="how-filters">
+      <button class="on" data-k="all">全部</button>
+      <button data-k="knot">绑钩</button>
+      <button data-k="rig">钓组</button>
+    </div>
+  </div>
+  <h2 class="group-title how-group" data-k="knot">绑钩 <span>4 种</span></h2>
+  <div class="card how-card" data-kind="knot">
+    <div class="fish-head"><div class="how-icon">🪢</div><div><h3>帕洛马结</h3><div class="en">Palomar Knot</div></div></div>
+    <div class="spot-fish"><span class="tag">绑钩</span><span class="tag">绑转环</span></div>
+    <p class="how-desc">最简单又牢靠的绑钩结，编织线、碳线都适合，新手先学这个。</p>
+    <details class="method">
+      <summary>怎么绑</summary>
+      <ol class="steps"><li>线对折，把对折的线头穿过钩眼</li><li>用对折的两股线打一个松松的单结</li><li>把钩子从对折形成的线圈中穿过去</li><li>沾点水润湿，拉主线收紧，剪掉多余线头</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="knot">
+    <div class="fish-head"><div class="how-icon">🪢</div><div><h3>改良克林奇结</h3><div class="en">Improved Clinch Knot</div></div></div>
+    <div class="spot-fish"><span class="tag">绑钩</span><span class="tag">碳线 / 尼龙线</span></div>
+    <p class="how-desc">单丝线（碳线、尼龙线）绑钩最常用的结，钓场上最快。</p>
+    <details class="method">
+      <summary>怎么绑</summary>
+      <ol class="steps"><li>线穿过钩眼，留出约 15 cm 线头</li><li>线头绕主线缠 5–7 圈</li><li>线头穿过钩眼旁边的小圈</li><li>再从刚形成的大圈里穿回来</li><li>沾水收紧，剪线头</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="knot">
+    <div class="fish-head"><div class="how-icon">🪢</div><div><h3>双 Uni 结</h3><div class="en">Double Uni Knot</div></div></div>
+    <div class="spot-fish"><span class="tag">主线接子线</span></div>
+    <p class="how-desc">编织主线接碳线子线的简单接法，比 FG 结好学。</p>
+    <details class="method">
+      <summary>怎么绑</summary>
+      <ol class="steps"><li>两根线并排重叠约 20 cm</li><li>用第一根线的线头打圈，绕另一根线 4–6 圈后收紧（编织线绕 8 圈左右）</li><li>另一根线头同样操作</li><li>拉两根主线，让两个结滑到一起贴紧</li><li>剪掉线头</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="knot">
+    <div class="fish-head"><div class="how-icon">🪢</div><div><h3>FG 结</h3><div class="en">FG Knot</div></div></div>
+    <div class="spot-fish"><span class="tag">主线接子线</span><span class="tag">路亚</span></div>
+    <p class="how-desc">编织线接碳线最细最牢的接法，过导环很顺，适合抛亮片、假饵。难度较高，建议对着视频多练。</p>
+    <details class="method">
+      <summary>怎么绑</summary>
+      <ol class="steps"><li>绷紧编织主线</li><li>碳线在编织线上左右交叉缠绕约 20 次</li><li>用编织线在碳线上打几个半结固定</li><li>最后打一个收尾结，剪线头</li></ol>
+    </details>
+  </div>
+  <h2 class="group-title how-group" data-k="rig">钓组 <span>6 种</span></h2>
+  <div class="card how-card" data-kind="rig">
+    <div class="fish-head"><div class="how-icon">🎣</div><div><h3>沉底钓组</h3><div class="en">Carolina Rig</div></div></div>
+    <div class="spot-fish"><span class="tag">红鼓鱼</span><span class="tag">黑鼓鱼</span><span class="tag">比目鱼</span></div>
+    <p class="how-desc">最常用的底钓钓组，铅坠可以滑动，鱼咬饵时感觉不到重量。</p><div class="rig-parts"><span class="part">主线</span><span class="arr">→</span><span class="part">滑动铅</span><span class="arr">→</span><span class="part">保护珠</span><span class="arr">→</span><span class="part">转环</span><span class="arr">→</span><span class="part">子线 60–90 cm</span><span class="arr">→</span><span class="part">鱼钩</span></div>
+    <details class="method">
+      <summary>怎么做</summary>
+      <ol class="steps"><li>主线依次穿过滑动铅和保护珠</li><li>主线绑上转环</li><li>转环另一头接 60–90 cm 子线</li><li>子线绑鱼钩，挂虾、蟹块或鱼块</li><li>水流急的堤上用 2–4 oz 的铅</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="rig">
+    <div class="fish-head"><div class="how-icon">🎣</div><div><h3>响漂钓组</h3><div class="en">Popping Cork</div></div></div>
+    <div class="spot-fish"><span class="tag">斑点鳟鱼</span><span class="tag">红鼓鱼</span></div>
+    <p class="how-desc">抽竿时浮漂会“啵”地响，模仿小鱼小虾吃东西的声音，把鱼引过来。</p><div class="rig-parts"><span class="part">主线</span><span class="arr">→</span><span class="part">响漂</span><span class="arr">→</span><span class="part">子线 60–90 cm</span><span class="arr">→</span><span class="part">鱼钩 + 活虾</span></div>
+    <details class="method">
+      <summary>怎么做</summary>
+      <ol class="steps"><li>主线接响漂上端</li><li>响漂下端接 60–90 cm 碳线子线</li><li>子线绑钩，从虾头角下方挂活虾</li><li>抛出后每隔几秒抽一下竿，让浮漂响</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="rig">
+    <div class="fish-head"><div class="how-icon">🎣</div><div><h3>串钩钓组</h3><div class="en">High-Low Rig</div></div></div>
+    <div class="spot-fish"><span class="tag">沙鳟鱼</span><span class="tag">黄花鱼</span></div>
+    <p class="how-desc">一次能挂两个钩，钓沙鳟鱼、黄花鱼这类成群的小鱼效率很高。</p><div class="rig-parts"><span class="part">主线</span><span class="arr">→</span><span class="part">转环</span><span class="arr">→</span><span class="part">支钩 ×2</span><span class="arr">→</span><span class="part">底部铅坠</span></div>
+    <details class="method">
+      <summary>怎么做</summary>
+      <ol class="steps"><li>主线接转环，下面接串钩线组</li><li>两个支钩分别挂虾肉</li><li>最下端挂 1–2 oz 铅坠</li><li>沉底后保持线绷紧，竿尖一抖就收线</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="rig">
+    <div class="fish-head"><div class="how-icon">🎣</div><div><h3>双 Jig</h3><div class="en">Double Jig Rig</div></div></div>
+    <div class="spot-fish"><span class="tag">沙鳟鱼</span><span class="tag">斑点鳟鱼</span></div>
+    <p class="how-desc">两个小铅头钩带软饵，上下跳动吸引鱼，不用带活饵。</p><div class="rig-parts"><span class="part">主线</span><span class="arr">→</span><span class="part">转环</span><span class="arr">→</span><span class="part">上 Jig</span><span class="arr">→</span><span class="part">下 Jig</span></div>
+    <details class="method">
+      <summary>怎么做</summary>
+      <ol class="steps"><li>主线接转环，下面接双钩线组</li><li>上下各挂一个小铅头钩配软饵</li><li>沉到底后抬竿让饵跳起，再让它自然落下</li><li>咬口多在下落的时候</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="rig">
+    <div class="fish-head"><div class="how-icon">🎣</div><div><h3>自由线</h3><div class="en">Free Line</div></div></div>
+    <div class="spot-fish"><span class="tag">羊头鱼</span><span class="tag">斑点鳟鱼</span><span class="tag">芒果鱼</span></div>
+    <p class="how-desc">不挂铅或只挂很小的铅，让活虾自然漂动，鱼最没戒心。</p><div class="rig-parts"><span class="part">主线</span><span class="arr">→</span><span class="part">转环</span><span class="arr">→</span><span class="part">子线</span><span class="arr">→</span><span class="part">鱼钩 + 活虾</span></div>
+    <details class="method">
+      <summary>怎么做</summary>
+      <ol class="steps"><li>主线接转环，再接一段碳线子线</li><li>子线绑小钩，挂活虾</li><li>不加铅，或加一颗很小的咬铅</li><li>放线让虾顺着水流漂到石头边、桥墩边</li></ol>
+    </details>
+  </div>
+  <div class="card how-card" data-kind="rig">
+    <div class="fish-head"><div class="how-icon">🎣</div><div><h3>鸡腿钓蟹</h3><div class="en">Chicken Neck Crabbing</div></div></div>
+    <div class="spot-fish"><span class="tag">蓝蟹</span></div>
+    <p class="how-desc">最简单的钓螃蟹方法，不需要鱼竿。</p><div class="rig-parts"><span class="part">棉线</span><span class="arr">→</span><span class="part">鸡腿</span><span class="arr">→</span><span class="part">抄网</span></div>
+    <details class="method">
+      <summary>怎么做</summary>
+      <ol class="steps"><li>棉线绑紧一只鸡腿，丢到水里</li><li>等线被拉直，说明螃蟹在吃</li><li>慢慢、匀速地把线往上拉，别停</li><li>螃蟹快出水时用抄网从下面捞</li><li>壳宽不够 5 inch 的放回去</li></ol>
+    </details>
+  </div>
+</main>
+
+<!-- ============ 钓点 ============ -->
+<main class="view" id="spots">
+  <div class="page-head">
+    <h1>钓点</h1>
+  </div>
+  <div class="card spot">
+    <div class="spot-title"><h3>288 新堤</h3><a class="cam" href="https://www.brazoriacountytx.gov/departments/parks-department/surfside-jetty#ad-image-0" target="_blank" rel="noopener"><span class="live-dot"></span>实时画面</a><a class="wx" href="https://www.google.com/search?q=Surfside%20Beach%20TX%20weather" target="_blank" rel="noopener" data-lat="28.944" data-lon="-95.293"><span class="wx-i">🌤️</span><span class="wx-t">天气</span></a></div>
+    <div class="en">Surfside Jetty County Park</div>
+    <div class="addr" data-addr="101 Parkview Rd, Surfside Beach, TX 77541">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><div>101 Parkview Rd, Surfside Beach, TX 77541</div></div>
+    </div>
+    <p class="spot-note">休斯顿华人最常去的岸钓点之一，有许多不同鱼种都出现在那里，但是难度略高，容易挂底且空军，需要一点体力。</p>
+    <div class="spot-fish"><span class="tag">马鲛鱼</span><span class="tag">斑点鳟鱼</span><span class="tag">带鱼</span><span class="tag">芒果鱼</span><span class="tag">比目鱼</span><span class="tag">羊头鱼</span></div>
+    <div class="spot-actions">
+      <button class="btn sheet-btn" type="button" data-title="288 新堤 · 导航" data-apple="https://maps.apple.com/?q=Surfside%20Jetty%20County%20Park%2C%20101%20Parkview%20Rd%2C%20Surfside%20Beach%2C%20TX%2077541" data-google="https://www.google.com/maps/search/?api=1&query=Surfside%20Jetty%20County%20Park%2C%20101%20Parkview%20Rd%2C%20Surfside%20Beach%2C%20TX%2077541">📍 导航</button>
+      <button class="btn ghost sheet-btn" type="button" data-title="288 新堤 · 附近鱼饵店" data-apple="https://maps.apple.com/?q=bait%20shop&amp;sll=28.944,-95.293" data-google="https://www.google.com/maps/search/?api=1&query=bait%20shop%20near%20101%20Parkview%20Rd%2C%20Surfside%20Beach%2C%20TX%2077541">🪱 鱼饵店</button>
+    </div>
+  </div>
+  <div class="card spot">
+    <div class="spot-title"><h3>288 旧堤</h3><a class="wx" href="https://www.google.com/search?q=Quintana%20TX%20weather" target="_blank" rel="noopener" data-lat="28.933" data-lon="-95.306"><span class="wx-i">🌤️</span><span class="wx-t">天气</span></a></div>
+    <div class="en">Quintana Jetty</div>
+    <div class="addr" data-addr="2nd St, Quintana, TX 77541">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><div>2nd St, Quintana, TX 77541</div></div>
+    </div>
+    <p class="spot-note">和新堤隔着 Freeport 航道，在对岸。以前是钓带鱼的热门地方。石头堤，比新堤难走，穿防滑鞋。</p>
+    <div class="spot-fish"><span class="tag">马鲛鱼</span><span class="tag">斑点鳟鱼</span><span class="tag">带鱼</span><span class="tag">芒果鱼</span><span class="tag">比目鱼</span><span class="tag">羊头鱼</span></div>
+    <div class="spot-actions">
+      <button class="btn sheet-btn" type="button" data-title="288 旧堤 · 导航" data-apple="https://maps.apple.com/?q=Quintana%20Jetty%2C%202nd%20St%2C%20Quintana%2C%20TX%2077541" data-google="https://www.google.com/maps/search/?api=1&query=Quintana%20Jetty%2C%202nd%20St%2C%20Quintana%2C%20TX%2077541">📍 导航</button>
+      <button class="btn ghost sheet-btn" type="button" data-title="288 旧堤 · 附近鱼饵店" data-apple="https://maps.apple.com/?q=bait%20shop&amp;sll=28.933,-95.306" data-google="https://www.google.com/maps/search/?api=1&query=bait%20shop%20near%202nd%20St%2C%20Quintana%2C%20TX%2077541">🪱 鱼饵店</button>
+    </div>
+  </div>
+  <div class="card spot">
+    <div class="spot-title"><h3>海狼公园</h3><a class="wx" href="https://www.google.com/search?q=Galveston%20TX%20weather" target="_blank" rel="noopener" data-lat="29.334" data-lon="-94.779"><span class="wx-i">🌤️</span><span class="wx-t">天气</span></a></div>
+    <div class="en">Seawolf Park</div>
+    <div class="addr" data-addr="100 Seawolf Park Blvd, Galveston, TX 77550">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><div>100 Seawolf Park Blvd, Galveston, TX 77550</div></div>
+    </div>
+    <div class="fees"><span class="fee">💵 钓鱼 $15</span></div>
+    <p class="spot-note">在 Pelican Island 上，园里停着二战潜艇和军舰。有码头和岸边可钓，按季节开放，需要买当日钓鱼手环。</p>
+    <div class="spot-fish"><span class="tag">沙鳟鱼</span><span class="tag">斑点鳟鱼</span><span class="tag">带鱼</span><span class="tag">黄花鱼</span><span class="tag">比目鱼</span></div>
+    <div class="spot-actions">
+      <button class="btn sheet-btn" type="button" data-title="海狼公园 · 导航" data-apple="https://maps.apple.com/?q=Seawolf%20Park%2C%20100%20Seawolf%20Park%20Blvd%2C%20Galveston%2C%20TX%2077550" data-google="https://www.google.com/maps/search/?api=1&query=Seawolf%20Park%2C%20100%20Seawolf%20Park%20Blvd%2C%20Galveston%2C%20TX%2077550">📍 导航</button>
+      <button class="btn ghost sheet-btn" type="button" data-title="海狼公园 · 附近鱼饵店" data-apple="https://maps.apple.com/?q=bait%20shop&amp;sll=29.334,-94.779" data-google="https://www.google.com/maps/search/?api=1&query=bait%20shop%20near%20100%20Seawolf%20Park%20Blvd%2C%20Galveston%2C%20TX%2077550">🪱 鱼饵店</button>
+    </div>
+  </div>
+  <div class="card spot">
+    <div class="spot-title"><h3>91 街</h3><a class="cam" href="https://galvestonfishingpier.com/live-pier-cam" target="_blank" rel="noopener"><span class="live-dot"></span>实时画面</a><a class="wx" href="https://www.google.com/search?q=Galveston%20TX%20weather" target="_blank" rel="noopener" data-lat="29.262" data-lon="-94.84"><span class="wx-i">🌤️</span><span class="wx-t">天气</span></a></div>
+    <div class="en">Galveston Fishing Pier</div>
+    <div class="addr" data-addr="9001 Seawall Blvd, Galveston, TX">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><div>9001 Seawall Blvd, Galveston, TX</div></div>
+    </div>
+    <div class="fees"><span class="fee">💵 钓鱼 $16</span><span class="fee">🅿️ 10 点后停车要另交费</span></div>
+    <p class="spot-note">海堤大道上伸进海里的长码头。码头末端水深，夏天可以钓到马鲛鱼甚至大海鲢。</p>
+    <div class="spot-fish"><span class="tag">马鲛鱼</span><span class="tag">黑鼓鱼</span><span class="tag">红鱼</span><span class="tag">石鲳</span><span class="tag">比目鱼</span></div>
+    <div class="spot-actions">
+      <button class="btn sheet-btn" type="button" data-title="91 街 · 导航" data-apple="https://maps.apple.com/?q=Galveston%20Fishing%20Pier%2C%209001%20Seawall%20Blvd%2C%20Galveston%2C%20TX" data-google="https://www.google.com/maps/search/?api=1&query=Galveston%20Fishing%20Pier%2C%209001%20Seawall%20Blvd%2C%20Galveston%2C%20TX">📍 导航</button>
+      <button class="btn ghost sheet-btn" type="button" data-title="91 街 · 附近鱼饵店" data-apple="https://maps.apple.com/?q=bait%20shop&amp;sll=29.262,-94.84" data-google="https://www.google.com/maps/search/?api=1&query=bait%20shop%20near%209001%20Seawall%20Blvd%2C%20Galveston%2C%20TX">🪱 鱼饵店</button>
+    </div>
+  </div>
+  <div class="card spot">
+    <div class="spot-title"><h3>61 街</h3><a class="cam" href="https://www.61stpier.com/piercam" target="_blank" rel="noopener"><span class="live-dot"></span>实时画面</a><a class="wx" href="https://www.google.com/search?q=Galveston%20TX%20weather" target="_blank" rel="noopener" data-lat="29.274" data-lon="-94.816"><span class="wx-i">🌤️</span><span class="wx-t">天气</span></a></div>
+    <div class="en">61st Street Fishing Pier</div>
+    <div class="addr" data-addr="6101 Seawall Blvd, Galveston, TX">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><div>6101 Seawall Blvd, Galveston, TX</div></div>
+    </div>
+    <p class="spot-note">老牌收费码头，就在海堤大道 61 街路口。有鱼饵店，新手和带孩子来比较方便。</p>
+    <div class="spot-fish"><span class="tag">猫鱼</span><span class="tag">黑鳍鲨</span><span class="tag">沙鳟鱼</span></div>
+    <div class="spot-actions">
+      <button class="btn sheet-btn" type="button" data-title="61 街 · 导航" data-apple="https://maps.apple.com/?q=61st%20Street%20Fishing%20Pier%2C%206101%20Seawall%20Blvd%2C%20Galveston%2C%20TX" data-google="https://www.google.com/maps/search/?api=1&query=61st%20Street%20Fishing%20Pier%2C%206101%20Seawall%20Blvd%2C%20Galveston%2C%20TX">📍 导航</button>
+      <button class="btn ghost sheet-btn" type="button" data-title="61 街 · 附近鱼饵店" data-apple="https://maps.apple.com/?q=bait%20shop&amp;sll=29.274,-94.816" data-google="https://www.google.com/maps/search/?api=1&query=bait%20shop%20near%206101%20Seawall%20Blvd%2C%20Galveston%2C%20TX">🪱 鱼饵店</button>
+    </div>
+  </div>
+  <div class="card spot">
+    <div class="spot-title"><h3>17 街</h3><a class="wx" href="https://www.google.com/search?q=Port%20Bolivar%20TX%20weather" target="_blank" rel="noopener" data-lat="29.372" data-lon="-94.76"><span class="wx-i">🌤️</span><span class="wx-t">天气</span></a></div>
+    <div class="en">Bolivar North Jetty（17th St, Port Bolivar）</div>
+    <div class="addr" data-addr="17th St, Port Bolivar, TX 77650">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><div>17th St, Port Bolivar, TX 77650</div><div class="addr-sub">轮渡码头：1050 Ferry Rd, Galveston, TX</div></div>
+    </div>
+    <p class="spot-note">从 Galveston 坐免费轮渡（码头在 1050 Ferry Rd）过海，下船开 5 分钟左右到 17 街，顺着路往北堤方向走，沿途就能钓鱼钓螃蟹。秋天蟹最肥。</p>
+    <div class="spot-fish"><span class="tag">蓝蟹</span><span class="tag">石头蟹</span><span class="tag">比目鱼</span><span class="tag">石头鱼</span></div>
+    <div class="spot-actions">
+      <button class="btn sheet-btn" type="button" data-title="17 街 · 导航" data-apple="https://maps.apple.com/?q=Bolivar%20North%20Jetty%2C%2017th%20St%2C%20Port%20Bolivar%2C%20TX%2077650" data-google="https://www.google.com/maps/search/?api=1&query=Bolivar%20North%20Jetty%2C%2017th%20St%2C%20Port%20Bolivar%2C%20TX%2077650">📍 导航</button>
+      <button class="btn ghost sheet-btn" type="button" data-title="17 街 · 附近鱼饵店" data-apple="https://maps.apple.com/?q=bait%20shop&amp;sll=29.372,-94.76" data-google="https://www.google.com/maps/search/?api=1&query=bait%20shop%20near%2017th%20St%2C%20Port%20Bolivar%2C%20TX%2077650">🪱 鱼饵店</button>
+    </div>
+  </div>
+  <div class="card spot">
+    <div class="spot-title"><h3>TCD</h3><a class="wx" href="https://www.google.com/search?q=Texas%20City%20TX%20weather" target="_blank" rel="noopener" data-lat="29.375" data-lon="-94.86"><span class="wx-i">🌤️</span><span class="wx-t">天气</span></a></div>
+    <div class="en">Texas City Dike</div>
+    <div class="addr" data-addr="1 Texas City Dike Rd, Texas City, TX 77590">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><div>1 Texas City Dike Rd, Texas City, TX 77590</div></div>
+    </div>
+    <p class="spot-note">伸进加尔维斯顿湾大约 5 英里长的堤，开车就能一路开到边上钓，很方便。外地车旺季要交入场费。</p>
+    <div class="spot-fish"><span class="tag">黄花鱼</span><span class="tag">沙鳟鱼</span></div>
+    <div class="spot-actions">
+      <button class="btn sheet-btn" type="button" data-title="TCD · 导航" data-apple="https://maps.apple.com/?q=Texas%20City%20Dike%2C%201%20Texas%20City%20Dike%20Rd%2C%20Texas%20City%2C%20TX%2077590" data-google="https://www.google.com/maps/search/?api=1&query=Texas%20City%20Dike%2C%201%20Texas%20City%20Dike%20Rd%2C%20Texas%20City%2C%20TX%2077590">📍 导航</button>
+      <button class="btn ghost sheet-btn" type="button" data-title="TCD · 附近鱼饵店" data-apple="https://maps.apple.com/?q=bait%20shop&amp;sll=29.375,-94.86" data-google="https://www.google.com/maps/search/?api=1&query=bait%20shop%20near%201%20Texas%20City%20Dike%20Rd%2C%20Texas%20City%2C%20TX%2077590">🪱 鱼饵店</button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ 须知 ============ -->
+<main class="view" id="rules">
+  <div class="page-head">
+    <div class="eyebrow">出发前</div>
+    <h1>须知</h1>
+  </div>
+  <div class="card">
+    <div class="list-row"><div class="ic">🪪</div><div style="flex:1">在德州海边钓鱼需要钓鱼执照，并带有咸水（Saltwater）附加项。可以在官网买，也可以去 Walmart 体育用品柜台买或续约。
+      <div class="row-actions">
+        <a class="btn" href="https://tpwd.texas.gov/regulations/outdoor-annual/licenses/fishing-licenses-stamps-tags-packages/fishing-licenses-and-packages/" target="_blank" rel="noopener">官网买执照</a>
+        <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Walmart" target="_blank" rel="noopener">附近的 Walmart</a>
+      </div></div></div>
+    <div class="list-row"><div class="ic">📏</div><div>每种鱼都有尺寸和数量限制，每年可能调整，出发前查
+      <a href="https://tpwd.texas.gov/regulations/outdoor-annual/fishing/" target="_blank" rel="noopener">TPWD 官方规定</a></div></div>
+    <div class="list-row"><div class="ic">🚫</div><div>比目鱼每年 11 月 1 日 – 12 月 14 日禁止带走</div></div>
+    <div class="list-row"><div class="ic">🪨</div><div>防波堤石头湿滑，穿防滑鞋，浪大时别上去</div></div>
+    <div class="list-row"><div class="ic">⚡</div><div>雷雨天别在空旷水边甩竿</div></div>
+    <div class="list-row"><div class="ic">🐢</div><div>带走垃圾和废线，别伤到海鸟和海龟</div></div>
+  </div>
+</main>
+
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-top">
+    <div class="lb-title" id="lb-title"></div>
+    <button class="lb-close" id="lb-close" type="button" aria-label="关闭">✕</button>
+  </div>
+  <div class="lb-img" id="lb-img"></div>
+  <div class="lb-credit" id="lb-credit"></div>
+</div>
+
+
+<div class="sheet-mask" id="sheet-mask"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="sheet-grip"></div>
+  <div class="sheet-title" id="sheet-title"></div>
+  <a class="sheet-opt" id="sheet-apple" target="_blank" rel="noopener"><span class="sheet-ic">🗺️</span>Apple 地图</a>
+  <a class="sheet-opt" id="sheet-google" target="_blank" rel="noopener"><span class="sheet-ic">📍</span>Google 地图</a>
+  <button class="sheet-cancel" id="sheet-cancel" type="button">取消</button>
+</div>
+
+<!-- ============ 底部 Tab ============ -->
+<nav class="tabbar">
+  <a href="#fish" data-tab="fish">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12c3-4.5 8.5-6.5 13.5-3.5L20.5 5v14L16 15.5C11 18.5 5.5 16.5 2.5 12z"/><circle cx="8" cy="11" r="1" fill="currentColor"/></svg>
+    鱼种
+  </a>
+  <a href="#spots" data-tab="spots">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+    钓点
+  </a>
+  <a href="#howto" data-tab="howto">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4.5" r="1.8"/><path d="M15 6.3V15a5 5 0 0 1-10 0v-2.5l2.5 2"/></svg>
+    钓法
+  </a>
+  <a href="#rules" data-tab="rules">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.2-7.5 9.5-4.3-1.3-7.5-5-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/></svg>
+    须知
+  </a>
+</nav>
+
+<script>
+  // ---------- Tab 切换（用 #hash，手机返回键也能用）----------
+  const tabs = document.querySelectorAll('.tabbar a');
+  const views = document.querySelectorAll('.view');
+
+  function show(id) {
+    if (!document.getElementById(id)) id = 'fish';
+    views.forEach(v => v.classList.toggle('active', v.id === id));
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === id));
+    window.scrollTo(0, 0);
+  }
+  // 直接监听点击切换，不依赖 #hash（有些手机预览/内嵌浏览器会拦截 hash 跳转）
+  tabs.forEach(t => t.addEventListener('click', e => {
+    e.preventDefault();
+    show(t.dataset.tab);
+    try { history.replaceState(null, '', '#' + t.dataset.tab); } catch (_) {}
+  }));
+  window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+  let start = 'fish';
+  try { start = location.hash.slice(1) || 'fish'; } catch (_) {}
+  show(start);
+
+
+  // ---------- 下拉：平滑展开 / 收起 ----------
+  const EASE = 'cubic-bezier(.2,.8,.2,1)';
+  document.querySelectorAll('details.method').forEach(d => {
+    const sum = d.querySelector('summary');
+    const dc = document.createElement('div'); dc.className = 'dc';
+    while (sum.nextSibling) dc.appendChild(sum.nextSibling);
+    d.appendChild(dc);
+    let anim = null;
+    sum.addEventListener('click', e => {
+      e.preventDefault();
+      if (anim) anim.cancel();
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!d.open) {
+        d.open = true;
+        const h = dc.scrollHeight;
+        if (reduce) return;
+        anim = dc.animate([{ height: '0px', opacity: 0, transform: 'translateY(-4px)' },
+                           { height: h + 'px', opacity: 1, transform: 'none' }],
+                          { duration: Math.min(380, 200 + h / 4), easing: EASE });
+        anim.onfinish = () => anim = null;
+      } else {
+        if (reduce) { d.open = false; return; }
+        const h = dc.offsetHeight;
+        d.classList.add('closing');
+        anim = dc.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }],
+                          { duration: Math.min(300, 160 + h / 5), easing: EASE });
+        anim.onfinish = () => { d.open = false; d.classList.remove('closing'); anim = null; };
+        anim.oncancel = () => d.classList.remove('closing');
+      }
+    });
+  });
+
+  // ---------- 鱼种筛选 + 搜索 ----------
+  const filterBtns = document.querySelectorAll('#filters button');
+  const fishCards = document.querySelectorAll('#fish-list .fish');
+  const fishGroups = document.querySelectorAll('#fish-list .group');
+  const searchBox = document.getElementById('fish-search');
+  let curFilter = 'all';
+  function applyFish() {
+    const q = searchBox.value.trim().toLowerCase();
+    let shown = 0;
+    fishCards.forEach(c => {
+      const f = curFilter;
+      const okF = f === 'all' || c.dataset.group === f || c.dataset.layer.split(' ').includes(f);
+      const okQ = !q || c.dataset.name.includes(q);
+      c.style.display = okF && okQ ? '' : 'none';
+      if (okF && okQ) shown++;
+    });
+    fishGroups.forEach(g => {
+      g.style.display = g.querySelector('.fish:not([style*="none"])') ? '' : 'none';
+    });
+    document.getElementById('fish-empty').hidden = shown > 0;
+  }
+  filterBtns.forEach(btn => btn.onclick = () => {
+    filterBtns.forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    curFilter = btn.dataset.f;
+    applyFish();
+  });
+  searchBox.addEventListener('input', applyFish);
+
+
+  // ---------- 鱼照片：Wikimedia Commons 免费授权图片，直接用图片地址加载 ----------
+  const FP = 'https://en.wikipedia.org/wiki/Special:FilePath/';
+  const photoCards = [...document.querySelectorAll('.fish[data-photo]')];
+  const photos = {};
+  photoCards.forEach(c => {
+    const f = encodeURIComponent(c.dataset.photo);
+    photos[c.dataset.wiki] = { thumb: FP + f + '?width=240', big: FP + f + '?width=1200',
+                               file: c.dataset.photo, page: c.dataset.wiki };
+    const btn = c.querySelector('.avatar');
+    const img = new Image();
+    img.alt = c.querySelector('h3').textContent;
+    img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
+    img.onload = () => { const p = btn.querySelector('.ph'); if (p) p.remove(); btn.classList.add('has-img'); };
+    img.onerror = () => img.remove();   // 加载失败就保留 🐟
+    img.src = photos[c.dataset.wiki].thumb;
+    btn.prepend(img);
+  });
+  // 没有照片的鱼：不能点
+  document.querySelectorAll('.fish:not([data-photo]) .avatar').forEach(b => { b.disabled = true; b.style.cursor = 'default'; });
+
+  // ---------- 点击看大图 ----------
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  function openLB(card) {
+    const ph = photos[card.dataset.wiki];
+    if (!ph) return;
+    document.getElementById('lb-title').innerHTML =
+      card.querySelector('h3').textContent + '<small>' + card.querySelector('.en').textContent + '</small>';
+    lbImg.innerHTML = '<div class="lb-loading">加载大图中…</div>';
+    const img = new Image();
+    img.alt = card.querySelector('h3').textContent;
+    img.referrerPolicy = 'no-referrer';
+    img.onload = () => { lbImg.innerHTML = ''; lbImg.appendChild(img); };
+    img.onerror = () => { lbImg.innerHTML = '<div class="lb-loading">大图加载失败，请检查网络</div>'; };
+    img.src = ph.big;
+    const fileLink = 'https://en.wikipedia.org/wiki/File:' + encodeURIComponent(ph.file);
+    document.getElementById('lb-credit').innerHTML =
+      '图片来源：<a href="' + fileLink + '" target="_blank" rel="noopener">Wikimedia Commons</a>（作者与授权见原页）';
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLB() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  photoCards.forEach(c => c.querySelector('.avatar').addEventListener('click', () => { if (c.querySelector('.avatar').classList.contains('has-img')) openLB(c); }));
+  document.getElementById('lb-close').onclick = closeLB;
+  lbImg.addEventListener('click', e => { if (e.target === lbImg) closeLB(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+
+  // ---------- 钓点右上角天气（Open-Meteo 免费，一次请求所有钓点）----------
+  (async () => {
+    const tags = [...document.querySelectorAll('.wx[data-lat]')];
+    if (!tags.length) return;
+    const icon = c => c === 0 ? '☀️' : c <= 2 ? '🌤️' : c === 3 ? '☁️' : c <= 48 ? '🌫️'
+                   : c <= 67 || (c >= 80 && c <= 82) ? '🌧️' : c <= 77 ? '🌨️' : '⛈️';
+    const url = 'https://api.open-meteo.com/v1/forecast?current=temperature_2m,weather_code'
+      + '&temperature_unit=fahrenheit&latitude=' + tags.map(t => t.dataset.lat).join(',')
+      + '&longitude=' + tags.map(t => t.dataset.lon).join(',');
+    try {
+      let d = await (await fetch(url)).json();
+      if (!Array.isArray(d)) d = [d];
+      tags.forEach((t, i) => {
+        const c = d[i] && d[i].current; if (!c) return;
+        t.querySelector('.wx-i').textContent = icon(c.weather_code);
+        t.querySelector('.wx-t').textContent = Math.round(c.temperature_2m) + '°';
+      });
+    } catch (_) { /* 没网就显示「天气」，点了照样能看 */ }
+  })();
+
+  // ---------- 导航 / 鱼饵店：底部弹出选择 Apple 或 Google 地图 ----------
+  const sheet = document.getElementById('sheet'), mask = document.getElementById('sheet-mask');
+  function openSheet(btn) {
+    document.getElementById('sheet-title').textContent = btn.dataset.title;
+    document.getElementById('sheet-apple').href = btn.dataset.apple;
+    document.getElementById('sheet-google').href = btn.dataset.google;
+    sheet.classList.add('open'); mask.classList.add('open');
+  }
+  function closeSheet() { sheet.classList.remove('open'); mask.classList.remove('open'); }
+  document.querySelectorAll('.sheet-btn').forEach(b => b.addEventListener('click', () => openSheet(b)));
+  mask.onclick = closeSheet;
+  document.getElementById('sheet-cancel').onclick = closeSheet;
+  document.querySelectorAll('.sheet-opt').forEach(a => a.addEventListener('click', () => setTimeout(closeSheet, 300)));
+
+  // ---------- 钓法页筛选 ----------
+  const howBtns = document.querySelectorAll('#how-filters button');
+  howBtns.forEach(btn => btn.onclick = () => {
+    howBtns.forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const k = btn.dataset.k;
+    document.querySelectorAll('.how-card, .how-group').forEach(el => {
+      const kk = el.dataset.kind || el.dataset.k;
+      el.style.display = (k === 'all' || kk === k) ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>
