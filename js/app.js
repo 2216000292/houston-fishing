@@ -89,7 +89,9 @@
   photoCards.forEach(c => {
     const f = encodeURIComponent(c.dataset.photo);
     photos[c.dataset.wiki] = c.dataset.local
-      ? { thumb: c.dataset.localThumb || c.dataset.local, big: c.dataset.local, local: true }   // 自己的照片，放在 images/
+      ? { thumb: c.dataset.localThumb || c.dataset.local, big: c.dataset.local, local: true, catchBy: c.dataset.catch }   // 自己的照片，放在 images/
+      : c.dataset.url
+      ? { thumb: c.dataset.url, big: c.dataset.url, credit: c.dataset.credit, creditLink: c.dataset.creditLink }   // 其他网站的图片，注明来源
       : { thumb: FP + f + '?width=240', big: FP + f + '?width=1200', file: c.dataset.photo, page: c.dataset.wiki };
     const btn = c.querySelector('.avatar');
     const img = new Image();
@@ -122,7 +124,12 @@
     img.onload = () => { lbImg.innerHTML = ''; lbImg.appendChild(img); };
     img.onerror = () => { lbImg.innerHTML = '<div class="lb-loading">大图加载失败，请检查网络</div>'; };
     img.src = ph.big;
-    if (ph.local) document.getElementById('lb-credit').textContent = '';
+    if (ph.local) document.getElementById('lb-credit').textContent = ph.catchBy ? '图片来源：' + ph.catchBy : '';
+    else if (ph.credit) {
+      const cr = document.getElementById('lb-credit'); cr.textContent = '图片来源：';
+      const a = document.createElement('a'); a.href = ph.creditLink || ph.big; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = ph.credit; cr.appendChild(a);
+    }
     else {
       const fileLink = 'https://en.wikipedia.org/wiki/File:' + encodeURIComponent(ph.file);
       document.getElementById('lb-credit').innerHTML =
