@@ -295,3 +295,4 @@
       el.style.display = (k === 'all' || kk === k) ? '' : 'none';
     });
   });
+  const howOn = document.querySelector('#how-filters button.on'); if (howOn) howOn.click();

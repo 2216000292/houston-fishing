@@ -492,3 +492,31 @@
     .detail, .spot.has-detail { transition: none; }
     .spot-go svg { animation: none; }
   }
+
+/* ---------- 钓法页：新手教程占位 ---------- */
+.beginner-empty { display: flex; gap: 14px; align-items: center; }
+.be-ic { flex: 0 0 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 24px; background: var(--primary-soft); }
+.beginner-empty b { font-size: 16px; }
+.beginner-empty p { margin: 4px 0 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+
+/* ---------- 钓法页：季节 ---------- */
+.season-tip { margin: -2px 2px 12px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+.season-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+@media (max-width: 340px) { .season-grid { grid-template-columns: 1fr; } }
+.season-card { padding: 14px 12px 12px; border-radius: 16px; border: 1px solid var(--line);
+  border-top: 3px solid var(--s); background: linear-gradient(180deg, var(--s-soft), var(--card) 85%); }
+.s-spring { --s: #6f9a55; --s-soft: #f1f5e6; }
+.s-summer { --s: #3f8f86; --s-soft: #e6f3f1; }
+.s-autumn { --s: #c08345; --s-soft: #faf0e2; }
+.s-winter { --s: #5f7a99; --s-soft: #edf1f6; }
+@media (prefers-color-scheme: dark) {
+  .s-spring { --s: #9cc47f; --s-soft: rgba(156,196,127,.10); }
+  .s-summer { --s: #6cc2b7; --s-soft: rgba(108,194,183,.10); }
+  .s-autumn { --s: #e0a669; --s-soft: rgba(224,166,105,.10); }
+  .s-winter { --s: #93aecd; --s-soft: rgba(147,174,205,.10); }
+}
+.season-card h3 { margin: 0; font-size: 18px; font-weight: 800; }
+.s-mon { margin: 2px 0 8px; font-size: 13px; color: var(--muted); }
+.s-line { margin: 0; font-size: 14px; line-height: 1.65; color: var(--text); }
+.s-line + .s-line { margin-top: 4px; }
+.s-line b { font-weight: 700; }
