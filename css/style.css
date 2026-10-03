@@ -501,9 +501,8 @@
 
 /* ---------- 钓法页：季节 ---------- */
 .season-tip { margin: -2px 2px 12px; font-size: 14px; line-height: 1.6; color: var(--muted); }
-.season-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
-@media (max-width: 340px) { .season-grid { grid-template-columns: 1fr; } }
-.season-card { padding: 14px 12px 12px; border-radius: 16px; border: 1px solid var(--line);
+.season-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+.season-card { padding: 14px 16px 14px; border-radius: 16px; border: 1px solid var(--line);
   border-top: 3px solid var(--s); background: linear-gradient(180deg, var(--s-soft), var(--card) 85%); }
 .s-spring { --s: #6f9a55; --s-soft: #f1f5e6; }
 .s-summer { --s: #3f8f86; --s-soft: #e6f3f1; }
@@ -517,6 +516,12 @@
 }
 .season-card h3 { margin: 0; font-size: 18px; font-weight: 800; }
 .s-mon { margin: 2px 0 8px; font-size: 13px; color: var(--muted); }
-.s-line { margin: 0; font-size: 14px; line-height: 1.65; color: var(--text); }
+.s-line { margin: 0; font-size: 15px; line-height: 1.65; color: var(--text); }
 .s-line + .s-line { margin-top: 4px; }
 .s-line b { font-weight: 700; }
+
+/* 横长照片的小图：整条鱼放进框里，背景用模糊的同一张图 */
+.avatar.fit-contain::before { content: ""; position: absolute; inset: -12px; background: var(--thumb) center / cover no-repeat;
+  filter: blur(10px) brightness(.9); opacity: 0; transition: opacity .25s; }
+.avatar.fit-contain.has-img::before { opacity: 1; }
+.avatar.fit-contain img { object-fit: contain; background: transparent; }

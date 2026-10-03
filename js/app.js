@@ -88,12 +88,17 @@
   const photos = {};
   photoCards.forEach(c => {
     const f = encodeURIComponent(c.dataset.photo);
-    photos[c.dataset.wiki] = { thumb: FP + f + '?width=240', big: FP + f + '?width=1200',
-                               file: c.dataset.photo, page: c.dataset.wiki };
+    photos[c.dataset.wiki] = c.dataset.local
+      ? { thumb: c.dataset.localThumb || c.dataset.local, big: c.dataset.local, local: true }   // 自己的照片，放在 images/
+      : { thumb: FP + f + '?width=240', big: FP + f + '?width=1200', file: c.dataset.photo, page: c.dataset.wiki };
     const btn = c.querySelector('.avatar');
     const img = new Image();
     img.alt = c.querySelector('h3').textContent;
     img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
+    if (c.dataset.pos) img.style.objectPosition = c.dataset.pos;   // 小图裁切位置
+    if (c.dataset.fit === 'contain') {   // 横长的网络图：整条鱼缩进框里，空白处用同一张图模糊填满
+      btn.classList.add('fit-contain'); btn.style.setProperty('--thumb', 'url("' + photos[c.dataset.wiki].thumb + '")');
+    }
     img.onload = () => { const p = btn.querySelector('.ph'); if (p) p.remove(); btn.classList.add('has-img'); };
     img.onerror = () => img.remove();   // 加载失败就保留 🐟
     img.src = photos[c.dataset.wiki].thumb;
@@ -117,9 +122,12 @@
     img.onload = () => { lbImg.innerHTML = ''; lbImg.appendChild(img); };
     img.onerror = () => { lbImg.innerHTML = '<div class="lb-loading">大图加载失败，请检查网络</div>'; };
     img.src = ph.big;
-    const fileLink = 'https://en.wikipedia.org/wiki/File:' + encodeURIComponent(ph.file);
-    document.getElementById('lb-credit').innerHTML =
-      '图片来源：<a href="' + fileLink + '" target="_blank" rel="noopener">Wikimedia Commons</a>（作者与授权见原页）';
+    if (ph.local) document.getElementById('lb-credit').textContent = '';
+    else {
+      const fileLink = 'https://en.wikipedia.org/wiki/File:' + encodeURIComponent(ph.file);
+      document.getElementById('lb-credit').innerHTML =
+        '图片来源：<a href="' + fileLink + '" target="_blank" rel="noopener">Wikimedia Commons</a>（作者与授权见原页）';
+    }
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
