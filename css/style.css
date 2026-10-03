@@ -1,0 +1,494 @@
+:root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #0b1220;
+    --muted: #667085;
+    --line: #e7ebf0;
+    --primary: #0a7cff;
+    --primary-soft: #e6f1ff;
+    --teal: #12b5a6;
+    --warn: #e5484d;
+    --warn-soft: #fff0f0;
+    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 4px 16px rgba(16,24,40,.06);
+    --tabbar: rgba(255,255,255,.82);
+    --radius: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0f14;
+      --card: #151b23;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --line: #232c38;
+      --primary: #4da3ff;
+      --primary-soft: #14263d;
+      --teal: #2dd4bf;
+      --warn: #ff6b6b;
+      --warn-soft: #2a1618;
+      --shadow: none;
+      --tabbar: rgba(21,27,35,.82);
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    font-size: 17px; line-height: 1.55;
+    background: var(--bg); color: var(--text);
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+  a { color: var(--primary); }
+
+  /* ---------- 页面 ---------- */
+  .view { display: none; max-width: 640px; margin: 0 auto; padding: 0 16px; }
+  .view.active { display: block; animation: fade .2s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .page-head { padding: calc(14px + env(safe-area-inset-top)) 2px 6px; }
+  .eyebrow { font-size: 13px; font-weight: 600; color: var(--primary); letter-spacing: .02em; }
+  .page-head h1 { margin: 2px 0 0; font-size: 32px; font-weight: 800; letter-spacing: -.02em; }
+  .page-head p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  @media (prefers-color-scheme: light) { .card { border-color: transparent; } }
+  .muted { color: var(--muted); font-size: 15px; }
+
+  /* ---------- 筛选（吸顶） ---------- */
+  .filters-wrap {
+    position: sticky; top: 0; z-index: 5;
+    margin: 0 -16px 8px; padding: 10px 16px;
+    background: var(--bg);
+  }
+  .filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button {
+    flex: 0 0 auto; min-height: 38px; padding: 0 16px;
+    border: 0; border-radius: 999px;
+    background: var(--card); color: var(--text);
+    font: inherit; font-size: 15px; font-weight: 600;
+    box-shadow: var(--shadow);
+    transition: background .15s, color .15s;
+  }
+  .filters button.on { background: var(--text); color: var(--bg); }
+
+  /* ---------- 鱼种卡片 ---------- */
+  .fish-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .avatar {
+    flex: 0 0 48px; height: 48px; border-radius: 14px;
+    display: grid; place-items: center; font-size: 24px;
+    background: linear-gradient(135deg, #5ec8ff, #0a7cff);
+  }
+  .fish h3 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3; }
+  .fish .en { font-size: 14px; color: var(--muted); line-height: 1.3; }
+  .tag {
+    display: inline-block; margin: 0 6px 8px 0; padding: 3px 10px;
+    border-radius: 999px; font-size: 13px; font-weight: 600;
+    background: var(--primary-soft); color: var(--primary);
+  }
+  .fish .intro { margin: 2px 0 12px; font-size: 16px; }
+  .fish dl {
+    margin: 0; display: grid; grid-template-columns: 44px 1fr;
+    font-size: 15px; border-top: 1px solid var(--line);
+  }
+  .fish dt, .fish dd { padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .fish dt { color: var(--muted); font-weight: 600; }
+  .fish dd { margin: 0; }
+  .alert {
+    margin-top: 12px; padding: 10px 12px; border-radius: 12px;
+    background: var(--warn-soft); color: var(--warn);
+    font-size: 14px; font-weight: 600;
+  }
+
+
+  /* ---------- 鱼种 v2 ---------- */
+  .search { width: 100%; min-height: 44px; margin-bottom: 10px; padding: 0 14px;
+    border: 0; border-radius: 12px; background: var(--card); color: var(--text);
+    font: inherit; font-size: 16px; box-shadow: var(--shadow); outline: none; -webkit-appearance: none; }
+  .search:focus { box-shadow: 0 0 0 2px var(--primary); }
+  .group-title { font-size: 15px; font-weight: 700; color: var(--muted); margin: 14px 2px 10px; }
+  .group-title span { font-weight: 500; }
+  .limits { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .lim { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 8px;
+    background: var(--bg); color: var(--muted); }
+  .lim.on { background: var(--primary-soft); color: var(--primary); }
+  .fish .row { display: grid; grid-template-columns: 40px 1fr; gap: 8px; padding: 9px 0;
+    border-top: 1px solid var(--line); font-size: 15px; }
+  .fish .lbl { color: var(--muted); font-weight: 700; font-size: 14px; }
+  .special { margin-top: 4px; padding: 10px 12px; border-radius: 12px; font-size: 14px;
+    background: #fff6e6; color: #9a5b00; }
+  .special span { display: inline-block; margin-right: 8px; padding: 1px 8px; border-radius: 6px;
+    background: #f5a524; color: #fff; font-weight: 700; font-size: 12px; }
+  @media (prefers-color-scheme: dark) { .special { background: #2b2210; color: #f5c46b; } }
+  .layer { margin-top: 12px; font-size: 15px; }
+  .how { margin: 8px 0 2px; font-size: 15px; }
+  .empty { text-align: center; color: var(--muted); }
+
+
+  /* ---------- 鱼照片 + 大图 ---------- */
+  .avatar { position: relative; flex: 0 0 72px !important; height: 72px !important; padding: 0; border: 0;
+    overflow: hidden; cursor: zoom-in; border-radius: 16px; }
+  .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #fff; opacity: 0; transition: opacity .25s; }
+  .avatar.has-img img { opacity: 1; }
+  .avatar .ph { font-size: 28px; }
+  .avatar .zoom { position: absolute; right: 4px; bottom: 4px; width: 20px; height: 20px; border-radius: 6px;
+    display: none; place-items: center; font-size: 12px; color: #fff; background: rgba(0,0,0,.45); }
+  .avatar.has-img .zoom { display: grid; }
+  .avatar:active { transform: scale(.96); }
+
+  .lightbox { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column;
+    background: #000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: calc(10px + env(safe-area-inset-top)) 16px 10px; color: #fff; }
+  .lb-title { font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .lb-title small { display: block; font-size: 13px; font-weight: 500; opacity: .7; }
+  .lb-close { flex: 0 0 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.16);
+    color: #fff; font-size: 22px; }
+  .lb-img { flex: 1; display: grid; place-items: center; overflow: auto; padding: 0 8px; touch-action: pinch-zoom; }
+  .lb-img img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+  .lb-credit { padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); text-align: center;
+    font-size: 12px; color: rgba(255,255,255,.65); }
+  .lb-credit a { color: #9ccbff; }
+  .lb-loading { color: #fff; opacity: .7; }
+
+
+  /* ---------- 钓法页 ---------- */
+  .how-icon { flex: 0 0 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+    font-size: 24px; background: var(--primary-soft); }
+  .how-desc { margin: 2px 0 10px; font-size: 15px; }
+  .rig-parts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 10px 12px;
+    border-radius: 12px; background: var(--bg); font-size: 13px; font-weight: 600; }
+  .rig-parts .part { padding: 2px 8px; border-radius: 6px; background: var(--card); border: 1px solid var(--line); }
+  .rig-parts .arr { color: var(--muted); }
+  .how-card h3 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.3; }
+  .how-card .en { font-size: 14px; color: var(--muted); line-height: 1.3; }
+  .method .steps li { padding: 0 0 0 2px; counter-increment: none; }
+  .method .steps li::before { content: none; }
+  .video-btn { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 4px 0 4px;
+    min-height: 42px; border-radius: 12px; text-decoration: none; font-size: 15px; font-weight: 700;
+    background: #fff0f0; color: #d92d2d; transition: transform .1s; }
+  .video-btn:active { transform: scale(.98); }
+  .video-btn .play { display: grid; place-items: center; width: 22px; height: 16px; border-radius: 4px;
+    background: #ff0000; color: #fff; font-size: 9px; }
+  @media (prefers-color-scheme: dark) { .video-btn { background: #3a1517; color: #ff8a8d; } }
+  .knot-videos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0 4px; }
+  .knot-videos .video-btn { margin: 0; min-height: 44px; }
+  .credit { margin-top: 6px; text-align: center; font-size: 12px; color: var(--muted); }
+  /* ---------- 绑钩卡片：文字在左、图解缩略图在右 ---------- */
+  .knot-card { position: relative; }
+  .knot-card::before { content: ""; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px;
+    border-radius: 0 3px 3px 0; background: #b9dcf7; }
+  @media (prefers-color-scheme: dark) { .knot-card::before { background: #2c4a66; } }
+  .knot-row { display: flex; gap: 14px; align-items: flex-start; }
+  .knot-text { flex: 1; min-width: 0; }
+  .knot-card h3 { margin: 0; font-size: 19px; font-weight: 800; line-height: 1.3; }
+  .knot-card .en { font-size: 13px; color: var(--muted); line-height: 1.3; }
+  .knot-card .how-desc { margin: 8px 0 0; font-size: 15px; }
+  .knot-thumb { position: relative; flex: 0 0 104px; height: 104px; padding: 4px; border: 0; box-shadow: 0 0 0 1px var(--line), 0 2px 8px rgba(16,24,40,.06);
+    border-radius: 14px; background: #fff; overflow: hidden; cursor: zoom-in; transition: transform .1s; }
+  .knot-thumb:active { transform: scale(.96); }
+  .knot-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .knot-chip { position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 0; text-align: center;
+    background: linear-gradient(transparent, rgba(0,0,0,.6)); color: #fff; font-size: 11px; font-weight: 700; }
+  .knot-card .video-btn { margin-top: 12px; }
+  .diagram { position: relative; display: block; width: 100%; padding: 0; margin: 2px 0 10px; border: 1px solid var(--line);
+    border-radius: 14px; overflow: hidden; background: #f3f3f3; cursor: zoom-in; }
+  .diagram img { display: block; width: 100%; height: auto; }
+  .diagram.tall { background: #fff; }
+  .diagram.tall img { max-height: 380px; object-fit: contain; }
+  .diagram:active { transform: scale(.99); }
+  .zoom-chip { position: absolute; right: 8px; bottom: 8px; padding: 4px 9px; border-radius: 999px;
+    background: rgba(0,0,0,.55); color: #fff; font-size: 12px; font-weight: 600; }
+  .steps { margin: 12px 0 0; padding-left: 22px; font-size: 15px; }
+  .steps li { margin-bottom: 8px; padding-left: 2px; }
+  .steps li::marker { color: var(--teal); font-weight: 700; }
+
+  /* 更多：做小一点 */
+  .spot .method.more { margin-top: 6px; }
+  .spot .method.more summary { min-height: 36px; font-size: 14px; font-weight: 600;
+    background: transparent; color: var(--muted); gap: 6px; }
+  .spot .method.more summary::after { width: 6px; height: 6px; border-width: 0 1.5px 1.5px 0; margin-top: -3px; }
+  .spot .method.more[open]:not(.closing) summary::after { margin-top: 3px; }
+  .spot .method.more summary:active { background: var(--bg); }
+  .more-body { margin-top: 4px !important; }
+  /* 下拉动画 */
+  .method .dc { overflow: hidden; }
+  .method summary::after { transition: transform .28s cubic-bezier(.2,.8,.2,1), margin .28s; }
+  .method summary { transition: transform .1s, background .2s; }
+
+  /* 钓法下拉 */
+  .method { margin-top: 12px; }
+  .method summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; justify-content: center; align-items: center; gap: 6px;
+    min-height: 46px; border-radius: 12px;
+    background: var(--primary-soft); color: var(--primary);
+    font-weight: 700; font-size: 16px;
+    transition: transform .1s;
+  }
+  .method summary:active { transform: scale(.98); }
+  .method summary::-webkit-details-marker { display: none; }
+  .method summary::after {
+    content: ""; width: 8px; height: 8px;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg); margin-top: -4px; transition: transform .2s;
+  }
+  .method[open]:not(.closing) summary::after { transform: rotate(-135deg); margin-top: 4px; }
+  .method ul { list-style: none; margin: 12px 0 0; padding: 0; counter-reset: step; }
+  .method li {
+    position: relative; padding: 0 0 12px 34px; font-size: 15px;
+    counter-increment: step;
+  }
+  .method li::before {
+    content: counter(step); position: absolute; left: 0; top: 1px;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--teal); color: #fff; font-size: 12px; font-weight: 700;
+  }
+  .method li b { display: block; }
+
+  /* ---------- 天气 ---------- */
+  .hero {
+    border-radius: 24px; padding: 20px; color: #fff; margin-bottom: 12px;
+    background: linear-gradient(160deg, #38bdf8 0%, #0a7cff 55%, #1e40af 100%);
+    box-shadow: 0 10px 30px rgba(10,124,255,.25);
+  }
+  .hero .place { font-size: 15px; opacity: .9; font-weight: 600; }
+  .hero .temp { font-size: 64px; font-weight: 300; line-height: 1.1; letter-spacing: -.03em; }
+  .hero .score { margin-top: 8px; display: inline-block; padding: 6px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.2); font-weight: 700; font-size: 15px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { margin: 0; }
+  .stat .label { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .stat .num { font-size: 26px; font-weight: 700; margin-top: 2px; }
+  .stat .sub { font-size: 13px; color: var(--muted); }
+  .btn {
+    width: 100%; min-height: 50px; border: 0; border-radius: 14px;
+    font: inherit; font-weight: 700; font-size: 16px;
+    background: var(--primary); color: #fff;
+    transition: transform .1s;
+  }
+  .btn.ghost { background: var(--card); color: var(--primary); box-shadow: var(--shadow); }
+  .btn:active { transform: scale(.98); }
+  .skeleton { height: 180px; border-radius: 24px; background: var(--line); animation: pulse 1.2s infinite; }
+  @keyframes pulse { 50% { opacity: .5; } }
+
+
+  /* ---------- 钓点卡片 ---------- */
+  .spot-area { font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: .03em; text-transform: uppercase; }
+  .spot h3 { margin: 0; font-size: 22px; font-weight: 800; }
+  .spot .en { font-size: 15px; color: var(--muted); margin-bottom: 12px; }
+  .aliases { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 12px; }
+  .alias-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .alias { font-size: 13px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--line); }
+  .addr { display: flex; gap: 10px; padding: 12px; border-radius: 12px; background: var(--bg); font-size: 15px; font-weight: 600; }
+  .addr svg { flex: 0 0 20px; height: 20px; color: var(--primary); margin-top: 2px; }
+  .addr-sub { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .spot .badges { margin: -4px 0 12px; }
+  .badge { display: inline-block; padding: 5px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; }
+  .badge.crab { background: #fff1e6; color: #c2560c; }
+  .badge.easy { background: #e8f8ef; color: #12804a; }
+  .badge.hard { background: #f1ebff; color: #6d3fd1; }
+  .badge.variety { background: #e6f1ff; color: #0a63cc; }
+  @media (prefers-color-scheme: dark) {
+    .badge.crab { background: #3a2412; color: #ffae6b; }
+    .badge.easy { background: #12301f; color: #5ee09a; }
+    .badge.hard { background: #2a1f45; color: #b79bff; }
+    .badge.variety { background: #14263d; color: #7cc0ff; } }
+  .fees .badge { font-size: 14px; }
+  .fees { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .fee { font-size: 14px; font-weight: 700; padding: 5px 10px; border-radius: 8px;
+    background: #e8f8ef; color: #12804a; }
+  @media (prefers-color-scheme: dark) { .fee { background: #12301f; color: #5ee09a; } }
+  .spot-note { margin: 12px 0 10px; font-size: 15px; color: var(--text); }
+  .spot-fish { margin-bottom: 4px; }
+  .spot-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .spot-actions .btn { min-height: 46px; display: grid; place-items: center; text-decoration: none; font-size: 15px; }
+  .more-body { display: grid; gap: 8px; margin-top: 10px; }
+  .more-body .btn.live { min-height: 46px; display: flex; gap: 8px; justify-content: center; align-items: center;
+    text-decoration: none; font-size: 15px; background: linear-gradient(135deg, #ff5f6d, #e5484d); color: #fff; }
+  .spot .method.more { margin-top: 8px; }
+  .spot-title { display: flex; align-items: center; gap: 10px; }
+  .cam { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto;
+    height: 28px; padding: 0 11px; border-radius: 999px; text-decoration: none;
+    background: #ffeceb; color: #e5484d; font-size: 13px; font-weight: 700; transition: transform .1s; }
+  .cam:active { transform: scale(.95); }
+  .cam .live-dot { width: 7px; height: 7px; background: #e5484d; animation: livered 1.6s infinite; }
+  @keyframes livered { 0% { box-shadow: 0 0 0 0 rgba(229,72,77,.55); } 70% { box-shadow: 0 0 0 6px rgba(229,72,77,0); } 100% { box-shadow: 0 0 0 0 rgba(229,72,77,0); } }
+  @media (prefers-color-scheme: dark) { .cam { background: #3a1517; color: #ff8a8d; } .cam .live-dot { background: #ff6b6b; } }
+  .wx { margin-left: auto; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px;
+    height: 30px; padding: 0 10px; border-radius: 999px; text-decoration: none;
+    background: var(--primary-soft); color: var(--primary); font-size: 14px; font-weight: 700; transition: transform .1s; }
+  .wx:active { transform: scale(.95); }
+  .wx-i { font-size: 15px; }
+  /* ---------- 导航选择面板 ---------- */
+  .spot-actions .sheet-btn { min-height: 48px; font-size: 16px; }
+  .sheet-mask { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.35);
+    opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .sheet-mask.open { opacity: 1; pointer-events: auto; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; max-width: 640px; margin: 0 auto;
+    padding: 8px 16px calc(16px + env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0;
+    background: var(--card); box-shadow: 0 -8px 30px rgba(0,0,0,.15);
+    transform: translateY(105%); visibility: hidden; pointer-events: none;
+    transition: transform .32s cubic-bezier(.2,.8,.2,1), visibility 0s linear .32s; }
+  .sheet.open { transform: none; visibility: visible; pointer-events: auto;
+    transition: transform .32s cubic-bezier(.2,.8,.2,1), visibility 0s; }
+  .sheet-grip { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 2px auto 12px; }
+  .sheet-title { text-align: center; font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 12px; }
+  .sheet-opt { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; margin-bottom: 8px;
+    border-radius: 14px; background: var(--bg); color: var(--text); text-decoration: none; font-size: 17px; font-weight: 600; }
+  .sheet-opt:active { transform: scale(.98); }
+  .sheet-ic { font-size: 20px; }
+  .sheet-cancel { width: 100%; min-height: 50px; margin-top: 4px; border: 0; border-radius: 14px;
+    background: transparent; color: var(--primary); font: inherit; font-size: 17px; font-weight: 700; }
+  .mini-actions { grid-column: 1 / -1; display: flex; gap: 8px; }
+  .mini { flex: 1; min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 6px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--card);
+    color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none; transition: transform .1s; }
+  .mini:active { transform: scale(.97); background: var(--bg); }
+  .spot-actions .live { grid-column: 1 / -1; display: flex; gap: 8px; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #ff5f6d, #e5484d); color: #fff; }
+  .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.8);
+    animation: live 1.6s infinite; }
+  @keyframes live { 70% { box-shadow: 0 0 0 7px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+  .spot-actions .copy { grid-column: 1 / -1; }
+  .toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+    background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 600;
+    opacity: 0; visibility: hidden; transition: opacity .2s, visibility 0s .2s; pointer-events: none; z-index: 30; }
+  .toast.show { opacity: 1; visibility: visible; transition: opacity .2s; }
+
+  /* ---------- 钓点 / 须知 ---------- */
+  .row-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .row-actions .btn { min-height: 44px; display: grid; place-items: center; text-decoration: none; font-size: 15px; }
+  .list-row { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .list-row:last-child { border-bottom: 0; }
+  .list-row .ic { flex: 0 0 32px; height: 32px; border-radius: 10px; display: grid; place-items: center;
+    background: var(--primary-soft); font-size: 17px; }
+
+  /* ---------- 底部 Tab 栏 ---------- */
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    display: flex; justify-content: space-around;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    background: var(--tabbar);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-top: 1px solid var(--line);
+  }
+  .tabbar a {
+    flex: 1; max-width: 120px;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 6px 0; min-height: 52px;
+    color: var(--muted); text-decoration: none;
+    font-size: 11px; font-weight: 600;
+  }
+  .tabbar svg { width: 26px; height: 26px; transition: transform .15s; }
+  .tabbar a.active { color: var(--primary); }
+  .tabbar a.active svg { transform: translateY(-1px); }
+  .tabbar a:active svg { transform: scale(.9); }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 16px 0 8px; }
+
+  /* ---------- 钓点卡片 v2：紧凑 ---------- */
+  .spot { padding: 14px 16px; }
+  .spot .spot-title h3 { font-size: 21px; }
+  .spot-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 2px 0 8px; font-size: 13px; color: var(--muted); }
+  .spot-meta .en { font-size: 14px; margin: 0; }
+  .spot-meta .dot { opacity: .6; margin-right: 6px; }
+  .spot-meta .mi { white-space: nowrap; }
+  .spot-meta .badge, .spot-meta .fee { padding: 2px 8px; border-radius: 6px; font-size: 12px; }
+  .spot .spot-note { margin: 0 0 8px; font-size: 15px; line-height: 1.5; }
+  .spot .spot-fish .tag { margin-bottom: 6px; }
+  :is(.spot,.detail) button.addr { width: 100%; margin-top: 4px; align-items: center; border: 0; font: inherit; font-size: 14px; font-weight: 600;
+    color: var(--text); text-align: left; cursor: pointer; padding: 10px 12px; transition: transform .1s, background .15s; }
+  :is(.spot,.detail) button.addr:active { transform: scale(.98); background: var(--primary-soft); }
+  :is(.spot,.detail) button.addr svg { margin-top: 0; flex: 0 0 18px; height: 18px; }
+  .addr-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chev { flex: 0 0 auto; color: var(--muted); font-size: 20px; line-height: 1; margin-left: 4px; }
+  .ext { font-size: .8em; opacity: .7; margin-left: 3px; font-weight: 600; }
+  .sheet-addr { text-align: center; font-size: 13px; color: var(--muted); margin: -8px 0 12px; }
+  button.sheet-opt { width: 100%; border: 0; font: inherit; font-size: 17px; font-weight: 600; text-align: left; cursor: pointer; }
+  .sheet-opt .ext { margin-left: auto; }
+  .sheet-opt[hidden], .sheet[hidden], .sheet-mask[hidden], .toast[hidden] { display: none !important; }
+  .card { padding: 14px 16px; margin-bottom: 10px; }
+
+
+  /* ---------- 可点开详情的钓点卡片 ---------- */
+  .spot.has-detail { cursor: pointer; transition: transform .15s, box-shadow .15s; }
+  .spot.has-detail:active:not(:has(a:active, button:active)) { transform: scale(.985); }
+  .spot.has-detail:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .spot.has-detail .spot-meta .dot { display: none; }
+  .spot.has-detail .spot-meta { column-gap: 8px; }
+  .spot-go-row { display: flex; align-items: center; gap: 12px; }
+  .spot-go-row .spot-note { flex: 1; min-width: 0; }
+  .spot-go { position: relative; flex: 0 0 44px; height: 44px; margin-bottom: 8px; border-radius: 50%;
+    display: grid; place-items: center; color: var(--primary); background: var(--primary-soft);
+    transition: transform .2s cubic-bezier(.2,.8,.2,1), background .2s, color .2s; }
+  .spot-go svg { width: 24px; height: 24px; animation: go-nudge 3s ease-in-out infinite; }
+  @keyframes go-nudge { 0%, 60%, 100% { transform: translateX(0); } 80% { transform: translateX(3px); } }
+  .spot.has-detail:active:not(:has(a:active, button:active)) .spot-go { transform: translateX(4px) scale(.94);
+    background: var(--primary); color: #fff; }
+
+  /* ---------- 钓点详情页：从右侧推入 ---------- */
+  html.lock, html.lock body { overflow: hidden; }
+  .detail { position: fixed; inset: 0; z-index: 35; display: flex; flex-direction: column; background: var(--bg);
+    transform: translateX(100%); transition: transform .34s cubic-bezier(.2,.8,.2,1); will-change: transform;
+    box-shadow: -8px 0 24px rgba(0,0,0,.18); }
+  .detail[hidden] { display: none !important; }
+  .detail.open { transform: none; }
+  .detail.dragging { transition: none; }
+  .detail-bar { flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
+    padding: calc(6px + env(safe-area-inset-top)) 8px 6px; background: var(--tabbar);
+    -webkit-backdrop-filter: saturate(180%) blur(16px); backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid var(--line); }
+  .detail-back { display: flex; align-items: center; gap: 2px; min-width: 76px; height: 44px; padding: 0 8px;
+    border: 0; background: none; color: var(--primary); font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; }
+  .detail-back span { font-size: 30px; line-height: 1; margin-top: -3px; }
+  .detail-bar-title { flex: 1; text-align: center; font-weight: 700; font-size: 17px;
+    opacity: 0; transition: opacity .2s; }
+  .detail.scrolled .detail-bar-title { opacity: 1; }
+  .detail-bar-gap { min-width: 76px; }
+  .detail-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .detail-inner { max-width: 640px; margin: 0 auto; padding: 12px 16px calc(28px + env(safe-area-inset-bottom)); }
+  .detail-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .detail-head h2 { margin: 0 auto 0 0; font-size: 28px; font-weight: 800; letter-spacing: -.01em; }
+  .detail-chips { display: flex; gap: 8px; align-items: center; }
+  .detail .spot-meta { margin: 4px 0 6px; }
+  .zone-map + .detail-h { margin-top: 22px; }
+  .detail-fees { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .detail-fees .fee { padding: 4px 10px; border-radius: 8px; font-size: 13px; }
+  .detail-h { margin: 20px 0 8px; font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .04em; }
+  .detail-note { margin: 0; font-size: 16px; line-height: 1.65; }
+  .detail-note + .detail-note { margin-top: 10px; }
+  .pos-list { list-style: none; margin: 0; padding: 0; border-radius: 14px; overflow: hidden;
+    background: var(--card); box-shadow: var(--shadow); }
+  .pos-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; font-size: 15px; line-height: 1.45; }
+  .pos-row + .pos-row { border-top: 1px solid var(--line); }
+  .pos-num { flex: 0 0 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--zc); color: #fff; font-size: 14px; font-weight: 800; }
+  .pos-txt { flex: 1; min-width: 0; }
+  .pos-hot { flex: 0 0 auto; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    background: var(--warn-soft); color: var(--warn); }
+  .detail-tip { margin: 0 0 10px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+  .detail .spot-fish .tag { margin-bottom: 6px; }
+  .detail button.addr { margin-top: 0; background: var(--card); box-shadow: var(--shadow); }
+
+  .zone-map { position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 16px;
+    overflow: hidden; cursor: zoom-in; background: var(--line); aspect-ratio: 1 / 1; }
+  .zone-map img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .zone-zoom { position: absolute; left: 10px; top: 10px; padding: 5px 10px; border-radius: 999px;
+    background: rgba(0,0,0,.55); color: #fff; font-size: 12px; font-weight: 600; }
+
+  .detail-fees .badge { padding: 4px 10px; font-size: 13px; }
+  .toast { z-index: 60; }
+  @media (prefers-reduced-motion: reduce) {
+    .detail, .spot.has-detail { transition: none; }
+    .spot-go svg { animation: none; }
+  }
