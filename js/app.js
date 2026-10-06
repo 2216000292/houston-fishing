@@ -52,34 +52,115 @@
     });
   });
 
-  // ---------- 鱼种筛选 + 搜索 ----------
-  const filterBtns = document.querySelectorAll('#filters button');
-  const fishCards = document.querySelectorAll('#fish-list .fish');
+  // ---------- 鱼种：排序 / 筛选 + 搜索 ----------
+  const fishCards = [...document.querySelectorAll('#fish-list .fish')];
   const fishGroups = document.querySelectorAll('#fish-list .group');
+  const sortedBox = document.getElementById('fish-sorted');
+  const sortChip = document.getElementById('sort-chip');
   const searchBox = document.getElementById('fish-search');
-  let curFilter = 'all';
+  fishCards.forEach(c => { c._home = c.parentNode; c._next = null; });
+  fishCards.forEach((c, i) => { c._order = i; });
+  const SORTS = {
+    default: { label: '默认分组' },
+    rare:    { label: '稀有度排行', note: '岸边越难钓到的排越前面', key: 'rare', dir: -1 },
+    taste:   { label: '好吃程度',   note: '越好吃的排越前面',       key: 'taste', dir: 1 },
+    limited: { label: '有尺寸限制', group: 'limited' },
+    free:    { label: '无尺寸限制', group: 'free' },
+  };
+  let curSort = 'default';
   function applyFish() {
     const q = searchBox.value.trim().toLowerCase();
+    const S = SORTS[curSort];
+    // 排序时把卡片平铺到一个列表里；其他情况放回原来的分组
+    if (S.key) {
+      fishCards.slice().sort((a, b) => S.dir * (a.dataset[S.key] - b.dataset[S.key]))
+               .forEach(c => sortedBox.appendChild(c));
+    } else {
+      fishCards.forEach(c => c._home.appendChild(c));
+    }
+    sortedBox.hidden = !S.key;
     let shown = 0;
     fishCards.forEach(c => {
-      const f = curFilter;
-      const okF = f === 'all' || c.dataset.group === f || c.dataset.layer.split(' ').includes(f);
-      const okQ = !q || c.dataset.name.includes(q);
-      c.style.display = okF && okQ ? '' : 'none';
-      if (okF && okQ) shown++;
+      const ok = (!S.group || c.dataset.group === S.group) && (!q || c.dataset.name.toLowerCase().includes(q));
+      c.style.display = ok ? '' : 'none';
+      if (ok) shown++;
     });
-    fishGroups.forEach(g => {
-      g.style.display = g.querySelector('.fish:not([style*="none"])') ? '' : 'none';
-    });
+    fishGroups.forEach(g => { g.style.display = g.querySelector('.fish:not([style*="none"])') ? '' : 'none'; });
+    sortChip.hidden = curSort === 'default';
+    document.getElementById('sort-label').textContent = S.note ? S.label + ' · ' + S.note : S.label;
     document.getElementById('fish-empty').hidden = shown > 0;
   }
-  filterBtns.forEach(btn => btn.onclick = () => {
-    filterBtns.forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
-    curFilter = btn.dataset.f;
-    applyFish();
-  });
   searchBox.addEventListener('input', applyFish);
+
+  // 下拉菜单
+  const sortBtn = document.getElementById('sort-btn');
+  const sortMenu = document.getElementById('sort-menu');
+  const sortOpts = sortMenu.querySelectorAll('.sort-opt');
+  function setMenu(open) {
+    sortMenu.hidden = !open;
+    sortBtn.setAttribute('aria-expanded', open);
+    sortBtn.classList.toggle('open', open);
+    if (open) (sortMenu.querySelector('.sort-opt.on') || sortOpts[0]).focus({ preventScroll: true });
+  }
+  sortBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(sortMenu.hidden); });
+  function pickSort(k) {
+    curSort = k;
+    sortOpts.forEach(x => { const on = x.dataset.sort === k; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
+    sortBtn.classList.toggle('active', k !== 'default');
+    setMenu(false);
+    applyFish();
+    const top = document.getElementById('fish-list').getBoundingClientRect().top + scrollY - 140;
+    if (scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
+  }
+  sortOpts.forEach(o => o.addEventListener('click', () => pickSort(o.dataset.sort)));
+  sortChip.addEventListener('click', () => pickSort('default'));
+  document.addEventListener('click', e => { if (!sortMenu.hidden && !e.target.closest('.sort-wrap')) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sortMenu.hidden) { setMenu(false); sortBtn.focus(); } });
+
+  // 每张卡片唯一的「详情」按钮：平滑展开 / 收起，默认全部展开
+  const EASE2 = 'cubic-bezier(.2,.8,.2,1)';
+  function setCard(c, open, animate = true) {
+    const btn = c.querySelector('.fish-toggle'), more = c.querySelector('.fish-more');
+    if (c.classList.contains('is-open') === open) return;
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? '收起详情' : '展开详情');
+    if (more._anim) more._anim.cancel();
+    const reduce = !animate || matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (open) {
+      c.classList.add('is-open');
+      if (reduce) return;
+      const h = more.scrollHeight;
+      more._anim = more.animate([{ height: '0px', opacity: 0 }, { height: h + 'px', opacity: 1 }],
+                                { duration: Math.min(360, 180 + h / 4), easing: EASE2 });
+      more._anim.onfinish = () => more._anim = null;
+    } else {
+      if (reduce) { c.classList.remove('is-open'); return; }
+      const h = more.offsetHeight;
+      c.classList.add('closing');
+      more._anim = more.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }],
+                                { duration: Math.min(300, 160 + h / 5), easing: EASE2 });
+      more._anim.onfinish = () => { c.classList.remove('is-open', 'closing'); more._anim = null; };
+      more._anim.oncancel = () => c.classList.remove('closing');
+    }
+  }
+  // 右上角「展开 / 收起」：一次操作所有卡片
+  const allBtn = document.getElementById('all-toggle');
+  function syncAll() {
+    const anyOpen = fishCards.some(c => c.classList.contains('is-open'));
+    allBtn.querySelector('.eb-text').textContent = anyOpen ? '收起' : '展开';
+    allBtn.classList.toggle('is-open', anyOpen);
+    allBtn.setAttribute('aria-pressed', anyOpen);
+    allBtn.setAttribute('aria-label', anyOpen ? '全部收起' : '全部展开');
+  }
+  fishCards.forEach(c => c.querySelector('.fish-toggle').addEventListener('click', () => {
+    setCard(c, !c.classList.contains('is-open')); syncAll();
+  }));
+  allBtn.addEventListener('click', () => {
+    const open = !allBtn.classList.contains('is-open');
+    fishCards.forEach(c => setCard(c, open, false));
+    syncAll();
+  });
+  syncAll();
 
 
   // ---------- 鱼照片：Wikimedia Commons 免费授权图片，直接用图片地址加载 ----------

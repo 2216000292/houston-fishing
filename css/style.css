@@ -525,3 +525,105 @@
   filter: blur(10px) brightness(.9); opacity: 0; transition: opacity .25s; }
 .avatar.fit-contain.has-img::before { opacity: 1; }
 .avatar.fit-contain img { object-fit: contain; background: transparent; }
+
+/* ---------- 鱼种：搜索 + 右侧两个图标按钮 ---------- */
+.fish-bar { display: flex; align-items: center; gap: 8px; }
+.search-box { flex: 1; min-width: 0; position: relative; display: block; }
+.search-box svg { position: absolute; left: 13px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--muted); pointer-events: none; }
+.fish-bar .search { margin: 0; padding-left: 40px; }
+.sort-wrap { position: relative; }
+.icon-btn { position: relative; flex: 0 0 44px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
+  border: 0; border-radius: 12px; background: var(--card); color: var(--text); box-shadow: var(--shadow); cursor: pointer;
+  transition: transform .1s, background .15s, color .15s; }
+.icon-btn:active { transform: scale(.94); }
+.icon-btn svg { width: 22px; height: 22px; grid-area: 1 / 1; transition: opacity .2s, transform .25s cubic-bezier(.2,.8,.2,1); }
+.icon-btn[aria-expanded="true"] { background: var(--primary-soft); color: var(--primary); }
+.ib-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--primary); box-shadow: 0 0 0 2px var(--card); transform: scale(0); transition: transform .2s; }
+.icon-btn.active .ib-dot { transform: scale(1); }
+.icon-btn.active { color: var(--primary); }
+#all-toggle .ic-expand { opacity: 0; transform: scale(.6); }
+#all-toggle.all-closed .ic-collapse { opacity: 0; transform: scale(.6); }
+#all-toggle.all-closed .ic-expand { opacity: 1; transform: none; }
+.sort-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; width: min(270px, calc(100vw - 32px));
+  padding: 6px; border-radius: 16px; background: var(--card); border: 1px solid var(--line);
+  box-shadow: 0 12px 32px rgba(16,24,40,.18); transform-origin: top right; animation: menu-in .16s cubic-bezier(.2,.8,.2,1); }
+@keyframes menu-in { from { opacity: 0; transform: translateY(-4px) scale(.97); } }
+.sm-title { padding: 8px 12px 4px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.sort-opt { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 8px 12px;
+  border: 0; border-radius: 12px; background: none; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.sort-opt:active, .sort-opt:focus-visible { background: var(--bg); outline: none; }
+.so-txt { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.so-txt b { font-size: 16px; }
+.so-txt small { font-size: 13px; color: var(--muted); }
+.so-check { color: var(--primary); font-weight: 800; opacity: 0; }
+.sort-opt.on .so-check { opacity: 1; }
+.sort-opt.on b { color: var(--primary); }
+.sort-chip { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; margin-top: 10px; min-height: 34px; padding: 0 12px 0 14px;
+  border: 0; border-radius: 999px; background: var(--primary-soft); color: var(--primary);
+  font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; animation: menu-in .16s ease-out; }
+.sort-chip[hidden] { display: none; }
+.sort-chip span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sc-x { flex: 0 0 auto; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%;
+  background: var(--primary); color: var(--card); font-size: 10px; }
+
+/* ---------- 鱼种卡片：右上角圆形下拉按钮 ---------- */
+.fish .fish-head { margin-bottom: 8px; }
+.fish-name { flex: 1; min-width: 0; }
+.fish-eval { margin: 0; font-size: 16px; line-height: 1.55; }
+.fish-toggle { flex: 0 0 40px; width: 40px; height: 40px; align-self: center; display: grid; place-items: center; padding: 0;
+  border: 0; border-radius: 50%; background: var(--bg); color: var(--muted); cursor: pointer;
+  transition: transform .1s, background .2s, color .2s; }
+.fish-toggle:active { transform: scale(.9); }
+.fish.is-open:not(.closing) .fish-toggle { background: var(--primary-soft); color: var(--primary); }
+.ft-chev { width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg); margin-top: -4px; transition: transform .28s cubic-bezier(.2,.8,.2,1), margin .28s; }
+.fish.is-open:not(.closing) .ft-chev { transform: rotate(-135deg); margin-top: 4px; }
+.fish-more { display: none; overflow: hidden; }
+.fish.is-open .fish-more { display: block; }
+.fish-more-in { padding-top: 12px; }
+.fish-more .row:last-of-type { padding-bottom: 2px; }
+.fish-more .special { margin-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .sort-menu, .sort-chip { animation: none; } }
+
+/* ---------- 鱼种卡片：数量 / 尺寸规定，放在英文名下面 ---------- */
+.fish-limit { margin-top: 4px; font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--muted); }
+.fish-limit.has-limit { color: var(--primary); }
+.fish-more .row:first-child { border-top: 1px solid var(--line); }
+
+/* ---------- v3：更紧凑的菜单、简洁/详细切换、限制小标签 ---------- */
+#fish .filters-wrap { padding-top: calc(12px + env(safe-area-inset-top)); }
+#fish-list > .group:first-child { margin-top: 4px; }
+.sort-menu { width: 188px; padding: 4px; border-radius: 14px; }
+.sm-title { padding: 6px 10px 2px; font-size: 12px; }
+.sort-opt { min-height: 40px; padding: 0 10px; border-radius: 10px; }
+.so-txt { font-size: 15px; font-weight: 600; }
+.sort-opt.on .so-txt { color: var(--primary); }
+
+.view-switch { position: relative; flex: 0 0 auto; display: grid; grid-template-columns: 1fr 1fr; height: 44px; padding: 4px;
+  border-radius: 12px; background: var(--card); box-shadow: var(--shadow); }
+.view-switch button { position: relative; z-index: 1; min-width: 44px; padding: 0 8px; border: 0; background: none;
+  color: var(--muted); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: color .2s; }
+.view-switch button[aria-checked="true"] { color: var(--primary); }
+.vs-thumb { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 9px;
+  background: var(--primary-soft); transition: transform .28s cubic-bezier(.2,.8,.2,1), opacity .2s; }
+.view-switch[data-mode="full"] .vs-thumb { transform: translateX(100%); }
+.view-switch[data-mode=""] .vs-thumb { opacity: 0; }
+
+.fish-limit { display: inline-block; margin-top: 5px; padding: 2px 8px; border-radius: 6px;
+  font-size: 12.5px; font-weight: 600; line-height: 1.5; background: var(--bg); color: var(--muted); }
+.fish-limit.has-limit { background: var(--primary-soft); color: var(--primary); }
+
+/* ---------- v4：说明文字、展开按钮、更紧凑的间距 ---------- */
+.fish-intro { margin: 0; padding: calc(12px + env(safe-area-inset-top)) 2px 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+#fish .filters-wrap { padding-top: 8px; padding-bottom: 8px; margin-bottom: 0; }
+#fish-list > .group:first-child { margin-top: 0; }
+#fish-list .card.fish { margin-bottom: 8px; }
+.sort-chip { margin-top: 8px; }
+.expand-btn { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 12px 0 14px;
+  border: 0; border-radius: 12px; background: var(--card); color: var(--text); box-shadow: var(--shadow);
+  font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform .1s; }
+.expand-btn:active { transform: scale(.95); }
+.eb-chev { width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg); margin-top: -4px; opacity: .7; transition: transform .25s cubic-bezier(.2,.8,.2,1), margin .25s; }
+.expand-btn.is-open .eb-chev { transform: rotate(-135deg); margin-top: 3px; }
