@@ -627,3 +627,196 @@
 .eb-chev { width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
   transform: rotate(45deg); margin-top: -4px; opacity: .7; transition: transform .25s cubic-bezier(.2,.8,.2,1), margin .25s; }
 .expand-btn.is-open .eb-chev { transform: rotate(-135deg); margin-top: 3px; }
+
+/* ---------- 钓点卡片：天气潮汐按钮（替代原来的地址行） ---------- */
+button.wx { border: 0; font: inherit; cursor: pointer; }
+.fc-btn { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 10px; padding: 10px 12px;
+  border: 0; border-radius: 12px; background: var(--primary-soft); color: var(--text); font: inherit; text-align: left; cursor: pointer;
+  transition: transform .1s; }
+.fc-btn:active { transform: scale(.98); }
+.fc-btn-ic { font-size: 22px; line-height: 1; }
+.fc-btn-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.fc-btn-t b { font-size: 15px; color: var(--primary); }
+.fc-btn-t small { font-size: 12.5px; color: var(--muted); }
+.fc-btn .chev { color: var(--primary); font-size: 22px; line-height: 1; }
+
+/* ---------- 天气潮汐页 ---------- */
+.fc .detail-scroll { background: var(--bg); }
+.fc-inner { max-width: 640px; margin: 0 auto; padding: 10px 0 calc(24px + env(safe-area-inset-bottom)); }
+.fc-days { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 16px 10px; }
+.fc-days::-webkit-scrollbar { display: none; }
+.fc-days button { flex: 0 0 auto; min-width: 54px; padding: 6px 8px; border: 0; border-radius: 12px; background: var(--card);
+  color: var(--text); font: inherit; cursor: pointer; box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 1px;
+  transition: background .2s, color .2s; }
+.fc-days button b { font-size: 14px; }
+.fc-days button small { font-size: 12px; color: var(--muted); }
+.fc-days button.on { background: var(--primary); color: #fff; }
+.fc-days button.on small { color: rgba(255,255,255,.85); }
+
+.fc-grid { display: flex; margin: 0 16px; border-radius: 16px; background: var(--card); box-shadow: var(--shadow); overflow: hidden; }
+.fc-labels { flex: 0 0 52px; border-right: 1px solid var(--line); background: var(--card); position: relative; z-index: 2; }
+.fl { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; font-size: 12px; color: var(--muted); }
+.fl b { font-size: 12.5px; color: var(--text); }
+.fl small { font-size: 11px; }
+.fl-ic { font-size: 16px; line-height: 1; }
+.fl-time, .fc-time { height: 30px; }
+.fl-wx, .fc-wx { height: 86px; }
+.fl-wind, .fc-wind { height: 78px; }
+.fl-tide, .fc-tide { height: 128px; }
+.fl + .fl, .fc-row + .fc-row, .fc-row + .fc-tide { border-top: 1px solid var(--line); }
+.fc-x { flex: 1; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.fc-x::-webkit-scrollbar { display: none; }
+.fc-track { position: relative; cursor: pointer; }
+.fc-row { display: flex; }
+.fc-c { flex: 0 0 54px; width: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  font-size: 12px; color: var(--muted); position: relative; }
+.fc-c.night { background: rgba(10,30,60,.045); }
+.fc-c.d0 { box-shadow: inset 1.5px 0 0 var(--line); }
+.fc-time .fc-c b { color: var(--text); font-size: 12px; }
+.fc-wx .wi { font-size: 20px; line-height: 1.1; }
+.fc-wx .wt { font-size: 11.5px; }
+.fc-wx .tp { font-size: 15px; color: var(--text); }
+.fc-wind .ws { font-size: 15px; color: var(--text); }
+.fc-wind .wa { width: 18px; height: 18px; color: var(--primary); }
+.fc-wind .wd { font-size: 11px; }
+.fc-wind .mid .ws { color: #c7761f; } .fc-wind .mid .wa { color: #c7761f; }
+.fc-wind .strong .ws { color: var(--warn); } .fc-wind .strong .wa { color: var(--warn); }
+.fc-c .na { color: var(--line); font-size: 16px; }
+.fc-tide { position: relative; }
+.fc-tide svg { display: block; }
+.fc-tide circle.hi, .fc-tide circle.lo { fill: var(--card); stroke: var(--primary); stroke-width: 2; }
+.fc-tide circle.cur { fill: var(--primary); stroke: var(--card); stroke-width: 2.5; }
+.fc-tide .tl { font-size: 11px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+.fc-tide-na { height: 100%; display: grid; place-items: center; font-size: 13px; color: var(--muted); padding: 0 12px; white-space: nowrap; }
+.fc-sel { position: absolute; top: 0; bottom: 0; left: 0; width: 54px; border-radius: 10px; pointer-events: none;
+  background: rgba(10,124,255,.08); box-shadow: inset 0 0 0 1.5px rgba(10,124,255,.45); transition: transform .18s cubic-bezier(.2,.8,.2,1); }
+@media (prefers-color-scheme: dark) {
+  .fc-c.night { background: rgba(0,0,0,.22); }
+  .fc-sel { background: rgba(77,163,255,.12); box-shadow: inset 0 0 0 1.5px rgba(77,163,255,.5); }
+}
+.fc-hint { margin: 8px 18px 12px; font-size: 12.5px; color: var(--muted); }
+
+.fc-readout, .fc-day { margin: 0 16px 10px; }
+.ro-loading { padding: 18px 0; text-align: center; color: var(--muted); }
+.ro-when { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.ro-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.ro-grid > div { display: flex; flex-direction: column; gap: 1px; padding: 8px 10px; border-radius: 12px; background: var(--bg); }
+.ro-grid span { font-size: 12.5px; color: var(--muted); }
+.ro-grid b { font-size: 18px; }
+.ro-grid small { font-size: 12.5px; color: var(--muted); min-height: 1em; }
+.dy-h { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.dy-sun { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.dy-sun > div, .tl-i { display: flex; flex-direction: column; gap: 1px; padding: 8px 10px; border-radius: 12px; background: var(--bg); }
+.dy-sun span, .tl-i span { font-size: 12.5px; color: var(--muted); }
+.dy-sun b, .tl-i b { font-size: 16px; }
+.tl-i small { font-size: 12px; color: var(--muted); }
+.tl-i.hi span { color: var(--primary); }
+.dy-tides { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+.tl-none { font-size: 13px; color: var(--muted); }
+.fc-src { margin: 4px 18px 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
+
+/* 天气页：标题一直显示，内容压缩到一屏 */
+.fc .detail-bar-title { opacity: 1; font-size: 16px; }
+.fl-time, .fc-time { height: 28px; }
+.fl-wx, .fc-wx { height: 74px; }
+.fl-wind, .fc-wind { height: 66px; }
+.fl-tide, .fc-tide { height: 112px; }
+.fc-wx .wi { font-size: 18px; }
+.fc-hint { margin: 6px 18px 8px; font-size: 12px; }
+.fc-readout, .fc-day { padding: 10px 12px; margin-bottom: 8px; }
+.ro-when { font-size: 13.5px; margin-bottom: 6px; }
+.ro-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.ro-grid > div { padding: 6px 8px; border-radius: 10px; gap: 0; }
+.ro-grid span { font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ro-grid b { font-size: 17px; white-space: nowrap; }
+.ro-grid b small { font-size: 11px; font-weight: 600; color: var(--muted); }
+.dy-row { display: flex; flex-direction: column; gap: 6px; }
+.dy-sun { margin: 0; gap: 6px; }
+.dy-sun > div, .tl-i { padding: 6px 10px; border-radius: 10px; }
+.dy-sun > div { flex-direction: row; align-items: baseline; justify-content: space-between; }
+.dy-sun b { font-size: 15px; }
+.dy-tides { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.tl-i { padding: 6px 8px; }
+.tl-i span { font-size: 11.5px; }
+.tl-i b { font-size: 13.5px; white-space: nowrap; }
+.tl-i small { font-size: 11px; }
+
+.fc-tide-na { position: sticky; left: 0; width: min(100%, calc(100vw - 100px)); height: 100%; display: flex; align-items: center; justify-content: center; }
+.tl-none { grid-column: 1 / -1; padding: 4px 2px; }
+
+/* ---------- 天气页 v2：一屏 7 小时、潮汐刻度、更高的潮汐图 ---------- */
+.fc-grid { margin: 0 12px; display: block; }
+.fc-days { padding: 0 12px 10px; }
+.fc-c { flex: 0 0 var(--col, 52px); width: var(--col, 52px); }
+.fl-time, .fc-time { height: 30px; }
+.fc-wx { height: 76px; }
+.fc-wind { height: 70px; }
+.fc-tide { height: 176px; position: relative; }
+.fc-time .now { color: var(--primary); }
+.fc-wind .ws small { font-size: 9.5px; font-weight: 600; color: var(--muted); margin-left: 1px; }
+.fc-axis { position: sticky; left: 0; z-index: 2; float: left; width: 30px; height: 100%; margin-right: -30px; pointer-events: none;
+  background: linear-gradient(90deg, var(--card) 62%, transparent); }
+.fc-axis span { position: absolute; left: 4px; transform: translateY(-50%); font-size: 10.5px; font-weight: 600; color: var(--muted); line-height: 1; }
+.fc-axis em { position: absolute; left: 4px; bottom: 4px; font-style: normal; font-size: 10px; color: var(--muted); }
+.fc-tide svg { display: block; position: relative; z-index: 1; }
+.fc-tide .gl { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 4; }
+.fc-tide .nowline { stroke: var(--primary); stroke-width: 1.5; stroke-dasharray: 4 4; opacity: .55; }
+.fc-tide circle.mid { fill: var(--primary); }
+.fc-tide .tl { font-size: 11.5px; font-weight: 700; text-anchor: middle; fill: var(--text); paint-order: stroke; stroke: var(--card); stroke-width: 3px; }
+.fc-tide .tl.tm { font-size: 10.5px; font-weight: 600; fill: var(--muted); }
+.fc-tide .tl.th { fill: var(--primary); }
+.fc-hint { text-align: center; margin: 6px 12px 10px; }
+.fc-day { margin: 0 12px 8px; padding: 10px 12px; }
+.fc-src { margin: 4px 14px 0; }
+
+/* ---------- 天气页 v3：小屏也能看到 7 小时，日期标签更小 ---------- */
+.fc-days { gap: 5px; padding-bottom: 8px; }
+.fc-days button { min-width: 44px; padding: 4px 6px; border-radius: 10px; gap: 0; }
+.fc-days button b { font-size: 12.5px; }
+.fc-days button small { font-size: 10.5px; }
+.fc-wx { height: 58px; }
+.fc-wx .wi { font-size: 20px; }
+.fc-wx .tp { font-size: 15px; }
+.narrow .fc-c { font-size: 10.5px; }
+.narrow .fc-time .fc-c b { font-size: 10.5px; }
+.narrow .fc-wx .wi { font-size: 17px; }
+.narrow .fc-wx .tp, .narrow .fc-wind .ws { font-size: 13px; }
+.narrow .fc-wind .ws small { display: none; }
+.narrow .fc-wind .wa { width: 15px; height: 15px; }
+.narrow .fc-wind .wd { font-size: 9.5px; }
+.narrow .fc-tide .tl { font-size: 10px; }
+.narrow .fc-tide .tl.tm { font-size: 9.5px; }
+@media (max-height: 620px) {
+  .fc-tide { height: 150px; }
+  .fc-wind { height: 62px; }
+  .fc-hint { margin: 4px 12px 6px; }
+}
+.fc .detail-bar-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 340px) {
+  .fc .detail-back { min-width: 64px; font-size: 15px; }
+  .fc .detail-bar-gap { min-width: 40px; }
+  .fc .detail-bar-title { font-size: 15px; }
+  .dy-sun > div { flex-direction: column; align-items: flex-start; }
+  .dy-sun b { font-size: 14px; }
+  .dy-tides { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fc-day { padding: 10px; }
+}
+
+/* 只保留日出日落 */
+.fc-day { padding: 8px; }
+.fc-day .dy-sun { margin: 0; }
+.fc-btn { padding: 12px; }
+.fc-btn-t b { font-size: 15.5px; }
+.spot-title { flex-wrap: wrap; row-gap: 6px; }
+.spot-title h3 { white-space: nowrap; }
+
+/* 潮汐图不要左侧刻度；钓点卡片按钮离上面近一点 */
+.spot .spot-go-row .spot-note, .spot > .spot-note { margin-bottom: 0; }
+.fc-btn { margin-top: 8px; }
+.spot-go-row .spot-go { margin-bottom: 0; }
+.detail .fc-btn { margin: 14px 0 0; }
+
+/* 详情页：天气潮汐行和地址行同一个样式 */
+.detail .fc-btn.fc-row { margin: 0; text-align: left; }
+.detail .fc-btn.fc-row svg { color: var(--primary); }
+.detail .fc-btn.fc-row .chev { color: var(--muted); font-size: 20px; }

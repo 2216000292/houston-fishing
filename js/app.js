@@ -314,29 +314,33 @@
   };
 
 
-  // ---------- 钓点详情页：从右侧推入，支持返回键 / 右滑返回 ----------
+  // ---------- 钓点详情页：从右侧推入，支持返回键 / 右滑返回（可以叠加打开）----------
   (() => {
-    let cur = null, closeT;
+    const stack = [];
     const root = document.documentElement;
+    const top = () => stack[stack.length - 1];
     function openDetail(id, push = true) {
-      const d = document.getElementById(id); if (!d || cur === d) return;
-      clearTimeout(closeT);
-      cur = d; d.hidden = false; d.offsetHeight;
+      const d = document.getElementById(id); if (!d || stack.includes(d)) return;
+      clearTimeout(d._closeT);
+      stack.push(d);
+      d.style.zIndex = 34 + stack.length;
+      d.hidden = false; d.offsetHeight;
       d.classList.add('open'); root.classList.add('lock');
       d.querySelector('.detail-scroll').scrollTop = 0; d.classList.remove('scrolled');
       if (push) history.pushState({ detail: id }, '');
       setTimeout(() => d.querySelector('.detail-back').focus({ preventScroll: true }), 350);
     }
     function closeDetail(fromPop = false) {
-      if (!cur) return;
+      const d = top(); if (!d) return;
       if (!fromPop && history.state && history.state.detail) { history.back(); return; }
-      const d = cur; cur = null;
+      stack.pop();
       d.classList.remove('open', 'dragging'); d.style.transform = '';
-      root.classList.remove('lock');
-      closeT = setTimeout(() => { d.hidden = true; }, 360);
+      if (!stack.length) root.classList.remove('lock');
+      d._closeT = setTimeout(() => { d.hidden = true; }, 360);
     }
+    window.openDetail = openDetail;
     try { history.scrollRestoration = 'manual'; } catch (_) {}  // 返回时别让浏览器自己改滚动位置
-    window.addEventListener('popstate', () => { if (cur) closeDetail(true); });
+    window.addEventListener('popstate', () => { if (stack.length) closeDetail(true); });
     document.querySelectorAll('[data-detail]').forEach(b => {
       b.addEventListener('click', e => { if (e.target.closest('a, button')) return; openDetail(b.dataset.detail); });
       b.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target === b) { e.preventDefault(); openDetail(b.dataset.detail); } });
@@ -349,9 +353,10 @@
 
       // 手指往右拖：跟手滑出，松手超过 1/3 就返回
       let x0 = 0, y0 = 0, dx = 0, mode = '';
-      d.addEventListener('touchstart', e => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; dx = 0; mode = ''; }, { passive: true });
+      d.addEventListener('touchstart', e => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; dx = 0; mode = e.target.closest('.fc-x, .fc-days') ? 'skip' : ''; }, { passive: true });
       d.addEventListener('touchmove', e => {
         const t = e.touches[0], mx = t.clientX - x0, my = t.clientY - y0;
+        if (mode === 'skip') return;
         if (!mode) { if (Math.abs(mx) < 10 && Math.abs(my) < 10) return; mode = (mx > 0 && Math.abs(mx) > Math.abs(my) * 1.5 && x0 < innerWidth * .5) ? 'x' : 'y'; }
         if (mode !== 'x') return;
         dx = Math.max(0, mx); d.classList.add('dragging'); d.style.transform = 'translateX(' + dx + 'px)';
@@ -363,7 +368,7 @@
       });
     });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && cur && !document.getElementById('lightbox').classList.contains('open')
+      if (e.key === 'Escape' && stack.length && !document.getElementById('lightbox').classList.contains('open')
           && !document.getElementById('sheet').classList.contains('open')) closeDetail();
     });
   })();
@@ -392,3 +397,285 @@
     });
   });
   const howOn = document.querySelector('#how-filters button.on'); if (howOn) howOn.click();
+
+  // =====================================================================
+  // 7 天天气 · 潮汐：温度、风（NWS）+ 潮汐（NOAA）+ 日出日落（本地计算）
+  // 三行共用一条时间轴，一起左右滑动；点任一列看那个小时的全部信息
+  // =====================================================================
+  (() => {
+    // 每个钓点用的坐标和最近的 NOAA 潮汐站
+    const SPOTS = {
+      '288new': { name: '288 新堤', lat: 28.944, lon: -95.293, st: '8772447', stName: 'Freeport' },
+      '288old': { name: '288 旧堤', lat: 28.933, lon: -95.306, st: '8772447', stName: 'Freeport' },
+      'seawolf': { name: '海狼公园', lat: 29.334, lon: -94.779, st: '8771450', stName: 'Galveston Pier 21' },
+      '91':     { name: '91 街', lat: 29.262, lon: -94.84,  st: '8771510', stName: 'Galveston Pleasure Pier' },
+      '61':     { name: '61 街', lat: 29.274, lon: -94.816, st: '8771510', stName: 'Galveston Pleasure Pier' },
+      '17':     { name: '17 街', lat: 29.372, lon: -94.76,  st: '8771341', stName: 'Galveston Bay Entrance, North Jetty' },
+      'tcd':    { name: 'TCD',   lat: 29.375, lon: -94.86,  st: '8771450', stName: 'Galveston Pier 21' },
+    };
+    const TZ = 'America/Chicago';
+    const HOUR = 3600e3, DAYS = 7;
+    const WEEK = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const $ = id => document.getElementById(id);
+    const page = $('detail-fc');
+
+    // ---------- 时间工具：统一按休斯顿时间显示 ----------
+    const fmtParts = new Intl.DateTimeFormat('en-US', { timeZone: TZ, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: false, weekday: 'short' });
+    function parts(t) {
+      const o = {}; fmtParts.formatToParts(new Date(t)).forEach(p => o[p.type] = p.value);
+      const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(o.weekday);
+      return { y: +o.year, m: +o.month, d: +o.day, h: (+o.hour) % 24, mi: +o.minute, wd, key: o.year + '-' + o.month + '-' + o.day };
+    }
+    const hm = t => { const p = parts(t); const ap = p.h < 12 ? 'AM' : 'PM'; return ((p.h + 11) % 12 + 1) + ':' + String(p.mi).padStart(2, '0') + ' ' + ap; };
+    const hLabel = h => ((h + 11) % 12 + 1) + (h < 12 ? ' AM' : ' PM');
+
+    // ---------- localStorage 缓存（读写失败就当没缓存） ----------
+    function cget(k, maxAge) {
+      try { const o = JSON.parse(localStorage.getItem(k) || 'null'); if (o && Date.now() - o.t < maxAge) return o; } catch (_) {}
+      return null;
+    }
+    function cset(k, d) { try { localStorage.setItem(k, JSON.stringify({ t: Date.now(), d })); } catch (_) {} }
+    async function getJSON(url, headers) {
+      const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 12000);
+      try {
+        const r = await fetch(url, { headers, signal: ctl.signal });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return await r.json();
+      } finally { clearTimeout(tm); }
+    }
+    const retry = async (fn) => { try { return await fn(); } catch (_) { await new Promise(r => setTimeout(r, 1200)); return fn(); } };
+
+    // ---------- NWS：逐小时温度、风、天气 ----------
+    async function loadNWS(sp) {
+      const k = 'nws:' + sp.lat + ',' + sp.lon;
+      const fresh = cget(k, HOUR); if (fresh) return { periods: fresh.d, at: fresh.t };
+      try {
+        const H = { Accept: 'application/geo+json' };
+        const pk = 'nwspt:' + sp.lat + ',' + sp.lon;
+        let url = (cget(pk, 30 * 24 * HOUR) || {}).d;
+        if (!url) {
+          const pt = await retry(() => getJSON('https://api.weather.gov/points/' + sp.lat + ',' + sp.lon, H));
+          url = pt.properties.forecastHourly; cset(pk, url);
+        }
+        const fc = await retry(() => getJSON(url, H));
+        const periods = fc.properties.periods.map(p => ({
+          t: Date.parse(p.startTime), temp: p.temperature, f: p.shortForecast, day: p.isDaytime,
+          wind: Math.max(...(String(p.windSpeed).match(/\d+/g) || [0]).map(Number)), dir: p.windDirection,
+          pop: p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value,
+        }));
+        cset(k, periods);
+        return { periods, at: Date.now() };
+      } catch (e) {
+        const stale = cget(k, 12 * HOUR);           // 联网失败：用 12 小时内的旧数据
+        if (stale) return { periods: stale.d, at: stale.t, stale: true };
+        throw e;
+      }
+    }
+
+    // ---------- NOAA：高低潮时间，中间用余弦插值画曲线 ----------
+    async function loadTide(sp) {
+      const now = new Date(), y = new Date(now.getTime() - 24 * HOUR);
+      const begin = y.getUTCFullYear() + String(y.getUTCMonth() + 1).padStart(2, '0') + String(y.getUTCDate()).padStart(2, '0');
+      const k = 'tide:' + sp.st + ':' + begin;
+      const c = cget(k, 12 * HOUR); if (c) return c.d;
+      const url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=houston_fishing'
+        + '&begin_date=' + begin + '&range=240&datum=MLLW&station=' + sp.st + '&time_zone=gmt&units=english&interval=hilo&format=json';
+      const j = await retry(() => getJSON(url));
+      if (!j.predictions) throw new Error((j.error && j.error.message) || 'no tide data');
+      const pts = j.predictions.map(p => ({ t: Date.parse(p.t.replace(' ', 'T') + ':00Z'), v: +p.v, type: p.type }));
+      cset(k, pts);
+      return pts;
+    }
+    function tideAt(pts, t) {
+      for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i], b = pts[i + 1];
+        if (t >= a.t && t <= b.t) {
+          const f = (t - a.t) / (b.t - a.t);
+          return { v: a.v + (b.v - a.v) * (1 - Math.cos(Math.PI * f)) / 2, rising: b.v > a.v };
+        }
+      }
+      return null;
+    }
+
+    // ---------- 日出日落（简化版 NOAA 太阳公式，误差约 1 分钟） ----------
+    function sunTimes(y, m, d, lat, lon) {
+      const rad = Math.PI / 180, J1970 = 2440588, J2000 = 2451545, dayMs = 864e5;
+      const toJ = t => t / dayMs - 0.5 + J1970, fromJ = j => (j + 0.5 - J1970) * dayMs;
+      const date = Date.UTC(y, m - 1, d, 12);
+      const lw = rad * -lon, phi = rad * lat, e = rad * 23.4397;
+      const n = Math.round(toJ(date) - J2000 - 0.0009 - lw / (2 * Math.PI));
+      const ds = 0.0009 + lw / (2 * Math.PI) + n;
+      const M = rad * (357.5291 + 0.98560028 * ds);
+      const C = rad * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M));
+      const L = M + C + rad * 102.9372 + Math.PI;
+      const dec = Math.asin(Math.sin(e) * Math.sin(L));
+      const Jnoon = J2000 + ds + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L);
+      const w = Math.acos((Math.sin(-0.833 * rad) - Math.sin(phi) * Math.sin(dec)) / (Math.cos(phi) * Math.cos(dec)));
+      const Jset = J2000 + 0.0009 + (w + lw) / (2 * Math.PI) + n + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L);
+      return { rise: fromJ(Jnoon - (Jset - Jnoon)), set: fromJ(Jset) };
+    }
+
+    // ---------- 天气文字 / 图标 ----------
+    function wxInfo(f, day) {
+      const s = (f || '').toLowerCase();
+      if (/thunder|t-storm/.test(s)) return ['⛈️', '雷雨'];
+      if (/snow|sleet|ice/.test(s)) return ['🌨️', '雨雪'];
+      if (/rain|shower|drizzle/.test(s)) return ['🌧️', /slight|chance/.test(s) ? '可能雨' : '雨'];
+      if (/fog|haze|smoke|mist/.test(s)) return ['🌫️', '雾'];
+      if (/mostly cloudy|overcast|^cloudy/.test(s)) return ['☁️', '阴'];
+      if (/partly|mostly sunny|mostly clear/.test(s)) return [day ? '⛅' : '☁️', '多云'];
+      if (/sunny|clear|fair/.test(s)) return [day ? '☀️' : '🌙', '晴'];
+      return [day ? '🌤️' : '🌙', f || ''];
+    }
+    const DIRS = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const DIR_CN = { N: '北', NNE: '北偏东', NE: '东北', ENE: '东偏北', E: '东', ESE: '东偏南', SE: '东南', SSE: '南偏东', S: '南', SSW: '南偏西', SW: '西南', WSW: '西偏南', W: '西', WNW: '西偏北', NW: '西北', NNW: '北偏西' };
+
+    // ---------- 渲染 ----------
+    const X = $('fc-x'), track = $('fc-track');
+    let state = null, COL = 52;
+
+    function build(sp, nws, tide) {
+      // 一屏正好 7 个小时
+      COL = Math.max(34, Math.floor(X.clientWidth / 7));
+      track.classList.toggle('narrow', COL < 46);
+      track.style.setProperty('--col', COL + 'px');
+      const start = Math.floor(Date.now() / HOUR) * HOUR;
+      const cols = [];
+      const today = parts(start);
+      for (let t = start; ; t += HOUR) {
+        const p = parts(t);
+        const dayIdx = Math.round((Date.UTC(p.y, p.m - 1, p.d) - Date.UTC(today.y, today.m - 1, today.d)) / 864e5);
+        if (dayIdx >= DAYS) break;
+        cols.push({ t, p, dayIdx });
+      }
+      const byHour = {}; (nws ? nws.periods : []).forEach(x => byHour[x.t] = x);
+      const days = [];
+      cols.forEach((c, i) => {
+        if (!days[c.dayIdx]) days[c.dayIdx] = { idx: c.dayIdx, p: c.p, first: i, sun: sunTimes(c.p.y, c.p.m, c.p.d, sp.lat, sp.lon) };
+      });
+      days.forEach(d => { d.hilo = (tide || []).filter(x => parts(x.t).key === d.p.key); });
+      const isNight = t => { const d = days.find(x => x.p.key === parts(t).key); return d && (t + HOUR / 2 < d.sun.rise || t + HOUR / 2 > d.sun.set); };
+      const cls = c => 'fc-c' + (c.p.h === 0 ? ' d0' : '') + (isNight(c.t) ? ' night' : '');
+
+      state = { sp, cols, days, byHour, tide, nws, dayShown: -1 };
+      track.style.width = cols.length * COL + 'px';
+
+      $('fc-days').innerHTML = days.map(d => `<button type="button" role="tab" data-day="${d.idx}"><b>${dayName(d)}</b><small>${d.p.m}/${d.p.d}</small></button>`).join('');
+      $('fc-days').querySelectorAll('button').forEach(b => b.onclick = () => {
+        const d = days[+b.dataset.day];
+        const six = cols.findIndex(c => c.dayIdx === d.idx && c.p.h === 6);
+        state.lockUntil = Date.now() + 900;
+        X.scrollTo({ left: d.idx === 0 ? 0 : (six >= 0 ? six : d.first) * COL, behavior: 'smooth' });
+        showDay(d.idx);
+      });
+
+      $('fc-time').innerHTML = cols.map((c, i) => `<div class="${cls(c)}">${i === 0 ? '<b class="now">现在</b>' : c.p.h === 0 ? `<b>${c.dayIdx === 1 ? '明天' : c.p.m + '/' + c.p.d}</b>` : hLabel(c.p.h)}</div>`).join('');
+      $('fc-wx').innerHTML = cols.map(c => {
+        const w = byHour[c.t];
+        if (!w) return `<div class="${cls(c)}"><span class="na">—</span></div>`;
+        const [ic, tx] = wxInfo(w.f, w.day);
+        return `<div class="${cls(c)}" title="${tx}"><span class="wi">${ic}</span><b class="tp">${w.temp}°</b></div>`;
+      }).join('');
+      $('fc-wind').innerHTML = cols.map(c => {
+        const w = byHour[c.t];
+        if (!w) return `<div class="${cls(c)}"><span class="na">—</span></div>`;
+        const deg = DIRS.indexOf(w.dir) * 22.5;
+        const strong = w.wind >= 15 ? ' strong' : w.wind >= 10 ? ' mid' : '';
+        return `<div class="${cls(c)}${strong}"><b class="ws">${w.wind}<small>mph</small></b>`
+          + (deg >= 0 ? `<svg class="wa" viewBox="0 0 24 24" style="transform:rotate(${deg + 180}deg)"><path d="M12 3l5 9h-3.5v9h-3v-9H7z" fill="currentColor"/></svg>` : '<span class="wa"></span>')
+          + `<span class="wd">${w.dir || ''}</span></div>`;
+      }).join('');
+      drawTide();
+      X.scrollLeft = 0;
+      showDay(0);
+    }
+
+    function drawTide() {
+      const box = $('fc-tide'), { cols, tide } = state;
+      const W = cols.length * COL, Hh = box.clientHeight || 176, top = 24, bot = 22;
+      if (!tide || !tide.length) { box.innerHTML = `<div class="fc-tide-na">${state.tideErr ? '潮汐数据暂时获取不到' : '潮汐加载中…'}</div>`; return; }
+      const t0 = cols[0].t, tEnd = cols[cols.length - 1].t, xOf = t => (t - t0) / HOUR * COL + COL / 2;
+      const inRange = tide.filter(p => p.t >= t0 - 12 * HOUR && p.t <= tEnd + 12 * HOUR);
+      const vs = inRange.map(p => p.v);
+      const lo = Math.floor(Math.min(...vs) * 2) / 2, hi = Math.ceil(Math.max(...vs) * 2) / 2;   // 刻度取 0.5 ft 的整数倍
+      const yOf = v => top + (1 - (v - lo) / ((hi - lo) || 1)) * (Hh - top - bot);
+      // 刻度：0.5 或 1 ft 一格
+      const step = hi - lo > 3 ? 1 : 0.5, ticks = [];
+      for (let v = lo; v <= hi + 1e-6; v += step) ticks.push(+v.toFixed(1));
+      const grid = ticks.map(v => `<line x1="0" x2="${W}" y1="${yOf(v)}" y2="${yOf(v)}" class="gl"/>`).join('');
+      let d = '';
+      for (let t = t0 - HOUR / 2; t <= tEnd + HOUR / 2; t += HOUR / 4) {
+        const v = tideAt(tide, t); if (!v) continue;
+        d += (d ? 'L' : 'M') + xOf(t).toFixed(1) + ' ' + yOf(v.v).toFixed(1);
+      }
+      const area = d ? d + `L${W} ${Hh}L0 ${Hh}Z` : '';
+      // 高低潮：空心点 + 数值 + 时间
+      const ext = inRange.filter(p => p.t >= t0 - HOUR / 2 && p.t <= tEnd + HOUR / 2);
+      const extMarks = ext.map(p => {
+        const x = xOf(p.t), y = yOf(p.v), H = p.type === 'H';
+        return `<circle cx="${x}" cy="${y}" r="4.5" class="${H ? 'hi' : 'lo'}"/><text x="${x}" y="${H ? y - 9 : y + 16}" class="tl ${H ? 'th' : 'tlo'}">${p.v.toFixed(1)} ft</text>`;
+      }).join('');
+      // 每 3 小时一个潮位（离高低潮太近的跳过，免得挤在一起）
+      const every = cols.filter(c => c.p.h % 3 === 0).map(c => {
+        if (ext.some(p => Math.abs(p.t - c.t) < 1.25 * HOUR)) return '';
+        const v = tideAt(tide, c.t); if (!v) return '';
+        const x = xOf(c.t), y = yOf(v.v);
+        return `<circle cx="${x}" cy="${y}" r="3" class="mid"/><text x="${x}" y="${y - 8}" class="tl tm">${v.v.toFixed(1)} ft</text>`;
+      }).join('');
+      const axis = ticks.map(v => `<span style="top:${yOf(v)}px">${v % 1 ? v.toFixed(1) : v}</span>`).join('');
+      box.innerHTML = `<div class="fc-axis" aria-hidden="true">${axis}</div><svg width="${W}" height="${Hh}" viewBox="0 0 ${W} ${Hh}">
+        <defs><linearGradient id="fcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--primary)" stop-opacity=".30"/><stop offset="1" stop-color="var(--primary)" stop-opacity=".04"/></linearGradient></defs>
+        ${grid}<path d="${area}" fill="url(#fcg)"/><path d="${d}" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linejoin="round"/>
+        <line x1="${COL / 2}" x2="${COL / 2}" y1="0" y2="${Hh}" class="nowline"/>
+        ${every}${extMarks}</svg>`;
+    }
+
+    const dayName = d => d.idx === 0 ? '今天' : d.idx === 1 ? '明天' : WEEK[d.p.wd];
+    function showDay(idx) {
+      if (!state || state.dayShown === idx) return; state.dayShown = idx;
+      const d = state.days[idx]; if (!d) return;
+      $('fc-days').querySelectorAll('button').forEach(b => { const on = +b.dataset.day === idx; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); if (on) b.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); });
+      $('fc-day').innerHTML = `<div class="dy-sun">
+          <div><span>🌅 ${dayName(d)}日出</span><b>${hm(d.sun.rise)}</b></div>
+          <div><span>🌇 ${dayName(d)}日落</span><b>${hm(d.sun.set)}</b></div>
+        </div>`;
+    }
+
+    // 滑动时：日期标签和下面的日出日落、高低潮跟着换
+    let raf = 0;
+    function onScroll() {
+      if (!state || Date.now() < (state.lockUntil || 0)) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const i = Math.min(state.cols.length - 1, Math.floor((X.scrollLeft + X.clientWidth / 2) / COL));
+        showDay(state.cols[i].dayIdx);
+      });
+    }
+    X.addEventListener('scroll', onScroll, { passive: true });
+
+    // ---------- 打开页面 ----------
+    async function open(key) {
+      const sp = SPOTS[key]; if (!sp) return;
+      $('fc-title').textContent = sp.name + ' · 天气潮汐';
+      state = null;
+      ['fc-time', 'fc-wx', 'fc-wind', 'fc-tide', 'fc-days'].forEach(id => $(id).innerHTML = '');
+      $('fc-day').innerHTML = '<div class="ro-loading">正在获取天气和潮汐…</div>';
+      window.openDetail('detail-fc');
+      const myKey = key; page.dataset.spot = key;
+      const [n, t] = await Promise.allSettled([loadNWS(sp), loadTide(sp)]);
+      if (page.dataset.spot !== myKey) return;          // 用户已经切到别的钓点
+      const nws = n.status === 'fulfilled' ? n.value : null;
+      const tide = t.status === 'fulfilled' ? t.value : null;
+      build(sp, nws, tide);
+      state.tideErr = !tide; if (!tide) { drawTide(); state.dayShown = -1; showDay(0); }
+      const ago = nws ? Math.round((Date.now() - nws.at) / 60000) : null;
+      $('fc-src').innerHTML = `天气：NWS 美国国家气象局${nws ? (ago < 1 ? '（刚刚更新）' : `（${ago} 分钟前更新${nws.stale ? '，联网失败，显示的是旧数据' : ''}）`) : '（暂时获取不到）'}<br>`
+        + `潮汐：NOAA ${sp.stName} 潮汐站（${sp.st}），潮位以 MLLW 为基准${tide ? '' : '（暂时获取不到）'}<br>日出日落：按钓点经纬度计算`;
+    }
+    document.querySelectorAll('.fc-btn[data-spot]').forEach(b => b.addEventListener('click', () => open(b.dataset.spot)));
+    // 卡片和详情页右上角的天气小标签，也打开同一个页面
+    document.querySelectorAll('button.wx[data-lat]').forEach(b => b.addEventListener('click', () => {
+      const k = Object.keys(SPOTS).find(k => SPOTS[k].lat === +b.dataset.lat && SPOTS[k].lon === +b.dataset.lon);
+      if (k) open(k);
+    }));
+  })();
