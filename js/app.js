@@ -60,37 +60,34 @@
   const searchBox = document.getElementById('fish-search');
   fishCards.forEach(c => { c._home = c.parentNode; c._next = null; });
   fishCards.forEach((c, i) => { c._order = i; });
+  // 默认：华人钓友最关心的鱼在前。稀有度 / 好吃程度：再点一次同一项就倒过来
   const SORTS = {
-    default: { label: '默认分组' },
-    rare:    { label: '稀有度排行', note: '岸边越难钓到的排越前面', key: 'rare', dir: -1 },
-    taste:   { label: '好吃程度',   note: '越好吃的排越前面',       key: 'taste', dir: 1 },
-    limited: { label: '有尺寸限制', group: 'limited' },
-    free:    { label: '无尺寸限制', group: 'free' },
+    default: { label: '默认排序', key: 'hot', dir: 1 },
+    rare:    { label: '稀有度排行', key: 'rare', dir: -1, notes: ['罕见的在前', '常见的在前'] },
+    taste:   { label: '好吃程度',   key: 'taste', dir: 1, notes: ['最好吃的在前', '最不好吃的在前'] },
+    limited: { label: '有尺寸限制', key: 'hot', dir: 1, group: 'limited' },
+    free:    { label: '无尺寸限制', key: 'hot', dir: 1, group: 'free' },
   };
-  let curSort = 'default';
+  let curSort = 'default', rev = false;
   function applyFish() {
     const q = searchBox.value.trim().toLowerCase();
-    const S = SORTS[curSort];
-    // 排序时把卡片平铺到一个列表里；其他情况放回原来的分组
-    if (S.key) {
-      fishCards.slice().sort((a, b) => S.dir * (a.dataset[S.key] - b.dataset[S.key]))
-               .forEach(c => sortedBox.appendChild(c));
-    } else {
-      fishCards.forEach(c => c._home.appendChild(c));
-    }
-    sortedBox.hidden = !S.key;
+    const S = SORTS[curSort], d = S.dir * (rev ? -1 : 1);
+    fishCards.slice().sort((a, b) => d * (a.dataset[S.key] - b.dataset[S.key])).forEach(c => sortedBox.appendChild(c));
+    sortedBox.hidden = false;
+    document.getElementById('fish').classList.toggle('show-rare', curSort === 'rare');
     let shown = 0;
     fishCards.forEach(c => {
       const ok = (!S.group || c.dataset.group === S.group) && (!q || c.dataset.name.toLowerCase().includes(q));
       c.style.display = ok ? '' : 'none';
       if (ok) shown++;
     });
-    fishGroups.forEach(g => { g.style.display = g.querySelector('.fish:not([style*="none"])') ? '' : 'none'; });
+    fishGroups.forEach(g => { g.style.display = 'none'; });
     sortChip.hidden = curSort === 'default';
-    document.getElementById('sort-label').textContent = S.note ? S.label + ' · ' + S.note : S.label;
+    document.getElementById('sort-label').textContent = S.notes ? S.label + ' · ' + S.notes[rev ? 1 : 0] : S.label;
     document.getElementById('fish-empty').hidden = shown > 0;
   }
   searchBox.addEventListener('input', applyFish);
+  applyFish();
 
   // 下拉菜单
   const sortBtn = document.getElementById('sort-btn');
@@ -104,8 +101,12 @@
   }
   sortBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(sortMenu.hidden); });
   function pickSort(k) {
+    rev = (k === curSort && SORTS[k].notes) ? !rev : false;    // 同一项再点一次：倒序
     curSort = k;
-    sortOpts.forEach(x => { const on = x.dataset.sort === k; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
+    sortOpts.forEach(x => {
+      const on = x.dataset.sort === k; x.classList.toggle('on', on); x.setAttribute('aria-checked', on);
+      const ck = x.querySelector('.so-check'); ck.textContent = on && SORTS[k].notes ? (rev ? '↑' : '↓') : '✓';
+    });
     sortBtn.classList.toggle('active', k !== 'default');
     setMenu(false);
     applyFish();
@@ -113,7 +114,7 @@
     if (scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
   }
   sortOpts.forEach(o => o.addEventListener('click', () => pickSort(o.dataset.sort)));
-  sortChip.addEventListener('click', () => pickSort('default'));
+  sortChip.addEventListener('click', () => { rev = false; pickSort('default'); });
   document.addEventListener('click', e => { if (!sortMenu.hidden && !e.target.closest('.sort-wrap')) setMenu(false); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sortMenu.hidden) { setMenu(false); sortBtn.focus(); } });
 
@@ -176,7 +177,7 @@
       : { thumb: FP + f + '?width=240', big: FP + f + '?width=1200', file: c.dataset.photo, page: c.dataset.wiki };
     const btn = c.querySelector('.avatar');
     const img = new Image();
-    img.alt = c.querySelector('h3').textContent;
+    img.alt = c.querySelector('h3').firstChild.textContent;
     img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
     if (c.dataset.pos) img.style.objectPosition = c.dataset.pos;   // 小图裁切位置
     if (c.dataset.fit === 'contain') {   // 横长的网络图：整条鱼缩进框里，空白处用同一张图模糊填满
@@ -197,10 +198,10 @@
     const ph = photos[card.dataset.wiki];
     if (!ph) return;
     document.getElementById('lb-title').innerHTML =
-      card.querySelector('h3').textContent + '<small>' + card.querySelector('.en').textContent + '</small>';
+      card.querySelector('h3').firstChild.textContent + '<small>' + card.querySelector('.en').textContent + '</small>';
     lbImg.innerHTML = '<div class="lb-loading">加载大图中…</div>';
     const img = new Image();
-    img.alt = card.querySelector('h3').textContent;
+    img.alt = card.querySelector('h3').firstChild.textContent;
     img.referrerPolicy = 'no-referrer';
     img.onload = () => { lbImg.innerHTML = ''; lbImg.appendChild(img); };
     img.onerror = () => { lbImg.innerHTML = '<div class="lb-loading">大图加载失败，请检查网络</div>'; };
@@ -224,44 +225,6 @@
   document.getElementById('lb-close').onclick = closeLB;
   lbImg.addEventListener('click', e => { if (e.target === lbImg) closeLB(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
-
-  // ---------- 钓点右上角天气（Open-Meteo 免费，一次请求所有钓点）----------
-  (async () => {
-    const tags = [...document.querySelectorAll('.wx[data-lat]')];
-    if (!tags.length) return;
-    const icon = c => c === 0 ? '☀️' : c <= 2 ? '🌤️' : c === 3 ? '☁️' : c <= 48 ? '🌫️'
-                   : c <= 67 || (c >= 80 && c <= 82) ? '🌧️' : c <= 77 ? '🌨️' : '⛈️';
-    const url = 'https://api.open-meteo.com/v1/forecast?current=temperature_2m,weather_code'
-      + '&temperature_unit=fahrenheit&latitude=' + tags.map(t => t.dataset.lat).join(',')
-      + '&longitude=' + tags.map(t => t.dataset.lon).join(',');
-    const paint = d => tags.forEach((t, i) => {
-      const c = d[i] && d[i].current; if (!c) return;
-      t.querySelector('.wx-i').textContent = icon(c.weather_code);
-      t.querySelector('.wx-t').textContent = Math.round(c.temperature_2m) + '°';
-    });
-    // 先显示上次的气温（3 小时内），避免一直显示「天气」
-    const KEY = 'wx-cache:' + url;
-    try {
-      const old = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (old && Date.now() - old.t < 3 * 3600e3) paint(old.d);
-    } catch (_) {}
-    async function load() {
-      const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 8000);
-      try {
-        const r = await fetch(url, { signal: ctl.signal });
-        if (!r.ok) throw new Error(r.status);
-        let d = await r.json();
-        if (!Array.isArray(d)) d = [d];
-        return d;
-      } finally { clearTimeout(timer); }
-    }
-    try {
-      let d;
-      try { d = await load(); } catch (_) { await new Promise(r => setTimeout(r, 1500)); d = await load(); }
-      paint(d);
-      try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d })); } catch (_) {}
-    } catch (_) { /* 没网就显示「天气」，点了照样能看 */ }
-  })();
 
   // ---------- 导航 / 鱼饵店：底部弹出选择 Apple 或 Google 地图 ----------
   const sheet = document.getElementById('sheet'), mask = document.getElementById('sheet-mask');
@@ -446,8 +409,8 @@
     const retry = async (fn) => { try { return await fn(); } catch (_) { await new Promise(r => setTimeout(r, 1200)); return fn(); } };
 
     // ---------- NWS：逐小时温度、天气 + 原始网格数据里的精确风速风向 ----------
-    // 逐小时预报（forecastHourly）里的风速是给普通人看的，按 5 mph 取整，常写成「5 to 10 mph」；
-    // 同一个网格点的原始数据（forecastGridData）是不取整的数值，所以风速、风向从那里取。
+    // 逐小时预报（forecastHourly）里的风速被取整成 5 mph 的倍数；
+    // 风速风向改从同一网格点的原始数据（forecastGridData）读，取不到时退回逐小时预报。
     const DUR = s => { const m = /P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?/.exec(s) || []; return ((+m[1] || 0) * 24 + (+m[2] || 0) + (+m[3] || 0) / 60) * HOUR; };
     function gridHours(prop, conv) {           // 把「起始时间/持续多久」展开成每个整点一个值
       const out = {};
@@ -600,7 +563,7 @@
       $('fc-wx').innerHTML = cols.map(c => {
         const w = byHour[c.t];
         if (!w) return `<div class="${cls(c)}"><span class="na">—</span></div>`;
-        const [ic, tx] = wxInfo(w.f, w.day);
+        const [ic, tx] = w.ic ? [w.ic, w.tx] : wxInfo(w.f, w.day);
         return `<div class="${cls(c)}" title="${tx}"><span class="wi">${ic}</span><b class="tp">${w.temp}°</b></div>`;
       }).join('');
       $('fc-wind').innerHTML = cols.map(c => {
@@ -636,18 +599,20 @@
         d += (d ? 'L' : 'M') + xOf(t).toFixed(1) + ' ' + yOf(v.v).toFixed(1);
       }
       const area = d ? d + `L${W} ${Hh}L0 ${Hh}Z` : '';
+      // 最左边那格的数字往右挪，别被左侧刻度挡住
+      const lx = x => x < 34 ? 34 : x, la = x => x < 34 ? ' text-anchor="start"' : '';
       // 高低潮：空心点 + 数值 + 时间
       const ext = inRange.filter(p => p.t >= t0 - HOUR / 2 && p.t <= tEnd + HOUR / 2);
       const extMarks = ext.map(p => {
         const x = xOf(p.t), y = yOf(p.v), H = p.type === 'H';
-        return `<circle cx="${x}" cy="${y}" r="4.5" class="${H ? 'hi' : 'lo'}"/><text x="${x}" y="${H ? y - 9 : y + 16}" class="tl ${H ? 'th' : 'tlo'}">${p.v.toFixed(1)} ft</text>`;
+        return `<circle cx="${x}" cy="${y}" r="4.5" class="${H ? 'hi' : 'lo'}"/><text x="${lx(x)}" y="${H ? y - 9 : y + 16}" class="tl ${H ? 'th' : 'tlo'}"${la(x)}>${p.v.toFixed(1)} ft</text>`;
       }).join('');
       // 每 3 小时一个潮位（离高低潮太近的跳过，免得挤在一起）
       const every = cols.filter(c => c.p.h % 3 === 0).map(c => {
         if (ext.some(p => Math.abs(p.t - c.t) < 1.25 * HOUR)) return '';
         const v = tideAt(tide, c.t); if (!v) return '';
         const x = xOf(c.t), y = yOf(v.v);
-        return `<circle cx="${x}" cy="${y}" r="3" class="mid"/><text x="${x}" y="${y - 8}" class="tl tm">${v.v.toFixed(1)} ft</text>`;
+        return `<circle cx="${x}" cy="${y}" r="3" class="mid"/><text x="${lx(x)}" y="${y - 8}" class="tl tm"${la(x)}>${v.v.toFixed(1)} ft</text>`;
       }).join('');
       const axis = ticks.map(v => `<span style="top:${yOf(v)}px">${v % 1 ? v.toFixed(1) : v}</span>`).join('');
       box.innerHTML = `<div class="fc-axis" aria-hidden="true">${axis}</div><svg width="${W}" height="${Hh}" viewBox="0 0 ${W} ${Hh}">
@@ -696,8 +661,10 @@
       build(sp, nws, tide);
       state.tideErr = !tide; if (!tide) { drawTide(); state.dayShown = -1; showDay(0); }
       const ago = nws ? Math.round((Date.now() - nws.at) / 60000) : null;
-      $('fc-src').innerHTML = `天气：NWS 美国国家气象局${nws ? (ago < 1 ? '（刚刚更新）' : `（${ago} 分钟前更新${nws.stale ? '，联网失败，显示的是旧数据' : ''}）`) : '（暂时获取不到）'}<br>`
-        + `潮汐：NOAA ${sp.stName} 潮汐站（${sp.st}），潮位以 MLLW 为基准${tide ? '' : '（暂时获取不到）'}<br>日出日落：按钓点经纬度计算`;
+      const upd = nws ? (ago < 1 ? '刚刚更新' : ago + ' 分钟前更新' + (nws.stale ? '，联网失败，显示的是之前的数据' : '')) : '暂时获取不到';
+      $('fc-src').innerHTML = `天气来自美国国家气象局（NWS，${upd}）。最近 3 天的预报通常比较准，第 4 天起仅供参考。<br>`
+        + `潮汐来自 NOAA ${sp.stName} 潮汐站${tide ? '' : '（暂时获取不到）'}，按天文规律推算，不受预报天数影响，7 天都一样可靠；大风天实际水位可能会偏高或偏低。<br>`
+        + `日出日落按钓点位置计算。`;
     }
     document.querySelectorAll('.fc-btn[data-spot]').forEach(b => b.addEventListener('click', () => open(b.dataset.spot)));
     // 卡片和详情页右上角的天气小标签，也打开同一个页面

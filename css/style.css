@@ -820,3 +820,29 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .detail .fc-btn.fc-row { margin: 0; text-align: left; }
 .detail .fc-btn.fc-row svg { color: var(--primary); }
 .detail .fc-btn.fc-row .chev { color: var(--muted); font-size: 20px; }
+
+/* 稀有度标签：只在「稀有度排行」时显示 */
+.rare-tag { display: none; margin-left: 8px; padding: 1px 7px; border-radius: 6px; vertical-align: 2px;
+  font-size: 12px; font-weight: 700; line-height: 1.6; white-space: nowrap; }
+.show-rare .rare-tag { display: inline-block; }
+.rare-tag.t1 { background: #eef1f5; color: #667085; }
+.rare-tag.t2 { background: #e8f6ee; color: #1f8a4c; }
+.rare-tag.t3 { background: #e6f1ff; color: #0a6ad6; }
+.rare-tag.t4 { background: #f1ebff; color: #6d3fd1; }
+.rare-tag.t5 { background: #fff3d6; color: #a86a00; }
+@media (prefers-color-scheme: dark) {
+  .rare-tag.t1 { background: #232c38; color: #a3b0c2; }
+  .rare-tag.t2 { background: #12301f; color: #5ee09a; }
+  .rare-tag.t3 { background: #14263d; color: #7cc0ff; }
+  .rare-tag.t4 { background: #2a1f45; color: #b79bff; }
+  .rare-tag.t5 { background: #3a2a0d; color: #f5c46b; }
+}
+
+/* 规定小标签 + 稀有度标签同一行 */
+.fish-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+.fish-tags .fish-limit { margin-top: 0; }
+.fish-tags .rare-tag { margin-left: 0; vertical-align: 0; font-size: 12.5px; line-height: 1.5; padding: 2px 8px; }
+.sort-opt.on .so-check { font-size: 16px; }
+
+/* ---------- v5：收起时只显示名字、英文名和标签；描述放进展开区 ---------- */
+.fish .fish-head { margin-bottom: 0; }
