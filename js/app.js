@@ -445,24 +445,51 @@
     }
     const retry = async (fn) => { try { return await fn(); } catch (_) { await new Promise(r => setTimeout(r, 1200)); return fn(); } };
 
-    // ---------- NWS：逐小时温度、风、天气 ----------
+    // ---------- NWS：逐小时温度、天气 + 原始网格数据里的精确风速风向 ----------
+    // 逐小时预报（forecastHourly）里的风速是给普通人看的，按 5 mph 取整，常写成「5 to 10 mph」；
+    // 同一个网格点的原始数据（forecastGridData）是不取整的数值，所以风速、风向从那里取。
+    const DUR = s => { const m = /P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?/.exec(s) || []; return ((+m[1] || 0) * 24 + (+m[2] || 0) + (+m[3] || 0) / 60) * HOUR; };
+    function gridHours(prop, conv) {           // 把「起始时间/持续多久」展开成每个整点一个值
+      const out = {};
+      ((prop && prop.values) || []).forEach(v => {
+        if (v.value == null) return;
+        const [st, du] = v.validTime.split('/');
+        const t0 = Date.parse(st), t1 = t0 + DUR(du);
+        for (let t = Math.ceil(t0 / HOUR) * HOUR; t < t1; t += HOUR) out[t] = conv(v.value);
+      });
+      return out;
+    }
+    const toMph = uom => /m_s/.test(uom || '') ? v => v * 2.23694 : /km_h/.test(uom || '') ? v => v * 0.621371 : v => v;
+    const degToDir = d => DIRS[Math.round(((d % 360) + 360) % 360 / 22.5) % 16];
+
     async function loadNWS(sp) {
-      const k = 'nws:' + sp.lat + ',' + sp.lon;
+      const k = 'nws2:' + sp.lat + ',' + sp.lon;
       const fresh = cget(k, HOUR); if (fresh) return { periods: fresh.d, at: fresh.t };
       try {
         const H = { Accept: 'application/geo+json' };
-        const pk = 'nwspt:' + sp.lat + ',' + sp.lon;
-        let url = (cget(pk, 30 * 24 * HOUR) || {}).d;
-        if (!url) {
+        const pk = 'nwspt2:' + sp.lat + ',' + sp.lon;
+        let urls = (cget(pk, 30 * 24 * HOUR) || {}).d;
+        if (!urls) {
           const pt = await retry(() => getJSON('https://api.weather.gov/points/' + sp.lat + ',' + sp.lon, H));
-          url = pt.properties.forecastHourly; cset(pk, url);
+          urls = { hourly: pt.properties.forecastHourly, grid: pt.properties.forecastGridData }; cset(pk, urls);
         }
-        const fc = await retry(() => getJSON(url, H));
-        const periods = fc.properties.periods.map(p => ({
-          t: Date.parse(p.startTime), temp: p.temperature, f: p.shortForecast, day: p.isDaytime,
-          wind: Math.max(...(String(p.windSpeed).match(/\d+/g) || [0]).map(Number)), dir: p.windDirection,
-          pop: p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value,
-        }));
+        const [fc, grid] = await Promise.all([
+          retry(() => getJSON(urls.hourly, H)),
+          urls.grid ? retry(() => getJSON(urls.grid, H)).catch(() => null) : null,   // 网格数据失败就退回逐小时预报的风
+        ]);
+        const gp = grid && grid.properties;
+        const ws = gp ? gridHours(gp.windSpeed, toMph(gp.windSpeed && gp.windSpeed.uom)) : {};
+        const wd = gp ? gridHours(gp.windDirection, v => v) : {};
+        const periods = fc.properties.periods.map(p => {
+          const t = Date.parse(p.startTime);
+          const fallback = (String(p.windSpeed).match(/\d+/g) || [0]).map(Number);
+          return {
+            t, temp: p.temperature, f: p.shortForecast, day: p.isDaytime,
+            wind: ws[t] != null ? Math.round(ws[t]) : Math.round(fallback.reduce((a, b) => a + b, 0) / fallback.length),
+            dir: wd[t] != null ? degToDir(wd[t]) : p.windDirection,
+            pop: p.probabilityOfPrecipitation && p.probabilityOfPrecipitation.value,
+          };
+        });
         cset(k, periods);
         return { periods, at: Date.now() };
       } catch (e) {
