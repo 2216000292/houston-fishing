@@ -940,3 +940,32 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
   .rf-lb > div, .rf-oz > div { padding: 7px 6px; }
   .rf-lb b, .rf-oz b { font-size: 14px; }
 }
+
+/* ---------- 亮片钓组页：手机端细调 ---------- */
+.rig-flow { grid-template-columns: minmax(0,1fr) 70px minmax(0,1fr) 70px minmax(0,1fr); }
+.rf-tile { max-width: 72px; border-radius: 16px; }
+.rf-kthumb { width: 44px; height: 44px; border-radius: 12px; }
+.rf-kthumb::after { content: ""; position: absolute; inset: -8px; }          /* 点击范围放大到 60px，好点 */
+.rf-kimg { border-radius: 9px; }
+.rf-cap { margin-top: 2px; }
+.rf-kcap { font-size: 11.5px; font-weight: 600; }
+.rf-oz > div, .rf-lb > div { justify-content: flex-start; }
+.yt { width: min(100%, 230px); }
+.rf-oz { grid-template-columns: 1fr; }
+.rf-oz > div { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: baseline; }
+.rf-oz p { grid-column: 1 / -1; }
+.yt-link { display: flex; align-items: center; justify-content: center; min-height: 44px; margin: 4px auto 0; padding: 0 12px; }
+@media (max-width: 360px) {
+  .rig-hero { gap: 12px; }
+  .rig-hero-img { flex-basis: 72px; height: 72px; border-radius: 16px; }
+  .rig-hero-img img { width: 62px; height: 62px; }
+  .rig-hero-txt h2 { font-size: 22px; }
+  .rig-hero-txt .en { font-size: 13px; margin-bottom: 6px; }
+  .rig-hero-txt .tag { font-size: 12.5px; padding: 3px 8px; }
+  .rig-flow { grid-template-columns: minmax(0,1fr) 54px minmax(0,1fr) 54px minmax(0,1fr); }
+  .rf-tile { border-radius: 13px; }
+  .rf-kthumb { width: 36px; height: 36px; border-radius: 10px; }
+  .rf-kthumb::after { inset: -10px; }
+  .rf-kcap { font-size: 11px; }
+  .yt { width: min(100%, 200px); }
+}
