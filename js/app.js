@@ -118,7 +118,7 @@
   document.addEventListener('click', e => { if (!sortMenu.hidden && !e.target.closest('.sort-wrap')) setMenu(false); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sortMenu.hidden) { setMenu(false); sortBtn.focus(); } });
 
-  // 每张卡片唯一的「详情」按钮：平滑展开 / 收起，默认全部展开
+  // 每张卡片唯一的「详情」按钮：平滑展开 / 收起，默认全部收起
   const EASE2 = 'cubic-bezier(.2,.8,.2,1)';
   function setCard(c, open, animate = true) {
     const btn = c.querySelector('.fish-toggle'), more = c.querySelector('.fish-more');

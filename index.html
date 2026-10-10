@@ -36,332 +36,334 @@
           <button class="sort-opt" type="button" role="menuitemradio" aria-checked="false" data-sort="free"><span class="so-txt">无尺寸限制</span><span class="so-check" aria-hidden="true">✓</span></button>
         </div>
       </div>
-      <button class="expand-btn" id="all-toggle" type="button" aria-pressed="true"><span class="eb-text">收起</span><span class="eb-chev" aria-hidden="true"></span></button>
+      <button class="expand-btn" id="all-toggle" type="button" aria-pressed="false"><span class="eb-text">展开</span><span class="eb-chev" aria-hidden="true"></span></button>
     </div>
     <button class="sort-chip" id="sort-chip" type="button" hidden aria-label="恢复默认分组"><span id="sort-label"></span><span class="sc-x" aria-hidden="true">✕</span></button>
   </div>
 
   <div id="fish-list">
       <div class="group" data-group="limited">
-      <div class="card fish is-open" data-hot="6" data-rare="12" data-tier="t2" data-taste="9" data-wiki="Black drum" data-photo="local" data-local="images/fish-black-drum.webp" data-local-thumb="images/fish-black-drum-thumb.webp" data-group="limited" data-layer="底层" data-name="黑鼓鱼 black drum">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>黑鼓鱼</h3><div class="en">Black drum</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 5 条，14–30 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-black-drum" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="6" data-rare="12" data-tier="t2" data-taste="9" data-wiki="Black drum" data-photo="local" data-local="images/fish-black-drum.webp" data-local-thumb="images/fish-black-drum-thumb.webp" data-group="limited" data-layer="底层" data-name="黑鼓鱼 black drum">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>黑鼓鱼</h3><div class="en">Black drum</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 5 条，14–30 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-black-drum" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-black-drum"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿常见的大型鱼种之一，体型越大颜色通常越浅，拉力强劲。大型黑鼓鱼肉质较粗，且经常带有寄生虫，不太推荐带走。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>沉底钓</div></div>
-          <div class="special"><span>特例</span>每天最多可留一条大于 52 寸的</div>
+          <div class="row"><div class="lbl">钓法</div><div>虾肉、活虾、螃蟹块沉底钓</div></div>
+          <div class="special"><span>特殊限制</span>每天可有一条超过 52 寸的大黑鼓鱼，计入每日 5 条总额。30–52 寸之间的黑鼓鱼不能保留</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="5" data-rare="13" data-tier="t2" data-taste="10" data-wiki="Red drum" data-photo="Red_Drum_(Sciaenops_ocellatus).jpg" data-group="limited" data-layer="上层 底层" data-name="红鼓鱼 / 红鱼 red drum / red fish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>红鱼</h3><div class="en">Red drum / Red fish</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，20–28 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-red-drum" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="5" data-rare="13" data-tier="t2" data-taste="10" data-wiki="Red drum" data-photo="Red_Drum_(Sciaenops_ocellatus).jpg" data-group="limited" data-layer="上层 底层" data-name="红鼓鱼 / 红鱼 red drum / red fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>红鱼</h3><div class="en">Red drum / Red fish</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，20–28 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-red-drum" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-red-drum"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿可以钓到的大型鱼种之一，中小型肉质较好，拉力强劲。每年秋季迎来“红鱼潮”，大量成年红鱼聚集在海湾出口和近海，是岸钓大红鱼的好时机。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>各种鱼饵（死虾活虾死鱼活鱼，死螃蟹活螃蟹，鱿鱼）沉底。有概率会出现在水上，所以亮片也有机会</div></div>
-          <div class="special"><span>特例</span>每人每年可保留一条 28 寸以上的（用tag，填信息绑鱼尾）</div>
+          <div class="row"><div class="lbl">钓法</div><div>活虾、活乌头鱼、切块乌头鱼或螃蟹沉底钓</div></div>
+          <div class="special"><span>特殊限制</span>凭普通及额外红鱼标签，各额外保留 1 条超过 28 寸的红鱼</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="3" data-rare="6" data-tier="t2" data-taste="1" data-wiki="Southern flounder" data-photo="local" data-local="images/fish-flounder.webp" data-catch="休斯顿英伦风钓手钓获" data-local-thumb="images/fish-flounder-thumb.webp" data-pos="55% 65%" data-group="limited" data-layer="底层" data-name="比目鱼 皇帝鱼 flounder">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>比目鱼</h3><div class="en">Flounder</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 5 条，至少 15 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-southern-flounder" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="3" data-rare="6" data-tier="t2" data-taste="1" data-wiki="Southern flounder" data-photo="local" data-local="images/fish-flounder.webp" data-catch="休斯顿英伦风钓手钓获" data-local-thumb="images/fish-flounder-thumb.webp" data-pos="55% 65%" data-group="limited" data-layer="底层" data-name="比目鱼 皇帝鱼 flounder">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>比目鱼</h3><div class="en">Flounder</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 5 条，至少 15 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-southern-flounder" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-southern-flounder"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>热门岸钓鱼种，肉质细嫩鲜美，喜欢潜伏在沙泥底伏击猎物。咬饵后有时不会立刻吞下，使用活饵时可以稍等鱼咬稳再扬竿。每年10月下旬至11月，随着第一波较强冷锋南下，大量比目鱼开始向外海迁移，形成一年一度的“比目鱼潮”。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>活虾，活Mullet最佳。死的有概率。铅头钩带软饵在底层跳动也有概率</div></div>
-          <div class="special"><span>特例</span>11月1日-12月14日只能保留0条</div>
+          <div class="row"><div class="lbl">钓法</div><div>活小鱼、活虾贴底慢拖，或用 Berkley Gulp 软饵配铅头钩跳底</div></div>
+          <div class="special"><span>特殊限制</span>11 月 1 日至 12 月 14 日禁止保留</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="27" data-rare="2" data-tier="t1" data-taste="31" data-wiki="Gafftopsail catfish" data-photo="Bagre_marinus_62524575.jpg" data-group="limited" data-layer="中层 底层" data-name="斜帆鲶鱼 / 猫鱼 gafftopsail catfish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>斜帆鲶鱼 / 猫鱼</h3><div class="en">Gafftopsail Catfish</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，至少 14 寸</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-gafftopsail-catfish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="27" data-rare="2" data-tier="t1" data-taste="31" data-wiki="Gafftopsail catfish" data-photo="Bagre_marinus_62524575.jpg" data-group="limited" data-layer="中层 底层" data-name="斜帆鲶鱼 / 猫鱼 gafftopsail catfish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>斜帆鲶鱼 / 猫鱼</h3><div class="en">Gafftopsail Catfish</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，至少 14 寸</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-gafftopsail-catfish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-gafftopsail-catfish"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>常见的海水猫鱼，背鳍高耸如帆，春夏季较为活跃。体表黏液较多，肉可食用，偶尔也能见到当地钓友带走食用，但不太推荐。主要因为存在污染物积累风险，加上黏液多、处理麻烦，通常不值得专门带走。背鳍和胸鳍带有毒刺，被扎伤会十分疼痛，摘钩时务必小心。</div></div>
           <div class="row"><div class="lbl">水层</div><div>中层和底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>死虾或死鱼块沉底，浮标，以及自由线都可以</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>死虾、鱼块沉底钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="7" data-rare="7" data-tier="t2" data-taste="8" data-wiki="Sheepshead (fish)" data-photo="local" data-local="images/fish-sheepshead.webp" data-catch="休斯顿英伦风钓手钓获" data-local-thumb="images/fish-sheepshead-thumb.webp" data-group="limited" data-layer="结构" data-name="羊头鱼 sheepshead">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>羊头鱼</h3><div class="en">Sheepshead</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 5 条，至少 15 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-sheepshead-fish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="7" data-rare="7" data-tier="t2" data-taste="8" data-wiki="Sheepshead (fish)" data-photo="local" data-local="images/fish-sheepshead.webp" data-catch="休斯顿英伦风钓手钓获" data-local-thumb="images/fish-sheepshead-thumb.webp" data-group="limited" data-layer="结构" data-name="羊头鱼 sheepshead">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>羊头鱼</h3><div class="en">Sheepshead</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 5 条，至少 15 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-sheepshead-fish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-sheepshead-fish"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>热门岸钓鱼种，身上有明显的黑白竖纹，嘴里长着类似人类的牙齿，擅长咬碎贝壳和螃蟹。肉质紧实鲜甜。喜欢聚集在码头、桥墩和防波堤等有牡蛎附着的地方。冬末至春季较为活跃，尤其是2月至4月繁殖季节，大型羊头鱼更容易聚集。</div></div>
           <div class="row"><div class="lbl">水层</div><div>结构处（木桥下，石头边）</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>活虾浮漂，活虾自由线，靠近岩石处易钓</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>活虾或虾肉，小钩贴着桥墩、石堤垂直钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="1" data-rare="20" data-tier="t3" data-taste="14" data-wiki="Atlantic Spanish mackerel" data-photo="local" data-local="images/fish-spanish-mackerel.webp" data-local-thumb="images/fish-spanish-mackerel-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="马鲛鱼 / 鲅鱼 spanish mackerel">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>马鲛鱼</h3><div class="en">Spanish mackerel</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 15 条，至少 14 寸</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-atlantic-spanish-mackerel" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="1" data-rare="20" data-tier="t3" data-taste="14" data-wiki="Atlantic Spanish mackerel" data-photo="local" data-local="images/fish-spanish-mackerel.webp" data-local-thumb="images/fish-spanish-mackerel-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="马鲛鱼 / 鲅鱼 spanish mackerel">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>马鲛鱼</h3><div class="en">Spanish mackerel</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 15 条，至少 14 寸</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-atlantic-spanish-mackerel" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-atlantic-spanish-mackerel"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿岸钓最热门的路亚鱼种，极具挑战性。属于高速掠食性鱼类，游速极快，冲刺时拉力强劲。尤其在8月到10月，常成群追逐小鱼，Galveston 的码头和288防波堤是主要钓点。清晨最容易遇到鱼群，对水质清澈度要求较高，水浑时鱼口通常较差。肉质紧实鲜美，沿海地区常用来制作鱼滑、鱼丸，北方也常用来包鲅鱼饺子。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层，清水</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>只在清晨和早上，水面系，亮片，浮标以及假饵都能上</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>金属亮片、铁板快速收线，清水时搜索上层和中层</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="2" data-rare="18" data-tier="t2" data-taste="2" data-wiki="Spotted seatrout" data-photo="local" data-local="images/fish-speckled-trout.webp" data-local-thumb="images/fish-speckled-trout-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="斑点鳟鱼 speckled trout">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>斑点鳟鱼</h3><div class="en">Speckled trout</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，15–20 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-spotted-seatrout" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="2" data-rare="18" data-tier="t2" data-taste="2" data-wiki="Spotted seatrout" data-photo="local" data-local="images/fish-speckled-trout.webp" data-local-thumb="images/fish-speckled-trout-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="斑点鳟鱼 speckled trout">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>斑点鳟鱼</h3><div class="en">Speckled trout</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，15–20 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-spotted-seatrout" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-spotted-seatrout"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>岸钓最热门的路亚鱼种之一，身体局部布满明显的黑色斑点，肉质细嫩鲜美。属于伏击型掠食性鱼类。夜间常聚集在灯光照亮的水域附近，捕食被灯光吸引的小鱼。休斯顿当地钓友尤其喜欢在夏季夜晚自带卤素灯，或到有码头灯的地方钓斑点鳟，鱼群聚集时往往能连续上鱼，是非常热门的夜钓鱼种。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层，冬天偏底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>夜晚偏多。活虾自由线，活虾浮漂，亮片以及双Jig都能上</div></div>
-          <div class="special"><span>特例</span>注：TPWD 2026-2027现行规则为凭tag每证年可各保留一条超过 28 寸的</div>
+          <div class="row"><div class="lbl">钓法</div><div>活虾挂浮漂；夜间灯光下用双 Jig 或小软饵；也可用水面系假饵</div></div>
+          <div class="special"><span>特殊限制</span>凭普通及额外斑点鳟标签，各额外保留 1 条超过 28 寸的鱼</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="26" data-rare="10" data-tier="t2" data-taste="24" data-wiki="Flathead grey mullet" data-photo="Mugil_cephalus_Minorca.jpg" data-fit="contain" data-group="limited" data-layer="上层" data-name="乌头鱼 mullet">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>乌头鱼</h3><div class="en">Mullet</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，最多 12 寸（10–1 月）</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-flathead-grey-mullet" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="26" data-rare="10" data-tier="t2" data-taste="24" data-wiki="Flathead grey mullet" data-photo="Mugil_cephalus_Minorca.jpg" data-fit="contain" data-group="limited" data-layer="上层" data-name="乌头鱼 mullet">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>乌头鱼</h3><div class="en">Mullet</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，最多 12 寸（10–1 月）</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-flathead-grey-mullet" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-flathead-grey-mullet"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>岸边常见的鱼种之一，喜欢在水面跳跃，有时能看到大群乌头鱼跃出水面。主要以藻类和有机碎屑为食，不太容易用普通鱼饵钓获，更多人使用撒网捕捉。肉质较紧实，但味道和腥味受水域环境影响较大。当地钓友主要将其作为活饵或切块鱼饵，用来钓大型红鱼、鲨鱼等大型掠食性鱼类。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>撒网，做鱼饵，钓大鱼</div></div>
-          <div class="special"><span>特例</span>仅10-1月有尺寸限制，其他月份无尺寸限制</div>
+          <div class="row"><div class="lbl">钓法</div><div>主要用撒网捕捉</div></div>
+          <div class="special"><span>特殊限制</span>仅10-1月有尺寸限制，其他月份无尺寸限制</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="20" data-rare="39" data-tier="t5" data-taste="3" data-wiki="Northern red snapper" data-photo="Red_Snapper.jpg" data-fit="contain" data-group="limited" data-layer="底层" data-name="红衫鱼 red snapper">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>红衫鱼</h3><div class="en">Red snapper</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 4 条，至少 14 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-northern-red-snapper" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="20" data-rare="39" data-tier="t5" data-taste="3" data-wiki="Northern red snapper" data-photo="Red_Snapper.jpg" data-fit="contain" data-group="limited" data-layer="底层" data-name="红衫鱼 red snapper">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>红衫鱼</h3><div class="en">Red snapper</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 4 条，至少 14 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-northern-red-snapper" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-northern-red-snapper"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>墨西哥湾最热门的出海鱼种之一，岸边基本钓不到。Galveston 有不少可以跟船的出海钓鱼船，新手也能体验。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层（礁石、平台附近）</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>出海沉底钓。深海鱼</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>出海在礁石、沉船附近，用鱼肉块、鱿鱼或活饵沉底钓</div></div>
+          <div class="special"><span>特殊限制</span>联邦水域按开放季节，每天 2 条、至少 16 寸</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="18" data-rare="29" data-tier="t4" data-taste="4" data-wiki="Tripletail" data-photo="local" data-local="images/fish-tripletail.webp" data-local-thumb="images/fish-tripletail-thumb.webp" data-group="limited" data-layer="上层" data-name="松鲷 atlantic tripletail">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>松鲷</h3><div class="en">Atlantic tripletail</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，至少 17 寸</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-tripletail" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="18" data-rare="29" data-tier="t4" data-taste="4" data-wiki="Tripletail" data-photo="local" data-local="images/fish-tripletail.webp" data-local-thumb="images/fish-tripletail-thumb.webp" data-group="limited" data-layer="上层" data-name="松鲷 atlantic tripletail">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>松鲷</h3><div class="en">Atlantic tripletail</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，至少 17 寸</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-tripletail" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-tripletail"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿沿海较少见的优质鱼种，因背鳍、臀鳍和尾鳍看起来像三条尾巴而得名。身体宽扁，颜色通常呈深褐色或黑色，肉质洁白紧实。喜欢漂浮在水面附近，伪装成落叶，常躲在浮标、漂浮物和海上结构物旁。Galveston 近海偶尔可以钓获，但通常需要乘船寻找，并非容易遇到的岸钓鱼种。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>活虾浮漂，专找浮标、漂浮物边上</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>活虾挂浮漂或自由线，抛到浮标、漂浮物和海上结构物附近</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="8" data-rare="19" data-tier="t2" data-taste="11" data-wiki="Callinectes sapidus" data-photo="Callinectes_sapidus_1.jpg" data-group="limited" data-layer="底层" data-name="蓝蟹 blue crab">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦀</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>蓝蟹</h3><div class="en">Blue crab</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，壳宽至少 5 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-callinectes-sapidus" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="8" data-rare="19" data-tier="t2" data-taste="11" data-wiki="Callinectes sapidus" data-photo="Callinectes_sapidus_1.jpg" data-group="limited" data-layer="底层" data-name="蓝蟹 blue crab">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦀</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>蓝蟹</h3><div class="en">Blue crab</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，壳宽至少 5 寸</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-callinectes-sapidus" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-callinectes-sapidus"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿沿海最常见的螃蟹，肉质鲜甜。当地华人非常喜欢抓蓝蟹，常用蟹笼或鸡腿绑线捕捉。蓝蟹性情凶猛，蟹钳力量较大，抓取时务必小心，避免被夹伤。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>棉线绑鸡腿丢下去，然后线变直线后开始慢慢拉上来，然后用抄网捞。或者直接 用螃蟹笼</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>鸡腿绑线沉底，也可用蟹笼</div></div>
+          <div class="special"><span>特殊限制</span>禁止保留抱卵母蟹，不足 5 寸的仅可按规定少量留作鱼饵</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="22" data-rare="27" data-tier="t3" data-taste="12" data-wiki="Menippe mercenaria" data-photo="Juvenile_Stone_Crab_(_Menippe_mercenaria_)_-_Flickr_-_Andrea_Westmoreland.jpg" data-group="limited" data-layer="底层 结构" data-name="石头蟹 石蟹 stone crab">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦀</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>石头蟹</h3><div class="en">Stone crab</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，右螯至少 2.5 寸</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-menippe-mercenaria" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="22" data-rare="27" data-tier="t3" data-taste="12" data-wiki="Menippe mercenaria" data-photo="Juvenile_Stone_Crab_(_Menippe_mercenaria_)_-_Flickr_-_Andrea_Westmoreland.jpg" data-group="limited" data-layer="底层 结构" data-name="石头蟹 石蟹 stone crab">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦀</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>石头蟹</h3><div class="en">Stone crab</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，右螯至少 2.5 寸</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-menippe-mercenaria" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-menippe-mercenaria"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿沿海常见的螃蟹之一，市场价格通常较高。喜欢躲藏在礁石、防波堤附近，沿海偶尔可以捕获。与蓝蟹不同，石头蟹主要食用蟹钳。德州规定只能保留长度至少2.5英寸的右钳，左钳不得取下，蟹身必须立即放回水中，让其有机会重新长出蟹钳。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层（石头边）</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>17街石头边用夹子</div></div>
-          <div class="special"><span>特例</span>只能取右螯并立即放生，不能带走身体和左螯</div>
+          <div class="row"><div class="lbl">钓法</div><div>在石堤、礁石附近用蟹笼捕捉</div></div>
+          <div class="special"><span>特殊限制</span>只能取右螯并立即放生，不能带走身体和左螯</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="12" data-rare="33" data-tier="t5" data-taste="20" data-wiki="King mackerel" data-photo="local" data-local="images/fish-king-mackerel.webp" data-local-thumb="images/fish-king-mackerel-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="King / 大耳马鲛 king马鲛 king mackerel">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>King / 大耳马鲛</h3><div class="en">King mackerel</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，至少 27 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-king-mackerel" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="12" data-rare="33" data-tier="t5" data-taste="20" data-wiki="King mackerel" data-photo="local" data-local="images/fish-king-mackerel.webp" data-local-thumb="images/fish-king-mackerel-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="King / 大耳马鲛 king马鲛 king mackerel">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>King / 大耳马鲛</h3><div class="en">King mackerel</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 3 条，至少 27 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-king-mackerel" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-king-mackerel"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海最具挑战性的大型掠食性鱼类之一，体型远大于普通马鲛鱼，游速极快，爆发力惊人。主要在7月至9月较为活跃，喜欢追逐成群的小鱼，对水质清澈度要求较高。由于更偏好清澈、盐度较高的近海水域，加上休斯顿沿岸水质经常较浑浊，因此在 Galveston 岸边较难遇到。想挑战马鲛王的钓友通常会选择前往 Corpus Christi 一带的防波堤。牙齿非常锋利，大型个体还存在汞含量偏高的风险，不建议频繁食用。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>出海船钓，活鱼拖钓，亮片或活虾自由线以及红头白身假饵</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>活鱼或整条带鱼配钢丝前导线，也可用亮片</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="17" data-rare="32" data-tier="t5" data-taste="37" data-wiki="Atlantic tarpon" data-photo="Atlantic_tarpon.jpg" data-group="limited" data-layer="上层 中层" data-name="大海鲢 king大海鲢 tarpon">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>大海鲢</h3><div class="en">Tarpon</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 1 条，至少 85 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-atlantic-tarpon" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="17" data-rare="32" data-tier="t5" data-taste="37" data-wiki="Atlantic tarpon" data-photo="Atlantic_tarpon.jpg" data-group="limited" data-layer="上层 中层" data-name="大海鲢 king大海鲢 tarpon">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>大海鲢</h3><div class="en">Tarpon</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 1 条，至少 85 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-atlantic-tarpon" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-atlantic-tarpon"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海最疯狂的巨型掠食性鱼类之一，浑身银白色。体型巨大，成年鱼可超过200磅，爆发力极其惊人，中鱼后经常连续跃出水面数次，疯狂甩头、洗鳃，极容易脱钩，是无数钓友梦寐以求的终极挑战。主要在夏季至初秋活跃，休斯顿岸边极难钓获，通常需要乘船出海寻找。德州规定只有达到85英寸才能保留。由于鱼刺多、食用价值低，通常以运动钓鱼为主，建议钓获后放生。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>活虾活鱼浮漂，中鱼别松线，假饵也有概率</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>活乌头鱼、活小鱼或鱼块自由线钓，也可用大型软饵和米诺</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="16" data-rare="22" data-tier="t3" data-taste="30" data-wiki="Blacktip shark" data-photo="local" data-local="images/fish-blacktip.webp" data-local-thumb="images/fish-blacktip-thumb.webp" data-group="limited" data-layer="中层 底层" data-name="黑鳍鲨 blacktip shark">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦈</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>黑鳍鲨</h3><div class="en">Blacktip shark</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 1 条，至少 24 寸</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-blacktip-shark" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="16" data-rare="22" data-tier="t3" data-taste="30" data-wiki="Blacktip shark" data-photo="local" data-local="images/fish-blacktip.webp" data-local-thumb="images/fish-blacktip-thumb.webp" data-group="limited" data-layer="中层 底层" data-name="黑鳍鲨 blacktip shark">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🦈</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>黑鳍鲨</h3><div class="en">Blacktip shark</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 1 条，至少 24 寸</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-blacktip-shark" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-blacktip-shark"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>因鱼鳍末端呈黑色而得名。游速极快。春季和秋季随着鱼群迁移，常出现在 Galveston 海滩、防波堤附近，岸边就有机会钓获。</div></div>
           <div class="row"><div class="lbl">水层</div><div>中层和底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>钢丝前导线防咬断，挂大块鲻鱼或其他鱼块沉底或浮漂，傍晚和夜里偏多</div></div>
-          <div class="special"><span>特例</span>每天 1 条是所有鲨鱼加起来的总数；钓鲨鱼必须用非偏口、非不锈钢的圆形钩（circle hook）</div>
+          <div class="row"><div class="lbl">钓法</div><div>新鲜乌头鱼块或整条鱼沉底钓</div></div>
+          <div class="special"><span>特殊限制</span>每天 1 条是所有鲨鱼加起来的总数；钓鲨鱼必须用非偏口、非不锈钢的圆形钩（circle hook）</div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="23" data-rare="34" data-tier="t5" data-taste="13" data-wiki="Common snook" data-photo="local" data-local="images/fish-snook.webp" data-local-thumb="images/fish-snook-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="锯盖鱼 snook common snook">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>Snook / 锯盖鱼</h3><div class="en">Common snook</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 1 条，24–28 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-common-snook" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="23" data-rare="34" data-tier="t5" data-taste="13" data-wiki="Common snook" data-photo="local" data-local="images/fish-snook.webp" data-local-thumb="images/fish-snook-thumb.webp" data-group="limited" data-layer="上层 中层" data-name="锯盖鱼 snook common snook">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>Snook / 锯盖鱼</h3><div class="en">Common snook</div><div class="fish-tags"><div class="fish-limit has-limit">每天最多 1 条，24–28 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-common-snook" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-common-snook"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海非常稀有的路亚鱼种之一，身体修长，侧面有一条明显的黑色横线。属于凶猛的伏击型掠食性鱼类。肉质洁白细嫩，被认为是美味的食用鱼。由于不耐低温，主要分布在德州南部温暖水域，Galveston 极难遇到，想挑战通常需要前往 South Padre Island、Port Isabel 一带。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>活虾或小鱼自由线、浮漂，路亚米诺也能上，喜欢待在桥墩、石堤这类有结构的地方</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>活虾、活小鱼自由线，或用米诺、软饵贴着桥墩和石堤搜索</div></div>
         </div></div>
       </div>
       </div>
       <div class="group" data-group="free">
-      <div class="card fish is-open" data-hot="19" data-rare="31" data-tier="t4" data-taste="27" data-wiki="Crevalle jack" data-photo="local" data-local="images/fish-crevalle-jack.webp" data-local-thumb="images/fish-crevalle-jack-thumb.webp" data-group="free" data-layer="上层 中层" data-name="jack 马鲹 king jack crevalle jack jack crevalle">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>Jack / 马鲹</h3><div class="en">Crevalle Jack</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-crevalle-jack" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="19" data-rare="31" data-tier="t4" data-taste="27" data-wiki="Crevalle jack" data-photo="local" data-local="images/fish-crevalle-jack.webp" data-local-thumb="images/fish-crevalle-jack-thumb.webp" data-group="free" data-layer="上层 中层" data-name="jack 马鲹 king jack crevalle jack jack crevalle">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>Jack / 马鲹</h3><div class="en">Crevalle Jack</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-crevalle-jack" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-crevalle-jack"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海最具爆发力的路亚鱼种之一。中鱼后经常疯狂出线，持续猛冲，耐力惊人，即使体型不大也能让钓友搏斗很久。夏季至初秋较为活跃，常成群追逐小鱼，水面经常出现壮观的炸水现象。Galveston 的码头、防波堤和海滩都有机会遇到。肉质偏硬、腥味较浓，食用价值不高，但切块后是钓大型鲨鱼的优质鱼饵，深受当地岸钓鲨鱼爱好者欢迎。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>活饵沉底，沉船礁石边，会出现。炸水亮片丢下去就咬</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>金属亮片、铁板快速收线，遇到水面炸水时抛向鱼群前方</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="4" data-rare="9" data-tier="t2" data-taste="18" data-wiki="Largehead hairtail" data-photo="Trichiurus_lepturus.jpg" data-group="free" data-layer="上层 中层" data-name="带鱼 / 白带鱼 ribbon fish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>带鱼 / 白带鱼</h3><div class="en">Ribbon fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-largehead-hairtail" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="4" data-rare="9" data-tier="t2" data-taste="18" data-wiki="Largehead hairtail" data-photo="Trichiurus_lepturus.jpg" data-group="free" data-layer="上层 中层" data-name="带鱼 / 白带鱼 ribbon fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>带鱼 / 白带鱼</h3><div class="en">Ribbon fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-largehead-hairtail" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-largehead-hairtail"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>夏季常见的鱼种，夏季夜晚常成群靠近码头和灯光附近捕食小鱼，当地钓友喜欢夜间打灯钓带鱼，鱼情爆发时一晚上甚至能钓获上百条。此外，带鱼也是钓马鲛王（King Mackerel）的优质鱼饵，在 Corpus Christi 一带尤其受欢迎。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层，夜晚灯光下偏上层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>夜里浮漂挂虾，路亚亮片也行，注意防咬</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>夜间灯光下浮漂挂虾肉、鱼肉条，或用小亮片、小软饵</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="10" data-rare="3" data-tier="t1" data-taste="17" data-wiki="Atlantic croaker" data-photo="local" data-local="images/fish-croaker.webp" data-local-thumb="images/fish-croaker-thumb.webp" data-group="free" data-layer="底层" data-name="大西洋黄花鱼 croaker">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>大西洋黄花鱼</h3><div class="en">Croaker</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-atlantic-croaker" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="10" data-rare="3" data-tier="t1" data-taste="17" data-wiki="Atlantic croaker" data-photo="local" data-local="images/fish-croaker.webp" data-local-thumb="images/fish-croaker-thumb.webp" data-group="free" data-layer="底层" data-name="大西洋黄花鱼 croaker">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>大西洋黄花鱼</h3><div class="en">Croaker</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-atlantic-croaker" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-atlantic-croaker"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>深受华人喜爱的鱼种之一，肉质细嫩鲜甜，带有明显的蒜瓣肉，广东人也喜欢将其腌制晒成鱼干。平时在码头和防波堤附近也能钓到，每年10月中旬至11月初，随着秋季第一波较强冷锋南下，水温逐渐下降，大量黄花鱼从海湾向外海迁移，形成一年一度的“黄花鱼潮”。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>虾肉沉底，啥饵都吃</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>死虾、虾肉挂串钩沉底钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="9" data-rare="4" data-tier="t1" data-taste="16" data-wiki="Cynoscion arenarius" data-photo="local" data-local="images/fish-sand-trout.webp" data-local-thumb="images/fish-sand-trout-thumb.webp" data-group="free" data-layer="中层 底层" data-name="沙鳟鱼 sand trout">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>沙鳟鱼</h3><div class="en">Sand trout</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-cynoscion-arenarius" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="9" data-rare="4" data-tier="t1" data-taste="16" data-wiki="Cynoscion arenarius" data-photo="local" data-local="images/fish-sand-trout.webp" data-local-thumb="images/fish-sand-trout-thumb.webp" data-group="free" data-layer="中层 底层" data-name="沙鳟鱼 sand trout">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>沙鳟鱼</h3><div class="en">Sand trout</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-cynoscion-arenarius" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-cynoscion-arenarius"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>最常见的鱼种之一，几乎一年四季都能钓到。肉质细嫩鲜美，适合清蒸、香煎，但鱼肉较软，不太耐保存，建议新鲜食用。沙鳟通常成群活动，咬口积极，鱼情好时可以连续上鱼，钓法简单，对新手非常友好，也是休斯顿岸钓最容易收获的鱼种之一。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层和中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>双Jig或串钩底层跳</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>虾肉挂串钩沉底，或用双 Jig、小软饵</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="15" data-rare="8" data-tier="t2" data-taste="15" data-wiki="Gulf kingfish" data-photo="url" data-url="https://s3.dualstack.us-east-1.amazonaws.com/busites_www/tsfmag/meta/0222WEB_boyd_1641850516.jpg" data-credit="Texas Saltwater Fishing Magazine" data-credit-link="https://www.tsfmag.com/" data-fit="contain" data-group="free" data-layer="底层" data-name="美洲无鳔石首鱼 沙鮻 whiting">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>美洲无鳔石首鱼</h3><div class="en">Whiting</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-gulf-kingfish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="15" data-rare="8" data-tier="t2" data-taste="15" data-wiki="Gulf kingfish" data-photo="url" data-url="https://s3.dualstack.us-east-1.amazonaws.com/busites_www/tsfmag/meta/0222WEB_boyd_1641850516.jpg" data-credit="Texas Saltwater Fishing Magazine" data-credit-link="https://www.tsfmag.com/" data-fit="contain" data-group="free" data-layer="底层" data-name="美洲无鳔石首鱼 沙鮻 whiting">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>美洲无鳔石首鱼</h3><div class="en">Whiting</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-gulf-kingfish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-gulf-kingfish"><div class="fish-more-in">
-          <div class="row"><div class="lbl">描述</div><div>几乎一年四季都能钓到，喜欢在沙质海底觅食，常出现在 Galveston 的海滩、码头和浅水区。体型通常不大，但咬口积极，容易成群出现，鱼情好时可以连续上鱼，对新手十分友好。</div></div>
+          <div class="row"><div class="lbl">描述</div><div>Whiting 包括海湾、南方和北方无鳔石首鱼等几种近亲鱼类，几乎一年四季都能钓到。身体细长，嘴巴朝下，嘴下有一根短小的胡须，适合在沙底寻找食物。常出现在加尔维斯顿的海滩、码头和浅水区，体型不大但咬口积极，容易成群出现，对新手十分友好。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>虾肉沉底，沙滩浪口多</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾肉，用串钩沉底</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="24" data-rare="16" data-tier="t2" data-taste="35" data-wiki="Elops saurus" data-photo="Ladyfish_Tampa_Bay_2016.jpg" data-group="free" data-layer="上层 中层" data-name="海鲢鱼 / 公主鱼 lady fish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>公主鱼</h3><div class="en">Lady fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-elops-saurus" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="24" data-rare="16" data-tier="t2" data-taste="35" data-wiki="Elops saurus" data-photo="Ladyfish_Tampa_Bay_2016.jpg" data-group="free" data-layer="上层 中层" data-name="海鲢鱼 / 公主鱼 lady fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>公主鱼</h3><div class="en">Lady fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-elops-saurus" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-elops-saurus"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>沿海常见的鱼种之一，身体细长、银白色，游速极快，中鱼后经常连续跃出水面、疯狂甩头。夏季至初秋较为活跃，通常在钓马鲛鱼时意外钓获，Galveston 的码头和防波堤附近都能遇到。鱼刺非常多，肉质松软，食用价值较低，通常不建议保留。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>浮漂挂虾，路亚也追</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小亮片、米诺快速收线，或活虾挂浮漂</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="28" data-rare="30" data-tier="t4" data-taste="28" data-wiki="Atlantic stingray" data-photo="SStringray.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="鳐鱼 / 魔鬼鱼 老板鱼 stingray">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>鳐鱼 / 魔鬼鱼</h3><div class="en">Stingray</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-atlantic-stingray" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="28" data-rare="30" data-tier="t4" data-taste="28" data-wiki="Atlantic stingray" data-photo="SStringray.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="鳐鱼 / 魔鬼鱼 老板鱼 stingray">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>鳐鱼 / 魔鬼鱼</h3><div class="en">Stingray</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-atlantic-stingray" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-atlantic-stingray"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>常见的底栖鱼类之一，喜欢在沙泥底活动。Galveston 的91街钓鱼码头偶尔能遇到，尤其在春夏季较为活跃。体型较大的魔鬼鱼力量惊人，贴底游动时阻力很大，钓获后往往难以拉上岸。部分种类尾部带有毒刺，被扎伤会十分疼痛，处理时务必小心。肉质一般，通常不建议保留，钓获后尽量放生。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>虾肉沉底，常误钓上来</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>虾肉、鱿鱼或切块鱼肉沉底钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="29" data-rare="5" data-tier="t1" data-taste="29" data-wiki="Pinfish" data-photo="Lagodon_rhomboides_342995251.jpg" data-fit="contain" data-group="free" data-layer="中层 底层" data-name="Pinfish / 菱体兔牙鲷 pinfish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>Pinfish / 菱体兔牙鲷</h3><div class="en">Pinfish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-pinfish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="29" data-rare="5" data-tier="t1" data-taste="29" data-wiki="Pinfish" data-photo="Lagodon_rhomboides_342995251.jpg" data-fit="contain" data-group="free" data-layer="中层 底层" data-name="Pinfish / 菱体兔牙鲷 pinfish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>Pinfish / 菱体兔牙鲷</h3><div class="en">Pinfish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-pinfish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-pinfish"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>小杂鱼，因为经常吃你的饵但不上钩，比新手三鱼还遭人嫌。口感还行，适合煎着吃。小心背部有刺。</div></div>
           <div class="row"><div class="lbl">水层</div><div>中层和底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾沉底</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂少量虾肉</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="13" data-rare="15" data-tier="t2" data-taste="19" data-wiki="Atlantic spadefish" data-photo="Chaetodipterus_faber.jpg" data-group="free" data-layer="中层" data-name="石鲳 燕鱼 天使鱼 atlantic spadefish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>石鲳</h3><div class="en">Atlantic spadefish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-atlantic-spadefish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="13" data-rare="15" data-tier="t2" data-taste="19" data-wiki="Atlantic spadefish" data-photo="Chaetodipterus_faber.jpg" data-group="free" data-layer="中层" data-name="石鲳 燕鱼 天使鱼 atlantic spadefish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>石鲳</h3><div class="en">Atlantic spadefish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-atlantic-spadefish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-atlantic-spadefish"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>身体扁圆，带有明显的黑色竖纹，外形有点像燕鱼。喜欢成群聚集在码头、桥墩、防波堤和海上平台附近，春夏季至初秋较为活跃。肉质洁白紧实、味道鲜美，适合清蒸和香煎。虽然嘴巴较小，但拉力强劲。</div></div>
           <div class="row"><div class="lbl">水层</div><div>中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾，码头礁石边</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾肉</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="11" data-rare="17" data-tier="t2" data-taste="6" data-wiki="Florida pompano" data-photo="Pompano_common.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="金鲳鱼 pompano">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>金鲳鱼</h3><div class="en">Pompano</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-florida-pompano" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="11" data-rare="17" data-tier="t2" data-taste="6" data-wiki="Florida pompano" data-photo="Pompano_common.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="金鲳鱼 pompano">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>金鲳鱼</h3><div class="en">Pompano</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-florida-pompano" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-florida-pompano"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>身体扁圆，呈银白色，腹部和鱼鳍略带金黄色。肉质洁白细嫩、鲜甜肥美，鱼刺较少，非常适合清蒸，是当地公认的优质食用鱼。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>浮漂挂虾肉，沙滩浪口</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂鲜虾肉，用串钩沉底</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="36" data-rare="21" data-tier="t3" data-taste="36" data-wiki="Opsanus beta" data-photo="Gulf_toadfish_aka_Opsanus_beta.jpg" data-group="free" data-layer="底层" data-name="石头鱼 toad fish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>石头鱼</h3><div class="en">Toad fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-opsanus-beta" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="36" data-rare="21" data-tier="t3" data-taste="36" data-wiki="Opsanus beta" data-photo="Gulf_toadfish_aka_Opsanus_beta.jpg" data-group="free" data-layer="底层" data-name="石头鱼 toad fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>石头鱼</h3><div class="en">Toad fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-opsanus-beta" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-opsanus-beta"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿沿海常见的底栖鱼类，外形丑陋，擅长伪装成海底的石头。喜欢躲藏在礁石、牡蛎礁和码头附近，岸边偶尔能钓到。虽然长相不起眼、肉量较少，但味道鲜美，受到部分懂鱼的钓友喜爱。背鳍和鳃盖上的硬刺没有毒性，但依然可能造成刺伤，摘钩时务必小心。与真正的剧毒石头鱼（Stonefish）并非同一种鱼。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>虾肉沉底，石头缝里多</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>虾肉、小鱼块沉底钓，常藏在石头缝和码头底部</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="14" data-rare="24" data-tier="t3" data-taste="7" data-wiki="Lutjanus griseus" data-photo="local" data-local="images/fish-mangrove-snapper.webp" data-local-thumb="images/fish-mangrove-snapper-thumb.webp" data-group="free" data-layer="结构" data-name="芒果鱼 / 灰笛鲷 mangrove snapper">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>芒果鱼</h3><div class="en">Mangrove snapper</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-lutjanus-griseus" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="14" data-rare="24" data-tier="t3" data-taste="7" data-wiki="Lutjanus griseus" data-photo="local" data-local="images/fish-mangrove-snapper.webp" data-local-thumb="images/fish-mangrove-snapper-thumb.webp" data-group="free" data-layer="结构" data-name="芒果鱼 / 灰笛鲷 mangrove snapper">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>芒果鱼</h3><div class="en">Mangrove snapper</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-lutjanus-griseus" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-lutjanus-griseus"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海深受钓友喜爱的美味鱼种之一，鲜甜细嫩，非常适合清蒸。喜欢躲藏在礁石、防波堤附近，夏季至初秋较为活跃。虽然体型通常不大，但警惕性高、咬口谨慎，中鱼后会迅速钻回礁石。</div></div>
           <div class="row"><div class="lbl">水层</div><div>结构处（石头缝）</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>jetty石头缝虾肉自由线，很难钓</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>活虾、虾肉或小活鱼自由线，贴近防波堤石缝钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="21" data-rare="36" data-tier="t5" data-taste="5" data-wiki="Lane snapper" data-photo="Lutjanus_synagris.jpg" data-fit="contain" data-group="limited" data-layer="结构" data-name="巷笛鲷 黄尾鲷 lane snapper">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>巷笛鲷</h3><div class="en">Lane snapper</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，至少 8 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-lane-snapper" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="21" data-rare="36" data-tier="t5" data-taste="5" data-wiki="Lane snapper" data-photo="Lutjanus_synagris.jpg" data-fit="contain" data-group="limited" data-layer="结构" data-name="巷笛鲷 黄尾鲷 lane snapper">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>巷笛鲷</h3><div class="en">Lane snapper</div><div class="fish-tags"><div class="fish-limit has-limit">数量不限，至少 8 寸</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-lane-snapper" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-lane-snapper"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>小型鲷鱼，身体粉红色，带有几条黄色横纹，侧线下方有一个明显的黑斑。岸边极少遇到，通常是出海钓红衫鱼时顺带钓获。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层（礁石、平台附近）</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>出海沉底钓，虾肉或切块鱼肉都可以</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>出海在礁石、人工鱼礁附近，用虾肉、鱿鱼或鱼块沉底钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="38" data-rare="38" data-tier="t5" data-taste="39" data-wiki="Echiophis punctifer" data-photo="Echiophis_punctifer_SI2.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="斑匙吻蛇鳗 海鳝鱼 鳗鱼 echiophis punctifer snapper eel sea eel">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>斑匙吻蛇鳗</h3><div class="en">Echiophis punctifer</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-echiophis-punctifer" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="38" data-rare="38" data-tier="t5" data-taste="39" data-wiki="Echiophis punctifer" data-photo="Echiophis_punctifer_SI2.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="斑匙吻蛇鳗 海鳝鱼 鳗鱼 echiophis punctifer snapper eel sea eel">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>斑匙吻蛇鳗</h3><div class="en">Echiophis punctifer</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-echiophis-punctifer" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-echiophis-punctifer"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>身体细长如蛇，喜欢藏在沙泥底和礁石附近。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>虾肉沉底，夜里多</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>虾肉、鱼肉沉底，在沙泥底偶尔误钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="39" data-rare="1" data-tier="t1" data-taste="32" data-wiki="Hardhead catfish" data-photo="Arius_felis.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="硬头鲶鱼 / 硬头猫鱼 hardhead catfish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>硬头鲶鱼 / 硬头猫鱼</h3><div class="en">Hardhead catfish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-hardhead-catfish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="39" data-rare="1" data-tier="t1" data-taste="32" data-wiki="Hardhead catfish" data-photo="Arius_felis.jpg" data-fit="contain" data-group="free" data-layer="底层" data-name="硬头鲶鱼 / 硬头猫鱼 hardhead catfish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>硬头鲶鱼 / 硬头猫鱼</h3><div class="en">Hardhead catfish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t1">极常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-hardhead-catfish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-hardhead-catfish"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>几乎全年都能钓到，尤其在春夏季十分活跃。头部坚硬、体型较小，常被当地钓友视为杂鱼。虽然可以食用，但头大肉少、黏液多，加上污染物积累风险，通常不建议带走。背鳍和胸鳍带有毒刺，被扎伤会引起剧烈疼痛，摘钩时务必小心，切勿徒手抓握。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>沉底，抓鱼用钳子</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>死虾、虾肉、鱿鱼或鱼块沉底钓</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="30" data-rare="11" data-tier="t2" data-taste="22" data-wiki="Bairdiella chrysoura" data-photo="Silver_perch_(_Bairdiella_chrysoura_).jpg" data-group="free" data-layer="底层" data-name="银鲈 银色贝氏石首鱼 silver perch">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>银鲈</h3><div class="en">Silver perch</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-bairdiella-chrysoura" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="30" data-rare="11" data-tier="t2" data-taste="22" data-wiki="Bairdiella chrysoura" data-photo="Silver_perch_(_Bairdiella_chrysoura_).jpg" data-group="free" data-layer="底层" data-name="银鲈 银色贝氏石首鱼 silver perch">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>银鲈</h3><div class="en">Silver perch</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-bairdiella-chrysoura" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-bairdiella-chrysoura"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿沿海常见的小型鱼种，外形与沙鳟非常相似，容易混淆。主要区别是银鲈身体较短、嘴巴较小，而沙鳟身体修长、嘴巴较大且有明显犬齿。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>小Jig或沉底</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾肉沉底</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="37" data-rare="37" data-tier="t5" data-taste="38" data-wiki="Remora" data-photo="Echeneis_naucrates.jpg" data-group="free" data-layer="" data-name="吸盘鱼 remora">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>吸盘鱼</h3><div class="en">Remora</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-remora" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="37" data-rare="37" data-tier="t5" data-taste="38" data-wiki="Remora" data-photo="Echeneis_naucrates.jpg" data-group="free" data-layer="" data-name="吸盘鱼 remora">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>吸盘鱼</h3><div class="en">Remora</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-remora" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-remora"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海偶尔能遇到的奇特鱼种，头顶长有特殊的吸盘，喜欢吸附在鲨鱼、海龟和大型鱼类身上搭便车，并捡食食物残渣。</div></div>
           <div class="row"><div class="lbl">水层</div><div>不固定（吸附在鲨鱼等大鱼身上）</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>不专门钓，常跟着大鱼一起误钓上来</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>一般不专门钓，偶尔在钓鲨鱼或大型鱼时意外遇到</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="32" data-rare="35" data-tier="t5" data-taste="26" data-wiki="Little tunny" data-photo="Euthynnus_alletteratus_Italy_01.JPG" data-group="free" data-layer="上层 中层" data-name="小金枪鱼 little tunny">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>小金枪鱼</h3><div class="en">Little tunny</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-little-tunny" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="32" data-rare="35" data-tier="t5" data-taste="26" data-wiki="Little tunny" data-photo="Euthynnus_alletteratus_Italy_01.JPG" data-group="free" data-layer="上层 中层" data-name="小金枪鱼 little tunny">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>小金枪鱼</h3><div class="en">Little tunny</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t5">罕见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-little-tunny" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-little-tunny"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州近海偶尔能遇到的高速掠食性鱼类，外形酷似金枪鱼，游速极快、爆发力强劲。岸边极为罕见，但休斯顿钓鱼博主“四哥”曾成功钓获，通常需要乘船出海寻找。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层和中层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>亮片铁板快抽，水面炸水时扔</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小型金属铁板、亮片高速收线，寻找水面追逐小鱼的鱼群</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="34" data-rare="26" data-tier="t3" data-taste="33" data-wiki="Lookdown" data-photo="local" data-local="images/fish-lookdown.webp" data-local-thumb="images/fish-lookdown-thumb.webp" data-group="free" data-layer="中层 底层" data-name="镜鲹 lookdown lookdown fish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>镜鲹</h3><div class="en">Lookdown fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-lookdown" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="34" data-rare="26" data-tier="t3" data-taste="33" data-wiki="Lookdown" data-photo="local" data-local="images/fish-lookdown.webp" data-local-thumb="images/fish-lookdown-thumb.webp" data-group="free" data-layer="中层 底层" data-name="镜鲹 lookdown lookdown fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>镜鲹</h3><div class="en">Lookdown fish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-lookdown" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-lookdown"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海偶尔能钓到的鱼种，身体极度扁平，表面银光闪亮，像一面镜子，额头陡峭，外形十分独特。喜欢成群活动。Galveston 岸边偶尔能遇到，但不算常见。肉质可以食用，但身体薄、肉量较少，通常以观赏和体验钓获为主。</div></div>
           <div class="row"><div class="lbl">水层</div><div>中层和底层，夜晚灯光下会上浮</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>晚上码头打灯的地方多，小钩挂虾或小亮片都能上</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂活虾、虾肉，码头灯光下钓中层，也可用小亮片</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="33" data-rare="14" data-tier="t2" data-taste="34" data-wiki="Needlefish" data-photo="local" data-local="images/fish-needlefish.webp" data-local-thumb="images/fish-needlefish-thumb.webp" data-group="free" data-layer="上层" data-name="针鱼 needlefish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>针鱼</h3><div class="en">Needlefish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-needlefish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="33" data-rare="14" data-tier="t2" data-taste="34" data-wiki="Needlefish" data-photo="local" data-local="images/fish-needlefish.webp" data-local-thumb="images/fish-needlefish-thumb.webp" data-group="free" data-layer="上层" data-name="针鱼 needlefish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>针鱼</h3><div class="en">Needlefish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t2">常见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-needlefish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-needlefish"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿沿海常见的鱼种，身体细长，嘴巴像针一样尖，布满锋利的小牙齿。喜欢在水面附近追逐小鱼。夏季钓马鲛鱼时经常能看到针鱼追着假饵跑，却迟迟不肯咬钩，让不少路亚钓友十分头疼。</div></div>
           <div class="row"><div class="lbl">水层</div><div>上层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>水面附近用小亮片或小钩挂虾，嘴硬又窄，不容易挂住</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂鱼肉条、小鱼，或用细长型亮片在水面附近收线</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="35" data-rare="28" data-tier="t4" data-taste="23" data-wiki="Sea robin" data-photo="local" data-local="images/fish-sea-robin.webp" data-local-thumb="images/fish-sea-robin-thumb.webp" data-group="free" data-layer="底层" data-name="海罗宾 角鱼 飞鱼 sea robin searobin flying fish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>海罗宾 / 角鱼</h3><div class="en">Sea Robin</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-sea-robin" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="35" data-rare="28" data-tier="t4" data-taste="23" data-wiki="Sea robin" data-photo="local" data-local="images/fish-sea-robin.webp" data-local-thumb="images/fish-sea-robin-thumb.webp" data-group="free" data-layer="底层" data-name="海罗宾 角鱼 飞鱼 sea robin searobin flying fish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>海罗宾 / 角鱼</h3><div class="en">Sea Robin</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t4">少见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-sea-robin" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-sea-robin"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>休斯顿沿海常见的奇特鱼种，拥有一对像翅膀一样宽大的胸鳍，上岸时呈彩色，受到惊吓时会突然展开。喜欢生活在沙泥底，利用胸鳍下方像小脚一样的鳍条在海底探索、寻找食物。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>基本不主动钓它，曾经沉底钓比目鱼时拉了一条上来</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>虾肉、鱼肉沉底，通常是意外钓获</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="31" data-rare="23" data-tier="t3" data-taste="25" data-wiki="Sand perch" data-photo="local" data-local="images/fish-sand-perch.webp" data-local-thumb="images/fish-sand-perch-thumb.webp" data-group="free" data-layer="底层" data-name="沙鲈 sand perch">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>沙鲈</h3><div class="en">Sand Perch</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-sand-perch" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="31" data-rare="23" data-tier="t3" data-taste="25" data-wiki="Sand perch" data-photo="local" data-local="images/fish-sand-perch.webp" data-local-thumb="images/fish-sand-perch-thumb.webp" data-group="free" data-layer="底层" data-name="沙鲈 sand perch">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>沙鲈</h3><div class="en">Sand Perch</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-sand-perch" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-sand-perch"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海分布但岸边较少遇到的小型鱼种，身体带有褐色条纹和蓝色花纹，外形十分漂亮。喜欢栖息在沙底、礁石和贝壳底附近，通常在较深的近海水域更容易遇到。体型不大，肉质洁白，可以食用。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾肉沉底，沙底和礁石边都有</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾肉、鱼肉沉底，主要搜索沙底和礁石边缘</div></div>
         </div></div>
       </div>
-      <div class="card fish is-open" data-hot="25" data-rare="25" data-tier="t3" data-taste="21" data-wiki="Pigfish" data-photo="local" data-local="images/fish-pigfish.webp" data-local-thumb="images/fish-pigfish-thumb.webp" data-group="free" data-layer="底层" data-name="猪鱼 pigfish">
-        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>猪鱼</h3><div class="en">Pigfish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="true" aria-controls="fm-pigfish" aria-label="收起详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
+      <div class="card fish" data-hot="25" data-rare="25" data-tier="t3" data-taste="21" data-wiki="Pigfish" data-photo="local" data-local="images/fish-pigfish.webp" data-local-thumb="images/fish-pigfish-thumb.webp" data-group="free" data-layer="底层" data-name="猪鱼 pigfish">
+        <div class="fish-head"><button class="avatar" type="button" aria-label="看大图"><span class="ph">🐟</span><span class="zoom">⤢</span></button><div class="fish-name"><h3>猪鱼</h3><div class="en">Pigfish</div><div class="fish-tags"><div class="fish-limit">数量、尺寸不限</div><span class="rare-tag t3">偶见</span></div></div><button class="fish-toggle" type="button" aria-expanded="false" aria-controls="fm-pigfish" aria-label="展开详情"><span class="ft-chev" aria-hidden="true"></span></button></div>
         <div class="fish-more" id="fm-pigfish"><div class="fish-more-in">
           <div class="row"><div class="lbl">描述</div><div>德州沿海常见的小型鱼种，因离开水面后会发出类似猪叫的声音而得名。Galveston 岸边偶尔能钓到，通常体型不大。虽然可以食用，但肉量较少。</div></div>
           <div class="row"><div class="lbl">水层</div><div>底层</div></div>
-          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾肉沉底，码头和草滩边常见</div></div>
+          <div class="row"><div class="lbl">钓法</div><div>小钩挂虾肉、鱿鱼沉底，码头、海草床附近容易遇到</div></div>
         </div></div>
       </div>
       </div>
