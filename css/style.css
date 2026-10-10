@@ -846,3 +846,97 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 
 /* ---------- v5：收起时只显示名字、英文名和标签；描述放进展开区 ---------- */
 .fish .fish-head { margin-bottom: 0; }
+
+/* ---------- 钓法详情页（亮片）：示意图、钓组图解、视频 ---------- */
+.rig-link { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.rig-link .spot-go-row .how-desc { margin-bottom: 0; }
+.rig-link:active:not(:has(a:active, button:active)) .spot-go { transform: translateX(4px) scale(.94); }
+.how-icon.rig-ic { background: #0f1b2d; overflow: hidden; }
+.how-icon.rig-ic img { width: 44px; height: 44px; display: block; }
+.rig-hero { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.rig-hero-img { flex: 0 0 96px; height: 96px; border-radius: 18px; display: grid; place-items: center;
+  background: radial-gradient(120% 120% at 30% 20%, #1d3557 0%, #0f1b2d 70%); box-shadow: var(--shadow); }
+.rig-hero-img img { width: 84px; height: 84px; }
+.rig-hero-txt { min-width: 0; }
+.rig-hero-txt h2 { margin: 0; font-size: 26px; line-height: 1.2; }
+.rig-hero-txt .en { font-size: 14px; color: var(--muted); margin: 2px 0 8px; }
+.rig-hero-txt .spot-fish { margin: 0; }
+.yt { position: relative; width: min(100%, 250px); margin: 0 auto; aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 30%, #1d3557 0%, #0b1220 75%); box-shadow: var(--shadow); }
+.yt-poster { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background: none; cursor: pointer; }
+.yt-poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.yt-play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: transform .15s; }
+.yt-play::after { content: ""; position: absolute; left: 26px; top: 20px; border-style: solid; border-width: 12px 0 12px 19px;
+  border-color: transparent transparent transparent #fff; }
+.yt-poster:active .yt-play { transform: scale(.92); }
+.yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.yt-link { display: block; width: fit-content; margin: 10px auto 0; font-size: 14px; font-weight: 600; text-decoration: none; }
+.yt-link .ext { margin-left: 3px; font-size: 12px; }
+@media (max-width: 360px) {
+}
+
+/* ---------- 鱼种页筛选按钮：没点过之前，图标偶尔轻轻晃一下 ---------- */
+#sort-btn.hint svg { animation: sort-nudge 6s ease-in-out 2s infinite; transform-origin: 50% 50%; }
+@keyframes sort-nudge {
+  0%, 86%, 100% { transform: rotate(0); }
+  89% { transform: rotate(-9deg); }
+  92% { transform: rotate(7deg); }
+  95% { transform: rotate(-3deg); }
+  98% { transform: rotate(1deg); }
+}
+@media (prefers-reduced-motion: reduce) { #sort-btn.hint svg { animation: none; } }
+
+/* ---------- 钓组图解 v4：横着排；结用真实的小图，点了看图解；下面是磅数和重量 ---------- */
+.rig-card { padding: 16px 12px 12px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.rig-flow { display: grid; grid-template-columns: minmax(0,1fr) 66px minmax(0,1fr) 66px minmax(0,1fr); align-items: center; row-gap: 8px; }
+.rf-tile { position: relative; z-index: 1; justify-self: center; width: 100%; max-width: 82px; aspect-ratio: 1; border-radius: 18px;
+  display: grid; place-items: center;
+  background: radial-gradient(110% 110% at 30% 18%, #22406a 0%, #10213a 55%, #0b1628 100%);
+  box-shadow: 0 4px 12px rgba(10, 30, 60, .2), inset 0 1px 0 rgba(255,255,255,.08); }
+.rf-tile img { width: 80%; height: 80%; filter: drop-shadow(0 2px 4px rgba(0,0,0,.35)); }
+.rf-no { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; font-weight: 800;
+  color: #fff; background: var(--primary); flex: 0 0 18px; }
+.rf-tile .rf-no { position: absolute; top: -5px; left: -5px; box-shadow: 0 0 0 3px var(--card); }
+/* 连接线 + 结的小图 */
+.rf-knot { position: relative; align-self: stretch; display: grid; place-items: center; }
+.rf-knot::before { content: ""; position: absolute; left: -8px; right: -8px; top: 50%; height: 2px; margin-top: -1px; background: #9aa7b6; }
+.rf-knot:nth-child(2)::before { background: linear-gradient(90deg, #6aa04c, #9aa7b6); }
+.rf-kthumb { position: relative; z-index: 1; width: 46px; height: 46px; padding: 0; margin: 0; border: 0; border-radius: 14px; cursor: pointer;
+  background: #fff; box-shadow: 0 0 0 2px var(--primary), 0 3px 10px rgba(10,124,255,.22); transition: transform .12s; }
+.rf-kthumb:active { transform: scale(.93); }
+.rf-kimg { position: absolute; inset: 3px; border-radius: 11px; background: center / cover no-repeat; }
+.rf-zoom { position: absolute; right: -6px; bottom: -6px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 11px; line-height: 1; color: #fff; background: var(--primary); box-shadow: 0 0 0 2px var(--card); }
+.rf-cap { align-self: start; justify-self: center; display: flex; flex-direction: column; align-items: center; text-align: center; white-space: nowrap; }
+.rf-cap b { font-size: 14px; }
+.rf-cap span { font-size: 12px; color: var(--muted); }
+.rf-kcap { align-self: start; justify-self: center; padding-top: 2px; font-size: 12px; font-weight: 700; color: var(--primary);
+  text-align: center; line-height: 1.3; white-space: nowrap; }
+.rf-hint { margin: 10px 0 0; text-align: center; font-size: 12px; color: var(--muted); }
+/* 推荐规格 */
+.rf-spec { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.rf-spec-h { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 14px; font-weight: 700; }
+.rf-lb { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
+.rf-lb > div, .rf-oz > div { display: flex; flex-direction: column; padding: 8px 10px; border-radius: 12px; background: var(--bg); min-width: 0; }
+.rf-lb > div { align-items: center; text-align: center; }
+.rf-lb b, .rf-oz b { font-size: 16px; font-weight: 800; color: var(--primary); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rf-lb span, .rf-oz span { font-size: 13px; font-weight: 600; }
+.rf-oz { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 6px; }
+.rf-oz p { margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.pos-lead { margin-right: 6px; padding: 1px 7px; border-radius: 6px; font-size: 13px; background: var(--primary-soft); color: var(--primary); white-space: nowrap; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .rf-kthumb { background: #e9eef4; } }
+@media (max-width: 360px) {
+  .rig-card { padding: 14px 8px 10px; }
+  .rig-flow { grid-template-columns: minmax(0,1fr) 54px minmax(0,1fr) 54px minmax(0,1fr); }
+  .rf-tile { border-radius: 14px; }
+  .rf-kthumb { width: 36px; height: 36px; border-radius: 10px; }
+  .rf-zoom { width: 16px; height: 16px; font-size: 9px; right: -5px; bottom: -5px; }
+  .rf-tile .rf-no { top: -4px; left: -4px; width: 16px; height: 16px; font-size: 10px; }
+  .rf-kimg { inset: 2px; border-radius: 8px; }
+  .rf-kcap { white-space: normal; word-break: keep-all; font-size: 11px; }
+  .rf-cap b { font-size: 13px; }
+  .rf-cap span { font-size: 11px; }
+  .rf-lb > div, .rf-oz > div { padding: 7px 6px; }
+  .rf-lb b, .rf-oz b { font-size: 14px; }
+}

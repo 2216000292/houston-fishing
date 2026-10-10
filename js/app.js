@@ -100,6 +100,12 @@
     if (open) (sortMenu.querySelector('.sort-opt.on') || sortOpts[0]).focus({ preventScroll: true });
   }
   sortBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(sortMenu.hidden); });
+  // 筛选按钮的小提示：用户点过一次就永远不再晃
+  try { if (!localStorage.getItem('sortSeen')) sortBtn.classList.add('hint'); } catch (_) { sortBtn.classList.add('hint'); }
+  sortBtn.addEventListener('click', () => {
+    sortBtn.classList.remove('hint');
+    try { localStorage.setItem('sortSeen', '1'); } catch (_) {}
+  }, { once: true });
   function pickSort(k) {
     rev = (k === curSort && SORTS[k].notes) ? !rev : false;    // 同一项再点一次：倒序
     curSort = k;
@@ -224,7 +230,7 @@
   photoCards.forEach(c => c.querySelector('.avatar').addEventListener('click', () => { if (c.querySelector('.avatar').classList.contains('has-img')) openLB(c); }));
   document.getElementById('lb-close').onclick = closeLB;
   lbImg.addEventListener('click', e => { if (e.target === lbImg) closeLB(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) { closeLB(); e.stopImmediatePropagation(); } });
 
   // ---------- 导航 / 鱼饵店：底部弹出选择 Apple 或 Google 地图 ----------
   const sheet = document.getElementById('sheet'), mask = document.getElementById('sheet-mask');
@@ -347,6 +353,23 @@
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
   }));
+
+  // ---------- 钓法详情页的视频：点了才加载 YouTube，离开页面就停掉 ----------
+  document.querySelectorAll('.yt[data-id]').forEach(box => {
+    const poster = box.querySelector('.yt-poster');
+    poster.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + box.dataset.id + '?autoplay=1&playsinline=1&rel=0';
+      f.title = 'YouTube 视频';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      poster.hidden = true; box.appendChild(f);
+    });
+    const page = box.closest('.detail');
+    if (page) new MutationObserver(() => {
+      if (!page.classList.contains('open')) { const f = box.querySelector('iframe'); if (f) f.remove(); poster.hidden = false; }
+    }).observe(page, { attributes: true, attributeFilter: ['class'] });
+  });
 
   // ---------- 钓法页筛选 ----------
   const howBtns = document.querySelectorAll('#how-filters button');
