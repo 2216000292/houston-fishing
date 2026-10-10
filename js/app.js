@@ -63,7 +63,7 @@
   // 默认：华人钓友最关心的鱼在前。稀有度 / 好吃程度：再点一次同一项就倒过来
   const SORTS = {
     default: { label: '默认排序', key: 'hot', dir: 1 },
-    rare:    { label: '稀有度排行', key: 'rare', dir: -1, notes: ['罕见的在前', '常见的在前'] },
+    rare:    { label: '岸边稀有度排行', key: 'rare', dir: -1, notes: ['罕见的在前', '常见的在前'] },
     taste:   { label: '好吃程度',   key: 'taste', dir: 1, notes: ['最好吃的在前', '最不好吃的在前'] },
     limited: { label: '有尺寸限制', key: 'hot', dir: 1, group: 'limited' },
     free:    { label: '无尺寸限制', key: 'hot', dir: 1, group: 'free' },
