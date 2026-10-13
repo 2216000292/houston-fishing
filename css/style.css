@@ -984,3 +984,58 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .fc-wind .wdir .wd { font-size: 11px; line-height: 1; display: block; text-align: center; }
 .narrow .fc-wind .wdir .wa { width: 14px; height: 14px; }
 .narrow .fc-wind .wdir .wd { font-size: 10px; }
+
+/* ---------- 钓点页 v2：照片在上 + 标题标签 + 两行描述 + 两个按钮 ---------- */
+.spot.sp2 { padding: 0; overflow: hidden; margin-bottom: 14px; border: 1px solid var(--line); }
+.sp-photo { position: relative; aspect-ratio: 2 / 1; background: linear-gradient(135deg, #dfe8f2, #c9d6e4); overflow: hidden; }
+.sp-photo img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .3s; }
+.sp-photo.ok img { opacity: 1; }
+.sp-zoom { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%;
+  display: grid; place-items: center; color: #fff; background: rgba(10,14,19,.48); cursor: pointer;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 1px 4px rgba(0,0,0,.25); transition: transform .1s, background .15s; }
+.sp-zoom svg { width: 18px; height: 18px; display: block; }
+.sp-zoom:hover, .sp-zoom:focus-visible { background: rgba(10,14,19,.66); }
+.sp-zoom:active { transform: scale(.92); }
+.sp-body { padding: 15px; }
+.sp-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 10px; }
+.spot.sp2 .sp-head h3 { margin: 0; font-size: 22px; line-height: 1.3; }
+.sp-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.sp-tags .badge, .sp-tags .fee { padding: 4px 9px; border-radius: 7px; font-size: 11.5px; font-weight: 700; line-height: 1.3; white-space: nowrap; }
+.sp-tags .cam { height: 25px; padding: 0 10px; font-size: 11.5px; gap: 5px; }
+.sp-tags .cam .ext { font-size: 11px; }
+.sp-en { margin: 4px 0 10px; font-size: 12.5px; color: var(--muted); }
+.sp-desc { margin: 0 0 14px; font-size: 14px; line-height: 1.55; color: var(--text);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sp-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.sp-act, .sp-act.fc-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: auto; margin: 0;
+  min-height: 46px; padding: 10px 6px; border: 0; border-radius: 11px; font: inherit; font-size: 14.5px; font-weight: 700;
+  cursor: pointer; text-align: center; transition: transform .1s, filter .15s; }
+.sp-act .chev { font-size: 18px; line-height: 1; opacity: .8; }
+.sp-detail { background: #eef1f5; color: var(--text); }
+.sp-act.sp-weather { background: var(--primary-soft); color: var(--primary); }
+.sp-act:hover, .sp-act:focus-visible { filter: brightness(.97); }
+.sp-act:active { transform: scale(.975); }
+@media (prefers-color-scheme: dark) {
+  .sp-photo { background: linear-gradient(135deg, #253b4f, #111d2b); }
+  .sp-detail { background: #2a3646; color: #e7edf5; }
+  .sp-act.sp-weather { background: #173b61; color: #81c6ff; }
+  .sp-act:hover, .sp-act:focus-visible { filter: brightness(1.15); }
+}
+@media (max-width: 365px) {
+  .spot.sp2 .sp-head h3 { font-size: 19px; }
+  .sp-body { padding: 12px; }
+  .sp-tags .badge, .sp-tags .fee, .sp-tags .cam { font-size: 10.5px; }
+  .sp-act, .sp-act.fc-btn { font-size: 13px; }
+}
+/* 钓点照片的版权小字 */
+.lb-credit.sp-credit { font-size: 10.5px; line-height: 1.5; color: rgba(255,255,255,.55); letter-spacing: .1px; }
+.lb-credit.sp-credit a { color: rgba(255,255,255,.82); text-decoration: underline dotted; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.45); }
+.lb-credit.sp-credit a .ar { display: inline-block; margin-left: 3px; font-size: .9em; text-decoration: none; opacity: .75; }
+.lb-credit.sp-credit a:hover { color: #fff; }
+.lb-credit.sp-credit .cp { white-space: nowrap; }
+/* 有照片的钓点卡片：不显示描述（照片加载失败时照片区会被移除，描述自动回来） */
+.spot.sp2:has(.sp-photo) .sp-desc { display: none; }
+.spot.sp2:has(.sp-photo) .sp-en { margin-bottom: 14px; }
+/* 实时监控：摄像头图标 */
+.cam .cam-ic { width: 15px; height: 15px; flex: 0 0 auto; display: block; }
+.sp-tags .cam .cam-ic { width: 14px; height: 14px; }

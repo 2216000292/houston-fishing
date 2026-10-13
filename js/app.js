@@ -354,6 +354,63 @@
     document.body.style.overflow = 'hidden';
   }));
 
+  // ---------- 钓点照片：卡片顶部小图 + 右上角放大按钮 → 大图 + 版权小字 ----------
+  // authorUrl 不填就链到原图页（原图页上有作者信息）；cropped: 自己裁过图片文件才设 true
+  const fishingSpotPhotos = {
+    surfsideNewJetty: { name: '288 新堤', src: 'images/spot-288-photo-card.webp', srcBig: 'images/spot-288-photo.webp',   // YouTube 视频截图，存在本地
+      author: 'Third Coast Drone', license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
+      sourceUrl: 'https://www.youtube.com/watch?v=qGJ1HtJgoMU', attributionRequired: true, shareAlike: false, modification: 'Video screenshot, cropped' },
+    seawolfPark: { name: '海狼公园', fileName: 'Seawolf Park.jpg', author: 'Harrison Tran',
+      license: 'CC BY-SA 2.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0/',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Seawolf_Park.jpg', attributionRequired: true, shareAlike: true, cropped: false },
+    street61: { name: '61 街', fileName: "Galveston's 61 Street Fishing Pier.jpg", author: 'Jim Evans',
+      license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Galveston%27s_61_Street_Fishing_Pier.jpg', attributionRequired: true, shareAlike: true, cropped: false },
+    texasCityDike: { name: 'TCD', fileName: 'Texas City Dike, Texas City, United States (Unsplash).jpg', author: 'David Solce',
+      license: 'CC0 1.0', licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Texas_City_Dike,_Texas_City,_United_States_(Unsplash).jpg', attributionRequired: false, shareAlike: false, cropped: false },
+  };
+  const SP_FP = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
+  const spUrl = (ph, w) => ph.src ? (w > 1000 ? ph.srcBig || ph.src : ph.src) : SP_FP + encodeURIComponent(ph.fileName.replace(/ /g, '_')) + '?width=' + w;
+  const esc = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // 版权小字：Photo: 作者 · Original ↗ · CC BY-SA 4.0 ↗ · Cropped
+  // 作者名默认纯文字（填了 authorUrl 才可点）；原图、授权协议可点；Cropped 纯文字
+  function spotCredit(ph) {
+    const lk = (href, text) => `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(text)}<span class="ar" aria-hidden="true">↗</span></a>`;
+    const parts = [];
+    if (ph.author) parts.push('Photo: ' + (ph.authorUrl ? `<a href="${esc(ph.authorUrl)}" target="_blank" rel="noopener">${esc(ph.author)}</a>` : esc(ph.author)));
+    parts.push(lk(ph.sourceUrl, 'Original'));
+    parts.push(lk(ph.licenseUrl, ph.license));
+    if (ph.modification) parts.push(esc(ph.modification));   // 自定义改动说明，如 Video screenshot, cropped
+    else if (ph.cropped) parts.push('Cropped');   // 裁剪过：注明改动，仍按原协议（BY-SA 相同方式共享）
+    return parts.map(x => `<span class="cp">${x}</span>`).join(' · ');   // 每段不拆行，窄屏只在 · 处换行
+  }
+  document.querySelectorAll('.sp-photo[data-photo]').forEach(box => {
+    const ph = fishingSpotPhotos[box.dataset.photo], img = box.querySelector('img');
+    if (!ph) { box.remove(); return; }
+    img.onload = () => box.classList.add('ok');
+    img.onerror = () => box.remove();   // 加载失败就不显示照片区
+    img.src = spUrl(ph, 900);
+    box.querySelector('.sp-zoom').addEventListener('click', e => {
+      e.stopPropagation();
+      const card = box.closest('.spot'), lbImg = document.getElementById('lb-img');
+      document.getElementById('lb-title').innerHTML = esc(card.querySelector('h3').textContent) + '<small>' + esc(card.querySelector('.sp-en').textContent) + '</small>';
+      lbImg.innerHTML = '<div class="lb-loading">加载大图中…</div>';
+      const big = new Image(); big.alt = img.alt; big.referrerPolicy = 'no-referrer';
+      big.onload = () => { lbImg.innerHTML = ''; lbImg.appendChild(big); };
+      big.onerror = () => { lbImg.innerHTML = ''; const s = new Image(); s.src = img.src; s.alt = img.alt; lbImg.appendChild(s); };   // 大图失败就先放卡片上的图
+      big.src = spUrl(ph, 2000);
+      const cr = document.getElementById('lb-credit'); cr.innerHTML = spotCredit(ph); cr.classList.add('sp-credit');
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  // 卡片里的“钓点详情”按钮
+  document.querySelectorAll('.sp-detail').forEach(b => b.addEventListener('click', () => window.openDetail && window.openDetail(b.closest('[data-detail]').dataset.detail)));
+  // 别的大图打开时去掉钓点版权的小字样式
+  new MutationObserver(() => { const lb = document.getElementById('lightbox'); if (!lb.classList.contains('open')) document.getElementById('lb-credit').classList.remove('sp-credit'); })
+    .observe(document.getElementById('lightbox'), { attributes: true, attributeFilter: ['class'] });
+
   // ---------- 钓法详情页的视频：点了才加载 YouTube，离开页面就停掉 ----------
   document.querySelectorAll('.yt[data-id]').forEach(box => {
     const poster = box.querySelector('.yt-poster');
