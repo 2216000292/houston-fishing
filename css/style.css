@@ -6,6 +6,7 @@
     --line: #e7ebf0;
     --primary: #0a7cff;
     --primary-soft: #e6f1ff;
+    --rain: #2b7bd6;
     --teal: #12b5a6;
     --warn: #e5484d;
     --warn-soft: #fff0f0;
@@ -22,6 +23,7 @@
       --line: #232c38;
       --primary: #4da3ff;
       --primary-soft: #14263d;
+      --rain: #7cc0ff;
       --teal: #2dd4bf;
       --warn: #ff6b6b;
       --warn-soft: #2a1618;
@@ -969,3 +971,16 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
   .rf-kcap { font-size: 11px; }
   .yt { width: min(100%, 200px); }
 }
+
+/* ---------- 降水概率：天气图标下面一行小字 ---------- */
+.fc-wx { height: 74px; }
+.fc-wx .fc-c { gap: 1px; }
+.fc-wx .pop { font-size: 11px; font-weight: 700; line-height: 1; color: var(--rain); letter-spacing: -.2px; }
+.narrow .fc-wx .pop { font-size: 10px; }
+
+/* ---------- 风向：风速 / 锐角线箭头 / 方位，三行，居中对齐 ---------- */
+.fc-wind .wdir { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1; }
+.fc-wind .wdir .wa { width: 16px; height: 16px; flex: 0 0 auto; display: block; margin: 0 auto; }
+.fc-wind .wdir .wd { font-size: 11px; line-height: 1; display: block; text-align: center; }
+.narrow .fc-wind .wdir .wa { width: 14px; height: 14px; }
+.narrow .fc-wind .wdir .wd { font-size: 10px; }

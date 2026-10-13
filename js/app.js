@@ -541,6 +541,7 @@
       return [day ? '🌤️' : '🌙', f || ''];
     }
     const DIRS = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const DIR8 = ['北', '东北', '东', '东南', '南', '西南', '西', '西北'];   // 风向文字只用 8 个方位，箭头仍按 16 方位转
     const DIR_CN = { N: '北', NNE: '北偏东', NE: '东北', ENE: '东偏北', E: '东', ESE: '东偏南', SE: '东南', SSE: '南偏东', S: '南', SSW: '南偏西', SW: '西南', WSW: '西偏南', W: '西', WNW: '西偏北', NW: '西北', NNW: '北偏西' };
 
     // ---------- 渲染 ----------
@@ -587,7 +588,8 @@
         const w = byHour[c.t];
         if (!w) return `<div class="${cls(c)}"><span class="na">—</span></div>`;
         const [ic, tx] = w.ic ? [w.ic, w.tx] : wxInfo(w.f, w.day);
-        return `<div class="${cls(c)}" title="${tx}"><span class="wi">${ic}</span><b class="tp">${w.temp}°</b></div>`;
+        const pop = w.pop > 0 ? `<span class="pop">${Math.round(w.pop)}%</span>` : '';   // 降水概率：0% 或没数据就不显示
+        return `<div class="${cls(c)}" title="${tx}${w.pop > 0 ? ' · 降水概率 ' + Math.round(w.pop) + '%' : ''}"><span class="wi">${ic}</span>${pop}<b class="tp">${w.temp}°</b></div>`;
       }).join('');
       $('fc-wind').innerHTML = cols.map(c => {
         const w = byHour[c.t];
@@ -595,8 +597,8 @@
         const deg = DIRS.indexOf(w.dir) * 22.5;
         const strong = w.wind >= 15 ? ' strong' : w.wind >= 10 ? ' mid' : '';
         return `<div class="${cls(c)}${strong}"><b class="ws">${w.wind}<small>mph</small></b>`
-          + (deg >= 0 ? `<svg class="wa" viewBox="0 0 24 24" style="transform:rotate(${deg + 180}deg)"><path d="M12 3l5 9h-3.5v9h-3v-9H7z" fill="currentColor"/></svg>` : '<span class="wa"></span>')
-          + `<span class="wd">${w.dir || ''}</span></div>`;
+          + `<span class="wdir">` + (deg >= 0 ? `<svg class="wa" viewBox="0 0 24 24" style="transform:rotate(${deg + 180}deg)"><path d="M12 21.5V4.5M5 11.5 12 4.5l7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"/></svg>` : '')
+          + `<span class="wd">${deg >= 0 ? DIR8[Math.round(deg / 45) % 8] : (w.dir || '')}</span></span></div>`;
       }).join('');
       drawTide();
       X.scrollLeft = 0;
