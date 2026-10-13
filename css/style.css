@@ -1039,3 +1039,31 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 /* 实时监控：摄像头图标 */
 .cam .cam-ic { width: 15px; height: 15px; flex: 0 0 auto; display: block; }
 .sp-tags .cam .cam-ic { width: 14px; height: 14px; }
+/* 实时监控：摄像头图标一闪一闪 + 胶囊外圈扩散，提示可以点 */
+@keyframes cam-blink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes cam-ring { 0% { box-shadow: 0 0 0 0 rgba(229,72,77,.45); } 70% { box-shadow: 0 0 0 7px rgba(229,72,77,0); } 100% { box-shadow: 0 0 0 0 rgba(229,72,77,0); } }
+.cam { animation: cam-ring 2s ease-out infinite; }
+.cam .cam-ic { animation: cam-blink 1.2s ease-in-out infinite; }
+@media (prefers-color-scheme: dark) {
+  @keyframes cam-ring { 0% { box-shadow: 0 0 0 0 rgba(255,107,107,.4); } 70% { box-shadow: 0 0 0 7px rgba(255,107,107,0); } 100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); } }
+}
+@media (prefers-reduced-motion: reduce) { .cam, .cam .cam-ic { animation: none; } }
+/* 钓点卡片：圆角改小（原来 18px） */
+.spot.sp2 { border-radius: 12px; }
+.sp-act, .sp-act.fc-btn { border-radius: 8px; }
+/* 钓点卡片：微渐变 + 阴影，让相邻卡片更容易分开 */
+.spot.sp2 { background: linear-gradient(180deg, #f3f8ff 0%, var(--card) 55%); border-color: #dfe7f1;
+  box-shadow: 0 1px 2px rgba(16,24,40,.05), 0 6px 18px rgba(16,24,40,.08); }
+.spot.sp2 .sp-photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 28%; pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.18)); }
+@media (prefers-color-scheme: dark) {
+  .spot.sp2 { background: linear-gradient(180deg, #1b2533 0%, var(--card) 60%); border-color: #2a3543; box-shadow: 0 8px 22px rgba(0,0,0,.35); }
+}
+/* 渐变放在文字区（照片下方），照片卡片也看得到 */
+.spot.sp2 { background: var(--card); }
+.spot.sp2 .sp-body { background: linear-gradient(180deg, #edf4fd 0%, var(--card) 70%); }
+@media (prefers-color-scheme: dark) {
+  .spot.sp2 { background: var(--card); }
+  .spot.sp2 .sp-body { background: linear-gradient(180deg, #1f2b3b 0%, var(--card) 70%); }
+}
+.sp-act .sp-ic { width: 17px; height: 17px; flex: 0 0 auto; display: block; }
