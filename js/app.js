@@ -610,11 +610,12 @@
       const t0 = cols[0].t, tEnd = cols[cols.length - 1].t, xOf = t => (t - t0) / HOUR * COL + COL / 2;
       const inRange = tide.filter(p => p.t >= t0 - 12 * HOUR && p.t <= tEnd + 12 * HOUR);
       const vs = inRange.map(p => p.v);
-      const lo = Math.floor(Math.min(...vs) * 2) / 2, hi = Math.ceil(Math.max(...vs) * 2) / 2;   // 刻度取 0.5 ft 的整数倍
+      // 固定范围：最高 2.30 ft，最低 -1.20 ft（万一实际潮位超出才往外扩，免得线被切掉）
+      const lo = Math.min(-1.2, ...vs), hi = Math.max(2.3, ...vs);
       const yOf = v => top + (1 - (v - lo) / ((hi - lo) || 1)) * (Hh - top - bot);
-      // 刻度：0.5 或 1 ft 一格
-      const step = hi - lo > 3 ? 1 : 0.5, ticks = [];
-      for (let v = lo; v <= hi + 1e-6; v += step) ticks.push(+v.toFixed(1));
+      // 刻度：0.5 ft 一格
+      const ticks = [];
+      for (let v = Math.ceil(lo * 2) / 2; v <= hi + 1e-6; v += 0.5) ticks.push(+v.toFixed(1));
       const grid = ticks.map(v => `<line x1="0" x2="${W}" y1="${yOf(v)}" y2="${yOf(v)}" class="gl"/>`).join('');
       let d = '';
       for (let t = t0 - HOUR / 2; t <= tEnd + HOUR / 2; t += HOUR / 4) {
