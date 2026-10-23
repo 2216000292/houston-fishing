@@ -879,13 +879,13 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 }
 
 /* ---------- 鱼种页筛选按钮：没点过之前，图标偶尔轻轻晃一下 ---------- */
-#sort-btn.hint svg { animation: sort-nudge 6s ease-in-out 2s infinite; transform-origin: 50% 50%; }
+#sort-btn.hint svg { animation: sort-nudge 3s ease-in-out 1s infinite; transform-origin: 50% 50%; }
 @keyframes sort-nudge {
-  0%, 86%, 100% { transform: rotate(0); }
-  89% { transform: rotate(-9deg); }
-  92% { transform: rotate(7deg); }
-  95% { transform: rotate(-3deg); }
-  98% { transform: rotate(1deg); }
+  0%, 72%, 100% { transform: rotate(0); }
+  78% { transform: rotate(-9deg); }
+  84% { transform: rotate(7deg); }
+  90% { transform: rotate(-3deg); }
+  96% { transform: rotate(1deg); }
 }
 @media (prefers-reduced-motion: reduce) { #sort-btn.hint svg { animation: none; } }
 
@@ -1067,3 +1067,59 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
   .spot.sp2 .sp-body { background: linear-gradient(180deg, #1f2b3b 0%, var(--card) 70%); }
 }
 .sp-act .sp-ic { width: 17px; height: 17px; flex: 0 0 auto; display: block; }
+
+/* ---------- 黄花鱼钓组详情页：竖版钓组图、饵料列表、小技巧 ---------- */
+.cr-card { padding: 14px 12px 10px; }
+.cr-svg { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto; }
+.cr-line { fill: none; stroke: #98a2b3; stroke-width: 1.6; }
+.cr-pe { stroke: #6aa04c; stroke-width: 2; }
+.cr-ring { fill: none; stroke: #7b8593; stroke-width: 1.6; }
+.cr-hook path { fill: none; stroke: #8f98a5; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.cr-bait { fill: #e2453c; stroke: #b8322b; stroke-width: 1; }
+.cr-lbl text { fill: var(--text); font-size: 14px; font-weight: 700; }
+.cr-lbl .cr-sub { fill: var(--muted); font-size: 12px; font-weight: 500; }
+.cr-tick { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.bait-list { list-style: none; margin: 0; padding: 0; border-radius: 14px; overflow: hidden; background: var(--card);
+  border: 1px solid var(--line); box-shadow: var(--shadow); }
+.bait-list li { display: flex; align-items: center; gap: 12px; padding: 11px 14px; }
+.bait-list li + li { border-top: 1px solid var(--line); }
+.bait-ic { flex: 0 0 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: var(--bg); }
+.bait-ic svg { width: 30px; height: 30px; }
+.bait-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bait-txt b { font-size: 15px; }
+.bait-txt span { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.rig-tip { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; padding: 12px 14px; border-radius: 14px;
+  background: var(--primary-soft); }
+.rig-tip-ic { flex: 0 0 auto; font-size: 18px; line-height: 1.4; }
+.rig-tip p { margin: 0; font-size: 15px; line-height: 1.6; }
+
+/* ---------- 钓组卡片：右边的 › 固定在右上角，和标题对齐 ---------- */
+.rig-link { position: relative; }
+.rig-link .fish-head { padding-right: 52px; }
+.rig-link .spot-go-row { display: block; }
+.rig-link .spot-go { position: absolute; top: 18px; right: 16px; width: 44px; height: 44px; margin: 0; display: grid; place-items: center; }
+/* 黄花鱼钓组：提示和购买链接 */
+.cr-note { display: flex; gap: 8px; margin: 10px 2px 2px; padding-top: 10px; border-top: 1px solid var(--line);
+  font-size: 13px; line-height: 1.6; color: var(--muted); }
+.cr-note span { flex: 0 0 auto; }
+.bait-buy { display: inline-flex; align-items: center; gap: 3px; align-self: flex-start; margin-top: 6px; padding: 5px 10px; min-height: 32px;
+  border-radius: 8px; background: var(--primary-soft); color: var(--primary); font-size: 13px; font-weight: 700; text-decoration: none; }
+.bait-buy .ext { font-size: 11px; }
+.bait-buy:active { transform: scale(.96); }
+.bait-has-link { align-items: flex-start !important; }
+.bait-has-link .bait-ic { margin-top: 2px; }
+/* 钓组卡片没有描述后，底部留白统一 */
+.rig-link .spot-fish { margin-bottom: -8px; }
+.rig-link .fish-head:nth-last-child(2) { margin-bottom: 0; }
+.cr-spec { display: flex; align-items: center; gap: 10px; margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--bg); }
+.cr-spec-k { flex: 0 0 auto; font-size: 13px; font-weight: 700; color: var(--muted); }
+.cr-spec-v { font-size: 15px; }
+.cr-spec-v b { font-size: 16px; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; }
+.cr-spec .nw { white-space: nowrap; }
+.nw { white-space: nowrap; }
+.detail-bar-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 360px) { .detail-bar-title { font-size: 14px; letter-spacing: -.02em; } }
+/* 还没整理好的钓组：只显示标题和“整理中”提示 */
+.rig-pending .spot-fish { margin-bottom: 2px; }
+.rig-soon { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; color: var(--muted); background: var(--bg); border: 1px dashed var(--line); }
