@@ -1224,3 +1224,8 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .cr-lbl text { font-size: 17px; }
 .cr-lbl .cr-sub { font-size: 14px; }
 .hang p.mail-who { margin-top: 10px; font-size: 15px; color: var(--text); } .mail-who + .mail-link { margin-top: 2px; }
+.more-top { min-height: 0; padding-top: 14px; } .more-letter { margin-top: 12px; }
+/* 钓法、钓点去掉大标题后，顶部留出安全区 */
+#howto .filters-wrap { padding-top: calc(12px + env(safe-area-inset-top)); }
+.spots-intro { margin-bottom: 12px; }
+#howto .filters-wrap { padding-top: 10px; }

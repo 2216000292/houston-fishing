@@ -385,15 +385,19 @@
 
 <!-- ============ 天气 ============ -->
 <main class="view" id="howto">
-  <div class="page-head">
-    <h1>钓法</h1>
-  </div>
+  <p class="fish-intro">休斯顿大部分鱼种常用的钓组、绑结方法和季节规律，点进钓组可以看图解和视频</p>
   <div class="filters-wrap">
     <div class="filters" id="how-filters">
       <button class="on" data-k="rig">钓组</button>
       <button data-k="knot">绑结</button>
       <button data-k="season">季节</button>
+      <button data-k="beginner">新手教程</button>
     </div>
+  </div>
+  <h2 class="group-title how-group" data-k="beginner">新手教程</h2>
+  <div class="card how-card beginner-empty" data-kind="beginner">
+    <div class="be-ic">🎣</div>
+    <div><b>内容整理中</b><p>新手入门教程还在整理开发中，敬请期待。可以先看看「钓组」和「绑结」。</p></div>
   </div>
   <h2 class="group-title how-group" data-k="knot">绑结 <span>4 种</span></h2>
   <div class="card how-card knot-card" data-kind="knot">
@@ -493,9 +497,7 @@
 
 <!-- ============ 钓点 ============ -->
 <main class="view" id="spots">
-  <div class="page-head">
-    <h1>钓点</h1>
-  </div>
+  <p class="fish-intro spots-intro">休斯顿周边的热门钓点，可以看实时监控、一键导航，还能查未来 7 天的天气和潮汐</p>
   <div class="card spot sp2 has-detail" data-detail="detail-288" tabindex="0" role="button" aria-label="查看 288 新堤详情">
   <div class="sp-photo" data-photo="surfsideNewJetty">
     <img alt="288 新堤的钓点环境" loading="lazy" decoding="async" referrerpolicy="no-referrer">
@@ -602,13 +604,13 @@
     </header>
 
     <section class="more-letter">
-      <h2>为什么做这个网站</h2>
+      <h2>为什么做这个网站？</h2>
       <p>这个网站是我和两个朋友一起做的。我们想在休斯顿建一个本地的中文钓鱼社区，把这几年钓鱼积累的经验和踩过的坑都整理出来，希望能帮新手少走弯路，也让老钓友多一个交流的地方。内容会一直更新，发现写错的地方欢迎告诉我们。</p>
     </section>
 
     <div class="hang hang-contact">
       <svg class="hang-hook" viewBox="0 0 44 64" aria-hidden="true"><path class="hh-line" d="M0 6 C 18 6, 30 12, 32 26"/><path class="hh-steel" d="M32 26 V48 C32 58, 18 58, 18 48 V44"/><path class="hh-steel" d="M18 44 L21.5 48.5"/></svg>
-      <div class="hang-title"><b>欢迎加入我们的钓鱼群聊</b></div>
+      <div class="hang-title"><b>欢迎加入我们的钓鱼微信群聊</b></div>
       <button class="qr-box zoomable" type="button" data-title="休斯顿钓鱼分享群" data-sub="微信扫码进群 · 10 月 31 日前有效" aria-label="放大微信群二维码">
         <img src="images/wechat-group-qr.webp" alt="微信群「休斯顿钓鱼分享群」二维码" loading="lazy" decoding="async">
       </button>
