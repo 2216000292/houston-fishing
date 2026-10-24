@@ -1123,3 +1123,104 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .rig-pending .spot-fish { margin-bottom: 2px; }
 .rig-soon { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px;
   font-size: 13px; font-weight: 600; color: var(--muted); background: var(--bg); border: 1px dashed var(--line); }
+
+/* ---------- 钓点详情：可以点的钓位（带坐标，点了选地图导航） ---------- */
+.pos-link { padding: 0; }
+.pos-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 14px; border: 0; margin: 0; background: none;
+  color: inherit; font: inherit; font-size: 15px; line-height: 1.45; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.pos-btn:active { background: var(--bg); }
+.pos-txt b { margin-right: 6px; font-weight: 700; }
+.pos-go { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 2px; padding: 4px 6px 4px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; color: var(--primary); background: var(--primary-soft); }
+.pos-go svg { width: 14px; height: 14px; }
+.pos-swatch { border-radius: 8px; }
+.pos-tip { margin: 8px 2px 0; font-size: 13px; color: var(--muted); }
+
+/* ---------- 更多：整页像一副挂在浮漂下面的钓组 ----------
+   左边一根竖线从浮漂垂到铅坠，每个“开发中”的功能像子线上的钩子挂在线上。不用卡片和圆角。 */
+#rules { --rig-x: 22px; --gulf: #0f3b57; --bob: #e2453c; --pe: #6aa04c; }
+.more-rig { position: relative; padding: calc(18px + env(safe-area-inset-top)) 4px 8px 58px; }
+.more-rig::before { content: ""; position: absolute; left: var(--rig-x); top: calc(78px + env(safe-area-inset-top)); bottom: 64px; width: 2px;
+  margin-left: -1px; background: linear-gradient(180deg, var(--pe) 0%, #9aa7b6 30%, #9aa7b6 100%); }
+.more-bobber { position: absolute; left: calc(var(--rig-x) - 17px); top: calc(12px + env(safe-area-inset-top)); width: 34px; height: 78px;
+  transform-origin: 50% 0; animation: bob-float 4s ease-in-out infinite; }
+.mb-stick { stroke: #c4ccd6; stroke-width: 2.4; stroke-linecap: round; fill: none; }
+.mb-top { fill: var(--bob); }
+.mb-bot { fill: #f4f6f8; stroke: #c9d0d8; stroke-width: 1; }
+@keyframes bob-float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(3px) rotate(-3deg); } }
+@media (prefers-reduced-motion: reduce) { .more-bobber { animation: none; } }
+
+.more-top { padding-top: 6px; }
+.more-title { margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -.02em; line-height: 1.15; color: var(--text); white-space: nowrap; }
+.more-sub { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
+
+.more-letter { margin: 26px 0 0; padding: 14px 0 0 14px; border-left: 3px solid var(--gulf); }
+.more-letter h2 { margin: 0 0 8px; font-size: 15px; font-weight: 800; color: var(--text); }
+.more-letter p { margin: 0; font-family: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", serif; font-size: 16.5px;
+  line-height: 1.95; color: var(--text); }
+.more-letter p + p { margin-top: 10px; }
+
+.more-h { margin: 34px 0 6px; font-size: 15px; font-weight: 800; color: var(--text); }
+.hang { position: relative; padding: 14px 0 16px; border-bottom: 1px solid var(--line); }
+.hang:last-of-type { border-bottom: 0; }
+.hang-hook { position: absolute; left: calc(var(--rig-x) - 58px); top: 6px; width: 34px; height: 50px; overflow: visible; }
+.hh-line { fill: none; stroke: #9aa7b6; stroke-width: 1.6; }
+.hh-steel { fill: none; stroke: #7b8593; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.hang-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.hang-title b { font-size: 18px; font-weight: 800; }
+.hang-state { position: relative; padding-left: 12px; font-size: 13px; font-weight: 700; color: var(--bob); }
+.hang-state::before { content: ""; position: absolute; left: 0; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--bob); }
+.hang p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.7; color: var(--muted); }
+
+.more-end { position: relative; display: flex; align-items: center; gap: 10px; margin: 18px 0 28px; height: 40px; font-size: 13px; color: var(--muted); }
+.more-sinker { position: absolute; left: calc(var(--rig-x) - 58px - 11px); top: 0; width: 22px; height: 30px; fill: #6f7782; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #rules { --gulf: #4da3ff; }
+  :root:not([data-theme="light"]) .mb-bot { fill: #dfe4ea; }
+  :root:not([data-theme="light"]) .more-sinker { fill: #9aa3ae; }
+}
+@media (max-width: 360px) {
+  .more-title { font-size: 25px; }
+  .more-letter p { font-size: 15.5px; }
+}
+/* 更多：微信群二维码和作者邮箱 */
+.qr-box { display: block; width: 168px; margin: 12px 0 0; padding: 0; border: 1px solid var(--line); background: #fff; cursor: zoom-in; }
+.qr-box img { display: block; width: 100%; height: auto; }
+.qr-note { font-size: 12.5px !important; margin-top: 8px !important; }
+.mail-link { display: inline-block; margin-top: 8px; padding: 6px 0; font-size: 16px; font-weight: 700; color: var(--primary);
+  text-decoration: underline; text-underline-offset: 3px; word-break: break-all; }
+.hang-contact:last-of-type { border-bottom: 1px solid var(--line); }
+@media (max-width: 360px) { .mail-link { font-size: 14px; } }
+
+/* ---------- 更多：手机端调整（缩小左侧留白、字号更舒服） ---------- */
+#rules { --rig-x: 18px; --indent: 46px; }
+.more-rig { padding-left: var(--indent); padding-right: 2px; }
+.more-bobber { left: calc(var(--rig-x) - 17px); }
+.hang-hook { left: calc(var(--rig-x) - var(--indent)); }
+.more-sinker { left: calc(var(--rig-x) - var(--indent) - 11px); }
+.more-title { font-size: 28px; }
+.more-top { padding-top: 14px; min-height: 56px; }
+.more-letter { margin-top: 22px; padding: 12px 0 0 12px; }
+.more-letter p { font-size: 16px; line-height: 1.85; }
+.more-h { margin-top: 30px; }
+.hang-title b { font-size: 17px; }
+.hang p { font-size: 14.5px; line-height: 1.65; }
+.hang-contact .hang-title + .qr-box { margin-top: 10px; }
+.qr-box { width: min(180px, 100%); }
+.more-end span { font-size: 13.5px; }
+@media (max-width: 360px) {
+  #rules { --rig-x: 16px; --indent: 40px; }
+  .more-title { font-size: 24px; }
+  .more-letter p { font-size: 15.5px; line-height: 1.8; }
+  .hang-title b { font-size: 16px; }
+  .hang p { font-size: 14px; }
+}
+
+/* ---------- 沉底钓组图解：手机上字再大一点 ---------- */
+.cr-lbl text { font-size: 16px; }
+.cr-lbl .cr-sub { font-size: 13.5px; }
+/* 钩子缩小，放在钓线和文字之间，不压到文字 */
+.hang-hook { width: 22px; height: 33px; top: 10px; }
+.cr-lbl text { font-size: 17px; }
+.cr-lbl .cr-sub { font-size: 14px; }
+.hang p.mail-who { margin-top: 10px; font-size: 15px; color: var(--text); } .mail-who + .mail-link { margin-top: 2px; }

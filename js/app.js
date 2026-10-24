@@ -243,6 +243,8 @@
     $('sheet-apple').href = d.apple;
     $('sheet-google').href = d.google;
     $('sheet-bait').href = d.baitGoogle && /iPhone|iPad|Mac/.test(navigator.userAgent) ? d.baitApple : d.baitGoogle;
+    $('sheet-bait').hidden = !d.baitGoogle;   // 只给了坐标的钓位，不显示“附近鱼饵店”
+    $('sheet-copy').lastChild.textContent = d.coord ? '复制坐标' : '复制地址';
     const ferry = $('sheet-ferry');
     ferry.hidden = !d.ferryGoogle;
     if (d.ferryGoogle) ferry.href = /iPhone|iPad|Mac/.test(navigator.userAgent) ? d.ferryApple : d.ferryGoogle;
@@ -279,7 +281,7 @@
       t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t); t.select();
       try { ok = document.execCommand('copy'); } catch (_) {} t.remove();
     }
-    closeSheet(); toast(ok ? '已复制地址' : '复制失败，请长按地址手动复制');
+    closeSheet(); toast(ok ? (sheetBtn && sheetBtn.dataset.coord ? '已复制坐标' : '已复制地址') : '复制失败，请长按地址手动复制');
   };
 
 
