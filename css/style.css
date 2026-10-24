@@ -1229,3 +1229,11 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 #howto .filters-wrap { padding-top: calc(12px + env(safe-area-inset-top)); }
 .spots-intro { margin-bottom: 12px; }
 #howto .filters-wrap { padding-top: 10px; }
+/* 更多：分组标题比条目标题大；联系作者收紧 */
+.more-h { font-size: 20px; font-weight: 900; letter-spacing: -.01em; margin-bottom: 2px; }
+.hang-title b { font-size: 16.5px; }
+.more-h + .hang-contact { padding-top: 4px; }
+.hang-contact .mail-who { margin-top: 4px !important; }
+.hang-contact > p:first-of-type { margin-top: 2px; }
+@media (max-width: 360px) { .more-h { font-size: 18px; } .hang-title b { font-size: 15.5px; } }
+.more-h { margin-top: 26px; } .hang-contact .mail-link { margin-top: 0; padding-top: 2px; }

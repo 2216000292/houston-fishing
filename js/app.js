@@ -1,3 +1,20 @@
+// ---------- 访问统计（Umami）：每个页签算一个页面，钓点/钓组详情也单独记 ----------
+  const TAB_NAMES = { fish: '鱼种', spots: '钓点', howto: '钓法', rules: '更多' };
+  const statQ = [];
+  function stat(fn) {
+    if (window.umami && typeof window.umami.track === 'function') { try { fn(window.umami); } catch (_) {} }
+    else if (statQ.length < 50) statQ.push(fn);
+  }
+  (function flush(n) {
+    if (window.umami && typeof window.umami.track === 'function') { statQ.splice(0).forEach(fn => { try { fn(window.umami); } catch (_) {} }); return; }
+    if (n < 40) setTimeout(() => flush(n + 1), 250);
+  })(0);
+  const ref = (() => { try { return new URLSearchParams(location.search).get('ref') || ''; } catch (_) { return ''; } })();
+  function statPage(path, title) {
+    stat(u => u.track(p => ({ ...p, url: path + (ref ? '?ref=' + encodeURIComponent(ref) : ''), title })));
+  }
+  window.statPage = statPage;
+
 // ---------- Tab 切换（用 #hash，手机返回键也能用）----------
   const tabs = document.querySelectorAll('.tabbar a');
   const views = document.querySelectorAll('.view');
@@ -7,6 +24,7 @@
     views.forEach(v => v.classList.toggle('active', v.id === id));
     tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === id));
     window.scrollTo(0, 0);
+    if (show._last !== id) { show._last = id; statPage('/' + id, TAB_NAMES[id] || id); }
   }
   // 直接监听点击切换，不依赖 #hash（有些手机预览/内嵌浏览器会拦截 hash 跳转）
   tabs.forEach(t => t.addEventListener('click', e => {
@@ -292,6 +310,7 @@
     const top = () => stack[stack.length - 1];
     function openDetail(id, push = true) {
       const d = document.getElementById(id); if (!d || stack.includes(d)) return;
+      if (window.statPage && id !== 'detail-fc') { const t = d.querySelector('.detail-bar-title'); window.statPage('/' + id.replace('detail-', 'detail/'), t ? t.textContent.trim() : id); }
       clearTimeout(d._closeT);
       stack.push(d);
       d.style.zIndex = 34 + stack.length;
