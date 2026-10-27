@@ -15,6 +15,30 @@
   }
   window.statPage = statPage;
 
+  // 实时监控：记录哪个钓点的摄像头被点开，是在卡片上还是详情页里点的
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a.cam'); if (!a) return;
+    const card = a.closest('[data-detail]'), page = a.closest('section.detail');
+    const t = card ? card.querySelector('h3') : page ? page.querySelector('.detail-bar-title') : null;
+    const spot = t ? t.textContent.trim() : '未知';
+    stat(u => u.track('实时监控', { 钓点: spot, 位置: page ? '详情页' : '钓点卡片' }));
+  }, true);
+
+  // 钓点详情、天气潮汐：记录哪个钓点被点了
+  document.addEventListener('click', e => {
+    const card = e.target.closest('#spots [data-detail]'), page = e.target.closest('section.detail');
+    const name = el => { const t = el && (el.querySelector('.detail-bar-title') || el.querySelector('h3')); return t ? t.textContent.trim() : '未知'; };
+    const fc = e.target.closest('.fc-btn');
+    if (fc) {
+      if (page && page.id === 'detail-fc') return;
+      stat(u => u.track('天气潮汐', { 钓点: name(card || page), 位置: page ? '详情页' : '钓点卡片' }));
+      return;
+    }
+    if (card && !e.target.closest('a, button:not(.sp-detail)')) {
+      stat(u => u.track('钓点详情', { 钓点: name(card), 方式: e.target.closest('.sp-detail') ? '点按钮' : '点卡片' }));
+    }
+  }, true);
+
 // ---------- Tab 切换（用 #hash，手机返回键也能用）----------
   const tabs = document.querySelectorAll('.tabbar a');
   const views = document.querySelectorAll('.view');
@@ -117,7 +141,7 @@
     sortBtn.classList.toggle('open', open);
     if (open) (sortMenu.querySelector('.sort-opt.on') || sortOpts[0]).focus({ preventScroll: true });
   }
-  sortBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(sortMenu.hidden); });
+  sortBtn.addEventListener('click', e => { e.stopPropagation(); if (sortMenu.hidden) stat(u => u.track('鱼种筛选按钮')); setMenu(sortMenu.hidden); });
   // 筛选按钮的小提示：用户点过一次就永远不再晃
   try { if (!localStorage.getItem('sortSeen')) sortBtn.classList.add('hint'); } catch (_) { sortBtn.classList.add('hint'); }
   sortBtn.addEventListener('click', () => {
@@ -137,7 +161,10 @@
     const top = document.getElementById('fish-list').getBoundingClientRect().top + scrollY - 140;
     if (scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
   }
-  sortOpts.forEach(o => o.addEventListener('click', () => pickSort(o.dataset.sort)));
+  sortOpts.forEach(o => o.addEventListener('click', () => {
+    pickSort(o.dataset.sort);
+    stat(u => u.track('鱼种排序', { 选项: SORTS[curSort].label + (SORTS[curSort].notes ? ' · ' + SORTS[curSort].notes[rev ? 1 : 0] : '') }));
+  }));
   sortChip.addEventListener('click', () => { rev = false; pickSort('default'); });
   document.addEventListener('click', e => { if (!sortMenu.hidden && !e.target.closest('.sort-wrap')) setMenu(false); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sortMenu.hidden) { setMenu(false); sortBtn.focus(); } });
@@ -182,6 +209,7 @@
   }));
   allBtn.addEventListener('click', () => {
     const open = !allBtn.classList.contains('is-open');
+    stat(u => u.track('鱼种全部展开收起', { 操作: open ? '展开' : '收起' }));
     fishCards.forEach(c => setCard(c, open, false));
     syncAll();
   });
