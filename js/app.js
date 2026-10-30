@@ -425,6 +425,7 @@
   // 版权小字：Photo: 作者 · Original ↗ · CC BY-SA 4.0 ↗ · Cropped
   // 作者名默认纯文字（填了 authorUrl 才可点）；原图、授权协议可点；Cropped 纯文字
   function spotCredit(ph) {
+    if (ph.own) return '';
     const lk = (href, text) => `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(text)}<span class="ar" aria-hidden="true">↗</span></a>`;
     const parts = [];
     if (ph.author) parts.push('Photo: ' + (ph.authorUrl ? `<a href="${esc(ph.authorUrl)}" target="_blank" rel="noopener">${esc(ph.author)}</a>` : esc(ph.author)));

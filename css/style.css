@@ -1237,3 +1237,15 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .hang-contact > p:first-of-type { margin-top: 2px; }
 @media (max-width: 360px) { .more-h { font-size: 18px; } .hang-title b { font-size: 15.5px; } }
 .more-h { margin-top: 26px; } .hang-contact .mail-link { margin-top: 0; padding-top: 2px; }
+
+/* ---------- 比目鱼钓点：钓点页第一张，方形地图 + 当季热门标签 ---------- */
+.badge.hot { background: #fff0e8; color: #d2461d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.hot { background: #3a1d12; color: #ff9b6b; } }
+.sp-photo.sp-photo-sq { aspect-ratio: 1 / 1; }
+.sp-actions.sp-actions-1 { grid-template-columns: 1fr; }
+/* 比目鱼钓点：没有天气潮汐，用一个淡淡的 ✕ 占位，底色跟旁边按钮一样 */
+.sp-act.sp-none { justify-content: center; cursor: default; }
+.sp-act.sp-none .sp-ic { width: 16px; height: 16px; color: var(--muted); opacity: .35; }
+.sp-act.sp-none, .sp-act.sp-none:disabled { background: #eef1f5; color: var(--muted); opacity: 1; filter: none; transform: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sp-act.sp-none, :root:not([data-theme="light"]) .sp-act.sp-none:disabled { background: #222c39; } }
+.sp-act.sp-none .sp-ic { opacity: .45; }

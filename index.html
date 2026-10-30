@@ -499,6 +499,17 @@
 <!-- ============ 钓点 ============ -->
 <main class="view" id="spots">
   <p class="fish-intro spots-intro">休斯顿周边的热门钓点，可以看实时监控、一键导航，还能查未来 7 天的天气和潮汐</p>
+  <div class="card spot sp2 has-detail" data-detail="detail-flounder" tabindex="0" role="button" aria-label="查看比目鱼钓点详情">
+  <div class="sp-body">
+    <div class="sp-head"><h3>比目鱼钓点</h3><div class="sp-tags"><span class="badge hot">🔥 当季热门鱼种</span></div></div>
+    <p class="sp-en">Flounder Spots</p>
+    <p class="sp-desc">这些是我们自己常去的比目鱼钓点，也有一些是群友分享的位置。</p>
+    <div class="sp-actions">
+      <button class="sp-act sp-detail" type="button"><svg class="sp-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>钓点详情</button>
+      <button class="sp-act sp-none" type="button" disabled aria-label="多个钓点，没有统一的天气潮汐"><svg class="sp-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 8l8 8M16 8l-8 8"/></svg></button>
+    </div>
+  </div>
+  </div>
   <div class="card spot sp2 has-detail" data-detail="detail-288" tabindex="0" role="button" aria-label="查看 288 新堤详情">
   <div class="sp-photo" data-photo="surfsideNewJetty">
     <img alt="288 新堤的钓点环境" loading="lazy" decoding="async" referrerpolicy="no-referrer">
@@ -647,6 +658,43 @@
 </main>
 
 
+
+<!-- ============ 钓点详情：比目鱼钓点 ============ -->
+<section class="detail" id="detail-flounder" role="dialog" aria-modal="true" aria-labelledby="detail-flounder-title" hidden>
+  <header class="detail-bar">
+    <button class="detail-back" type="button" aria-label="返回"><span aria-hidden="true">‹</span>返回</button>
+    <div class="detail-bar-title">比目鱼钓点</div>
+    <span class="detail-bar-gap"></span>
+  </header>
+  <div class="detail-scroll">
+    <div class="detail-inner">
+      <div class="detail-head">
+        <h2 id="detail-flounder-title">比目鱼钓点</h2>
+      </div>
+      <div class="spot-meta"><span class="en">Flounder Spots</span></div>
+      <div class="detail-fees"><span class="badge hot">🔥 当季热门鱼种</span></div>
+
+      <button class="zone-map zoomable" type="button" data-title="比目鱼钓点分布" data-sub="双指可放大">
+        <img loading="lazy" src="images/spot-flounder.webp" alt="比目鱼钓点分布图：1–3 在 TCD，4 在海狼公园，5、6 在轮渡两头" decoding="async">
+        <span class="zone-zoom" aria-hidden="true">⤢ 点击放大</span>
+      </button>
+
+      <h3 class="detail-h">介绍</h3>
+      <p class="detail-note">这些是我们自己常去的比目鱼钓点，也有一些是群友分享的位置。</p>
+
+      <h3 class="detail-h">钓点</h3>
+      <ol class="pos-list">
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="比目鱼钓点 1 · TCD" data-addr="29.383337, -94.864030" data-coord="1" data-apple="https://maps.apple.com/?ll=29.383337,-94.864030&amp;q=%E6%AF%94%E7%9B%AE%E9%B1%BC%E9%92%93%E7%82%B9%201%20%C2%B7%20TCD" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.383337%2C-94.864030"><span class="pos-num" style="--zc:#e5372f">1</span><span class="pos-txt"><b>TCD</b>不挂底。</span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="比目鱼钓点 2 · TCD" data-addr="29.366847, -94.814765" data-coord="1" data-apple="https://maps.apple.com/?ll=29.366847,-94.814765&amp;q=%E6%AF%94%E7%9B%AE%E9%B1%BC%E9%92%93%E7%82%B9%202%20%C2%B7%20TCD" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.366847%2C-94.814765"><span class="pos-num" style="--zc:#e5372f">2</span><span class="pos-txt"><b>TCD</b>不挂底。</span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="比目鱼钓点 3 · TCD" data-addr="29.365277, -94.810102" data-coord="1" data-apple="https://maps.apple.com/?ll=29.365277,-94.810102&amp;q=%E6%AF%94%E7%9B%AE%E9%B1%BC%E9%92%93%E7%82%B9%203%20%C2%B7%20TCD" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.365277%2C-94.810102"><span class="pos-num" style="--zc:#e5372f">3</span><span class="pos-txt"><b>TCD</b>有点挂底。</span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="比目鱼钓点 4 · 海狼公园" data-addr="29.3360078, -94.7782501" data-coord="1" data-apple="https://maps.apple.com/?ll=29.3360078,-94.7782501&amp;q=%E6%AF%94%E7%9B%AE%E9%B1%BC%E9%92%93%E7%82%B9%204%20%C2%B7%20%E6%B5%B7%E7%8B%BC%E5%85%AC%E5%9B%AD" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.3360078%2C-94.7782501"><span class="pos-num" style="--zc:#e5372f">4</span><span class="pos-txt"><b>海狼公园</b></span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="比目鱼钓点 5 · 轮渡起点旁" data-addr="29.3279335, -94.7730526" data-coord="1" data-apple="https://maps.apple.com/?ll=29.3279335,-94.7730526&amp;q=%E6%AF%94%E7%9B%AE%E9%B1%BC%E9%92%93%E7%82%B9%205%20%C2%B7%20%E8%BD%AE%E6%B8%A1%E8%B5%B7%E7%82%B9%E6%97%81" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.3279335%2C-94.7730526"><span class="pos-num" style="--zc:#e5372f">5</span><span class="pos-txt"><b>轮渡起点旁</b>Galveston 这一侧。</span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="比目鱼钓点 6 · 轮渡终点旁" data-addr="29.3663739, -94.7793210" data-coord="1" data-apple="https://maps.apple.com/?ll=29.3663739,-94.7793210&amp;q=%E6%AF%94%E7%9B%AE%E9%B1%BC%E9%92%93%E7%82%B9%206%20%C2%B7%20%E8%BD%AE%E6%B8%A1%E7%BB%88%E7%82%B9%E6%97%81" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.3663739%2C-94.7793210"><span class="pos-num" style="--zc:#e5372f">6</span><span class="pos-txt"><b>轮渡终点旁</b>过海后 Bolivar 这一侧。</span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="比目鱼钓点 7 · Kemah" data-addr="29.5594641, -95.0194471" data-coord="1" data-apple="https://maps.apple.com/?ll=29.5594641,-95.0194471&amp;q=%E6%AF%94%E7%9B%AE%E9%B1%BC%E9%92%93%E7%82%B9%207%20%C2%B7%20Kemah" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.5594641%2C-95.0194471"><span class="pos-num" style="--zc:#e5372f">7</span><span class="pos-txt"><b>Kemah</b>在更北边，图上没有画出来。</span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+      </ol>
+    </div>
+  </div>
+</section>
 
 <!-- ============ 钓点详情页（91 街）============ -->
 <section class="detail" id="detail-91" role="dialog" aria-modal="true" aria-labelledby="detail-91-title" hidden>
