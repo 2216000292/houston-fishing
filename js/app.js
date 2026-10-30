@@ -15,6 +15,12 @@
   }
   window.statPage = statPage;
 
+  // 钓位导航：点了哪个钓位（比如 比目鱼钓点 4 · 海狼公园）
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.pos-btn.sheet-btn');
+    if (b) stat(u => u.track('钓位导航', { 钓位: b.dataset.title || '' }));
+  }, true);
+
   // 实时监控：记录哪个钓点的摄像头被点开，是在卡片上还是详情页里点的
   document.addEventListener('click', e => {
     const a = e.target.closest('a.cam'); if (!a) return;
