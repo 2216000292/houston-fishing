@@ -846,7 +846,7 @@
   function setWater(w, user) {
     sw.dataset.on = w;
     sw.setAttribute('aria-checked', w === 'fresh');
-    items.forEach(el => { el.hidden = el.dataset.water !== w; });
+    items.forEach(el => { el.hidden = el.dataset.water !== w || (el.hasAttribute('data-secret') && !window.secretOn); });
     if (user && window.umami && window.umami.track) { try { window.umami.track('钓点水域', { 选择: w === 'fresh' ? '淡水' : '海水' }); } catch (_) {} }
   }
   sw.addEventListener('click', () => {
@@ -885,7 +885,7 @@
   set(); a.addEventListener('pointerdown', set); a.addEventListener('click', set);
   // 统计：点了 放水记录 还是 当前水位
   document.querySelectorAll('.usgs-link').forEach(l => l.addEventListener('click', () => {
-    const name = (l.querySelector('.addr-text') || l).textContent.trim();
+    const t = l.querySelector('.addr-text'), name = t ? t.firstChild.textContent.trim() : '';
     if (window.umami && window.umami.track) { try { window.umami.track('萨默维尔湖水情', { 链接: name }); } catch (_) {} }
   }));
 })();
@@ -897,9 +897,28 @@
   if (!d || id === 'detail-fc') { try { history.replaceState(null, '', '#' + h.split('/')[0]); } catch (_) {} return; }
   // 淡水钓点：列表也切到淡水，返回时能看到它
   const card = document.querySelector('[data-detail="' + id + '"][data-water]');
+  if (card && card.hasAttribute('data-secret')) window.secretOn = true; // 拿到隐藏钓点链接的人也能在列表里看到它
   if (card && window.setWater) window.setWater(card.dataset.water);
   // 先把当前这一条历史改成列表页，再推入详情页：这样点返回会回到列表，而不是离开网站
   try { history.replaceState(null, '', '#' + h.split('/')[0]); } catch (_) {}
   window.openDetail(id);
   if (window.statEvent) { const t = d.querySelector('.detail-bar-title'); window.statEvent('钓点详情', { 钓点: t ? t.textContent.trim() : id, 方式: '分享链接' }); }
+})();
+
+// ---------- 隐藏钓点：连续点 8 次「钓点」页签解锁（刷新后重新隐藏） ----------
+(() => {
+  const tab = document.querySelector('.tabbar a[data-tab="spots"]'), card = document.querySelector('.secret-spot');
+  if (!tab || !card) return;
+  let n = 0, last = 0;
+  document.querySelectorAll('.tabbar a').forEach(t => t.addEventListener('click', () => {
+    if (t !== tab) { n = 0; return; }
+    const now = Date.now(); n = now - last < 1500 ? n + 1 : 1; last = now;
+    if (n < 8 || window.secretOn) return;
+    window.secretOn = true; n = 0;
+    if (window.setWater) window.setWater('fresh');
+    card.classList.add('secret-reveal');
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+    if (window.statEvent) window.statEvent('隐藏钓点', { 操作: '解锁' });
+    try { toast('🎣 发现隐藏钓点！'); } catch (_) {}
+  }));
 })();

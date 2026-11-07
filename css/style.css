@@ -1338,3 +1338,11 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .zone-map.zone-wide { aspect-ratio: 1600 / 610; height: auto; }
 .zone-map.zone-wide img { object-fit: contain; }
 .ws-wrap { padding-top: 6px; }
+.usgs-link .addr-sub { font-size: 12px; }
+
+/* 隐藏钓点：解锁时卡片发一下金光 */
+.badge.secret { background: #fff6db; color: #a16207; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.secret { background: #3a2e0a; color: #fcd34d; } }
+.secret-spot.secret-reveal { animation: secret-glow 1.6s ease-out 2; }
+@keyframes secret-glow { 0% { box-shadow: 0 0 0 0 rgba(234,179,8,.6), var(--shadow); } 70%, 100% { box-shadow: 0 0 0 14px rgba(234,179,8,0), var(--shadow); } }
+@media (prefers-reduced-motion: reduce) { .secret-spot.secret-reveal { animation: none; } }

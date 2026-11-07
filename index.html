@@ -624,6 +624,17 @@
     </div>
   </div>
   </div>
+  <div class="card spot sp2 has-detail secret-spot" data-water="fresh" data-secret="1" data-detail="detail-powerplant" tabindex="0" role="button" aria-label="查看白鲈鱼钓点（发电厂）详情" hidden>
+  <div class="sp-body">
+    <div class="sp-head"><h3>白鲈鱼钓点（发电厂）</h3><div class="sp-tags"><span class="badge secret">🤫 隐藏</span><span class="badge fresh">淡水</span></div></div>
+    <p class="sp-en">White Bass · Power Plant</p>
+    <p class="sp-desc">隐藏钓点，连点 8 次「钓点」才能看到，别外传。</p>
+    <div class="sp-actions">
+      <button class="sp-act sp-detail" type="button"><svg class="sp-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>钓点详情</button>
+      <button class="sp-act sp-none" type="button" disabled aria-label="多个钓点，没有统一的天气潮汐"><svg class="sp-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 8l8 8M16 8l-8 8"/></svg></button>
+    </div>
+  </div>
+  </div>
   <p class="water-empty" data-water="fresh" hidden>更多淡水钓点正在整理中，欢迎在群里分享你常去的地方。</p>
 </main>
 
@@ -685,6 +696,40 @@
 
 
 
+<!-- ============ 钓点详情：白鲈鱼钓点（发电厂，隐藏）============ -->
+<section class="detail" id="detail-powerplant" role="dialog" aria-modal="true" aria-labelledby="detail-powerplant-title" hidden>
+  <header class="detail-bar">
+    <button class="detail-back" type="button" aria-label="返回"><span aria-hidden="true">‹</span>返回</button>
+    <div class="detail-bar-title">白鲈鱼钓点（发电厂）</div>
+    <span class="detail-bar-gap"></span>
+  </header>
+  <div class="detail-scroll">
+    <div class="detail-inner">
+      <div class="detail-head">
+        <h2 id="detail-powerplant-title">白鲈鱼钓点（发电厂）</h2>
+      </div>
+      <div class="spot-meta"><span class="en">White Bass · Power Plant</span></div>
+      <div class="detail-fees"><span class="badge secret">🤫 隐藏</span> <span class="badge fresh">淡水</span></div>
+
+      <button class="zone-map zoomable" type="button" data-title="白鲈鱼钓点（发电厂）" data-sub="双指可放大" style="aspect-ratio:775/907">
+        <img loading="lazy" src="images/spot-powerplant.webp" alt="岸边草地上的一大堆白鲈鱼" decoding="async">
+        <span class="zone-zoom" aria-hidden="true">⤢ 点击放大</span>
+      </button>
+
+      <h3 class="detail-h">介绍</h3>
+      <p class="detail-note">隐藏钓点，只有连续点 8 次「钓点」才能看到，别外传哦。</p>
+
+      <h3 class="detail-h">钓点</h3>
+      <ol class="pos-list">
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="白鲈鱼钓点（发电厂）" data-addr="29.5054418, -95.7116635" data-coord="1" data-apple="https://maps.apple.com/?ll=29.5054418,-95.7116635&amp;q=%E7%99%BD%E9%B2%88%E9%B1%BC%E9%92%93%E7%82%B9%EF%BC%88%E5%8F%91%E7%94%B5%E5%8E%82%EF%BC%89" data-google="https://www.google.com/maps/search/?api=1&amp;query=29.5054418%2C-95.7116635"><span class="pos-num" style="--zc:#16a34a">1</span><span class="pos-txt"><b>具体位置</b></span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+      </ol>
+
+      <h3 class="detail-h">常见鱼种</h3>
+      <div class="spot-fish"><span class="tag">白鲈鱼</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ 钓点详情：萨默维尔湖（淡水）============ -->
 <section class="detail" id="detail-somerville" role="dialog" aria-modal="true" aria-labelledby="detail-somerville-title" hidden>
   <header class="detail-bar">
@@ -720,7 +765,7 @@
       <h3 class="detail-h">大坝放水 / 水位</h3>
       <a class="addr usgs-link" id="usgs-flow" href="https://waterservices.usgs.gov/nwis/dv/?format=rdb&amp;sites=08110000&amp;parameterCd=00060" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16V9M10 16V5M14 16v-6M18 16V7"/></svg>
-        <span class="addr-text">放水记录（过去 3 个月）</span><span class="chev">↗</span>
+        <span class="addr-text">放水记录（过去 3 个月）<span class="addr-sub">看每行最后一个数字，放水基本都在 150 cfs 以上</span></span><span class="chev">↗</span>
       </a>
       <a class="addr usgs-link" href="https://water.usace.army.mil/overview/swf/locations/somt2" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s-6 6.5-6 11a6 6 0 0 0 12 0c0-4.5-6-11-6-11z"/><path d="M9 14.5a3 3 0 0 0 3 3"/></svg>
