@@ -498,8 +498,22 @@
 
 <!-- ============ 钓点 ============ -->
 <main class="view" id="spots">
+  <div class="spots-top">
   <p class="fish-intro spots-intro">休斯顿周边的热门钓点，可以看实时监控、一键导航，还能查未来 7 天的天气和潮汐</p>
-  <div class="card spot sp2 has-detail" data-detail="detail-flounder" tabindex="0" role="button" aria-label="查看比目鱼钓点详情">
+  <div class="ws-wrap">
+  <button type="button" class="water-switch" role="switch" aria-checked="false" aria-label="淡水钓点" data-on="sea">
+    <span class="ws-track" aria-hidden="true">
+      <span class="ws-label ws-sea">海水</span><span class="ws-label ws-fresh">淡水</span>
+      <span class="ws-wave"></span>
+      <span class="ws-knob">
+        <svg class="ws-ic ws-ic-sea" viewBox="0 0 24 24"><path d="M2 9c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2M2 15c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <svg class="ws-ic ws-ic-fresh" viewBox="0 0 24 24"><path d="M12 21V11M12 11c0-4 3-7 7-7 0 4-3 7-7 7zM12 14c0-3-2.5-5.5-6-5.5 0 3.5 2.5 5.5 6 5.5z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </span>
+  </button>
+  </div>
+  </div>
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-flounder" tabindex="0" role="button" aria-label="查看比目鱼钓点详情">
   <div class="sp-body">
     <div class="sp-head"><h3>比目鱼钓点</h3><div class="sp-tags"><span class="badge hot">🔥 当季热门鱼种</span></div></div>
     <p class="sp-en">Flounder Spots</p>
@@ -510,7 +524,7 @@
     </div>
   </div>
   </div>
-  <div class="card spot sp2 has-detail" data-detail="detail-288" tabindex="0" role="button" aria-label="查看 288 新堤详情">
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-288" tabindex="0" role="button" aria-label="查看 288 新堤详情">
   <div class="sp-photo" data-photo="surfsideNewJetty">
     <img alt="288 新堤的钓点环境" loading="lazy" decoding="async" referrerpolicy="no-referrer">
     <button class="sp-zoom" type="button" aria-label="放大照片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></button>
@@ -525,7 +539,7 @@
     </div>
   </div>
   </div>
-  <div class="card spot sp2 has-detail" data-detail="detail-seawolf" tabindex="0" role="button" aria-label="查看海狼公园详情">
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-seawolf" tabindex="0" role="button" aria-label="查看海狼公园详情">
   <div class="sp-photo" data-photo="seawolfPark">
     <img alt="海狼公园的钓点环境" loading="lazy" decoding="async" referrerpolicy="no-referrer">
     <button class="sp-zoom" type="button" aria-label="放大照片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></button>
@@ -540,7 +554,7 @@
     </div>
   </div>
   </div>
-  <div class="card spot sp2 has-detail" data-detail="detail-61" tabindex="0" role="button" aria-label="查看 61 街 详情">
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-61" tabindex="0" role="button" aria-label="查看 61 街 详情">
   <div class="sp-photo" data-photo="street61">
     <img alt="61 街的钓点环境" loading="lazy" decoding="async" referrerpolicy="no-referrer">
     <button class="sp-zoom" type="button" aria-label="放大照片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></button>
@@ -555,7 +569,7 @@
     </div>
   </div>
   </div>
-  <div class="card spot sp2 has-detail" data-detail="detail-tcd" tabindex="0" role="button" aria-label="查看 TCD 详情">
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-tcd" tabindex="0" role="button" aria-label="查看 TCD 详情">
   <div class="sp-body">
     <div class="sp-head"><h3>TCD</h3><div class="sp-tags"><a class="cam" href="https://www.texascitytx.gov/637/Live-Weather-Cam" target="_blank" rel="noopener"><svg class="cam-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="m15.5 10.5 6-3.5v10l-6-3.5"/></svg>实时监控<span class="ext">↗</span></a></div></div>
     <p class="sp-en">Texas City Dike</p>
@@ -566,7 +580,7 @@
     </div>
   </div>
   </div>
-  <div class="card spot sp2 has-detail" data-detail="detail-288old" tabindex="0" role="button" aria-label="查看 288 旧堤 详情">
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-288old" tabindex="0" role="button" aria-label="查看 288 旧堤 详情">
   <div class="sp-body">
     <div class="sp-head"><h3>288 旧堤</h3></div>
     <p class="sp-en">Quintana Jetty</p>
@@ -577,7 +591,7 @@
     </div>
   </div>
   </div>
-  <div class="card spot sp2 has-detail" data-detail="detail-91" tabindex="0" role="button" aria-label="查看 91 街详情">
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-91" tabindex="0" role="button" aria-label="查看 91 街详情">
   <div class="sp-body">
     <div class="sp-head"><h3>91 街</h3><div class="sp-tags"><span class="fee">收费</span><a class="cam" href="https://galvestonfishingpier.com/live-pier-cam" target="_blank" rel="noopener"><svg class="cam-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="m15.5 10.5 6-3.5v10l-6-3.5"/></svg>实时监控<span class="ext">↗</span></a></div></div>
     <p class="sp-en">Galveston Fishing Pier</p>
@@ -588,7 +602,7 @@
     </div>
   </div>
   </div>
-  <div class="card spot sp2 has-detail" data-detail="detail-17" tabindex="0" role="button" aria-label="查看 17 街详情">
+  <div class="card spot sp2 has-detail" data-water="sea" data-detail="detail-17" tabindex="0" role="button" aria-label="查看 17 街详情">
   <div class="sp-body">
     <div class="sp-head"><h3>17 街</h3><div class="sp-tags"><span class="badge crab">螃蟹圣地</span></div></div>
     <p class="sp-en">Bolivar North Jetty</p>
@@ -599,6 +613,18 @@
     </div>
   </div>
   </div>
+  <div class="card spot sp2 has-detail" data-water="fresh" data-detail="detail-somerville" tabindex="0" role="button" aria-label="查看萨默维尔湖钓点详情" hidden>
+  <div class="sp-body">
+    <div class="sp-head"><h3>萨默维尔湖</h3><div class="sp-tags"><span class="badge fresh">淡水</span></div></div>
+    <p class="sp-en">Lake Somerville</p>
+    <p class="sp-desc">到了季节有皮皮和白鲈鱼，钓鱼码头和大坝都能岸钓，离休斯顿约 1.5 小时。</p>
+    <div class="sp-actions">
+      <button class="sp-act sp-detail" type="button"><svg class="sp-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>钓点详情</button>
+      <button class="sp-act sp-none" type="button" disabled aria-label="多个钓点，没有统一的天气潮汐"><svg class="sp-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 8l8 8M16 8l-8 8"/></svg></button>
+    </div>
+  </div>
+  </div>
+  <p class="water-empty" data-water="fresh" hidden>更多淡水钓点正在整理中，欢迎在群里分享你常去的地方。</p>
 </main>
 
 <!-- ============ 更多 ============ -->
@@ -623,10 +649,10 @@
     <div class="hang hang-contact">
       <svg class="hang-hook" viewBox="0 0 44 64" aria-hidden="true"><path class="hh-line" d="M0 6 C 18 6, 30 12, 32 26"/><path class="hh-steel" d="M32 26 V48 C32 58, 18 58, 18 48 V44"/><path class="hh-steel" d="M18 44 L21.5 48.5"/></svg>
       <div class="hang-title"><b>欢迎加入我们的钓鱼微信群聊</b></div>
-      <button class="qr-box zoomable" type="button" data-title="休斯顿钓鱼分享群" data-sub="微信扫码进群 · 11 月 6 日前有效" aria-label="放大微信群二维码">
+      <button class="qr-box zoomable" type="button" data-title="休斯顿钓鱼分享群" data-sub="微信扫码进群 · 11 月 11 日前有效" aria-label="放大微信群二维码">
         <img src="images/wechat-group-qr.webp" alt="微信群「休斯顿钓鱼分享群」二维码" loading="lazy" decoding="async">
       </button>
-      <p class="qr-note">二维码 11 月 6 日前有效，过期会再更新。</p>
+      <p class="qr-note">二维码 11 月 11 日前有效，过期会再更新。</p>
     </div>
 
     <h2 class="more-h">还在开发中的功能</h2>
@@ -658,6 +684,63 @@
 </main>
 
 
+
+<!-- ============ 钓点详情：萨默维尔湖（淡水）============ -->
+<section class="detail" id="detail-somerville" role="dialog" aria-modal="true" aria-labelledby="detail-somerville-title" hidden>
+  <header class="detail-bar">
+    <button class="detail-back" type="button" aria-label="返回"><span aria-hidden="true">‹</span>返回</button>
+    <div class="detail-bar-title">萨默维尔湖</div>
+    <span class="detail-bar-gap"></span>
+  </header>
+  <div class="detail-scroll">
+    <div class="detail-inner">
+      <div class="detail-head">
+        <h2 id="detail-somerville-title">萨默维尔湖</h2>
+      </div>
+      <div class="spot-meta"><span class="en">Lake Somerville</span></div>
+      <div class="detail-fees"><span class="badge fresh">淡水</span></div>
+
+      <button class="zone-map zone-wide zoomable" type="button" data-title="萨默维尔湖钓点分布" data-sub="双指可放大">
+        <img loading="lazy" src="images/spot-somerville.webp" alt="萨默维尔湖钓点分布图：1 在西边的钓鱼码头，2 在东边的大坝泄洪口" decoding="async">
+        <span class="zone-zoom" aria-hidden="true">⤢ 点击放大</span>
+      </button>
+
+      <h3 class="detail-h">介绍</h3>
+      <p class="detail-note">离休斯顿大约 1.5 小时车程，到了季节会有皮皮和白鲈鱼。下面两个钓点的视频，都是 YouTube 博主在这里钓鱼的实拍。</p>
+
+      <h3 class="detail-h">钓点</h3>
+      <ol class="pos-list">
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="萨默维尔湖 1 · 钓鱼码头" data-addr="30.309930, -96.618639" data-coord="1" data-apple="https://maps.apple.com/?ll=30.309930,-96.618639&amp;q=%E8%90%A8%E9%BB%98%E7%BB%B4%E5%B0%94%E6%B9%96%201%20%C2%B7%20%E9%92%93%E9%B1%BC%E7%A0%81%E5%A4%B4" data-google="https://www.google.com/maps/search/?api=1&amp;query=30.309930%2C-96.618639"><span class="pos-num" style="--zc:#16a34a">1</span><span class="pos-txt"><b>钓鱼码头</b>这里可能会有蛇，记得穿长裤。</span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+        <li class="pos-row pos-link"><button class="pos-btn sheet-btn" type="button" data-title="萨默维尔湖 2 · 大坝泄洪口" data-addr="30.319543, -96.523484" data-coord="1" data-apple="https://maps.apple.com/?ll=30.319543,-96.523484&amp;q=%E8%90%A8%E9%BB%98%E7%BB%B4%E5%B0%94%E6%B9%96%202%20%C2%B7%20%E5%A4%A7%E5%9D%9D%E6%B3%84%E6%B4%AA%E5%8F%A3" data-google="https://www.google.com/maps/search/?api=1&amp;query=30.319543%2C-96.523484"><span class="pos-num" style="--zc:#1d63e0">2</span><span class="pos-txt"><b>大坝泄洪口</b></span><span class="pos-go" aria-hidden="true">导航<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></li>
+      </ol>
+
+      <h3 class="detail-h">常见鱼种</h3>
+      <div class="spot-fish"><span class="tag">皮皮</span><span class="tag">白鲈鱼</span><span class="tag">杂交条纹鲈</span><span class="tag">大嘴鲈</span><span class="tag">蓝鳃太阳鱼</span></div>
+
+      <h3 class="detail-h">大坝放水 / 水位</h3>
+      <a class="addr usgs-link" id="usgs-flow" href="https://waterservices.usgs.gov/nwis/dv/?format=rdb&amp;sites=08110000&amp;parameterCd=00060" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16V9M10 16V5M14 16v-6M18 16V7"/></svg>
+        <span class="addr-text">放水记录（过去 3 个月）</span><span class="chev">↗</span>
+      </a>
+      <a class="addr usgs-link" href="https://water.usace.army.mil/overview/swf/locations/somt2" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s-6 6.5-6 11a6 6 0 0 0 12 0c0-4.5-6-11-6-11z"/><path d="M9 14.5a3 3 0 0 0 3 3"/></svg>
+        <span class="addr-text">当前水位</span><span class="chev">↗</span>
+      </a>
+
+      <h3 class="detail-h">视频</h3>
+      <p class="yt-cap"><span class="yt-cap-n">1</span>钓鱼码头</p>
+      <div class="yt" data-id="c6Nehlcd2k4">
+        <button class="yt-poster" type="button" aria-label="播放视频：钓鱼码头"><img loading="lazy" src="https://i.ytimg.com/vi/c6Nehlcd2k4/hqdefault.jpg" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><span class="yt-play" aria-hidden="true"></span></button>
+      </div>
+      <a class="yt-link" href="https://www.youtube.com/shorts/c6Nehlcd2k4" target="_blank" rel="noopener">在 YouTube 打开<span class="ext">↗</span></a>
+      <p class="yt-cap"><span class="yt-cap-n">2</span>大坝泄洪口</p>
+      <div class="yt" data-id="aOKrCXsb92g" data-ratio="16/9">
+        <button class="yt-poster" type="button" aria-label="播放视频：大坝泄洪口"><img loading="lazy" src="https://i.ytimg.com/vi/aOKrCXsb92g/hqdefault.jpg" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><span class="yt-play" aria-hidden="true"></span></button>
+      </div>
+      <a class="yt-link" href="https://www.youtube.com/watch?v=aOKrCXsb92g" target="_blank" rel="noopener">在 YouTube 打开<span class="ext">↗</span></a>
+    </div>
+  </div>
+</section>
 
 <!-- ============ 钓点详情：比目鱼钓点 ============ -->
 <section class="detail" id="detail-flounder" role="dialog" aria-modal="true" aria-labelledby="detail-flounder-title" hidden>

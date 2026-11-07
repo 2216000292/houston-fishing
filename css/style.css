@@ -1249,3 +1249,91 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .sp-act.sp-none, .sp-act.sp-none:disabled { background: #eef1f5; color: var(--muted); opacity: 1; filter: none; transform: none; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sp-act.sp-none, :root:not([data-theme="light"]) .sp-act.sp-none:disabled { background: #222c39; } }
 .sp-act.sp-none .sp-ic { opacity: .45; }
+
+/* ---------- 钓点页：右上角 海水 / 淡水 开关 ---------- */
+.spots-top { display: flex; align-items: flex-start; gap: 12px; }
+.spots-top .spots-intro { flex: 1; min-width: 0; }
+.water-switch { flex: none; margin: 2px 0 0; padding: 4px; border: 0; background: none; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; border-radius: 999px; }
+.water-switch:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.ws-track { position: relative; display: block; width: 84px; height: 38px; border-radius: 999px; overflow: hidden;
+  background: linear-gradient(160deg, #3aa0ff 0%, #0a63cc 100%);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.18), 0 4px 12px -4px rgba(10,99,204,.55);
+  transition: background .35s, box-shadow .35s; }
+.water-switch[data-on="fresh"] .ws-track { background: linear-gradient(160deg, #4fd27f 0%, #12804a 100%);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.18), 0 4px 12px -4px rgba(18,128,74,.55); }
+/* 底部流动的水波 */
+.ws-wave { position: absolute; left: 0; right: 0; bottom: 0; height: 11px; opacity: .28;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='12' viewBox='0 0 40 12'%3E%3Cpath d='M0 6c5 0 5-4 10-4s5 4 10 4 5-4 10-4 5 4 10 4v6H0z' fill='white'/%3E%3C/svg%3E") repeat-x 0 100% / 20px 6px; animation: ws-flow 3.2s linear infinite; transition: opacity .35s; }
+.water-switch[data-on="fresh"] .ws-wave { opacity: .2; animation-duration: 6s; }
+@keyframes ws-flow { to { background-position: 20px 100%; } }
+.ws-label { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; color: #fff;
+  font-size: 13px; font-weight: 800; letter-spacing: .5px; text-shadow: 0 1px 1px rgba(0,0,0,.15);
+  transition: opacity .25s, transform .35s cubic-bezier(.3,1.4,.5,1); }
+.ws-sea { right: 11px; }
+.ws-fresh { left: 11px; opacity: 0; transform: translateX(-8px); }
+.water-switch[data-on="fresh"] .ws-sea { opacity: 0; transform: translateX(8px); }
+.water-switch[data-on="fresh"] .ws-fresh { opacity: 1; transform: none; }
+/* 白色圆钮，带图标，按下会拉长一点 */
+.ws-knob { position: absolute; z-index: 1; top: 3px; left: 3px; width: 32px; height: 32px; border-radius: 999px;
+  background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.04);
+  display: grid; place-items: center; color: #0a63cc;
+  transition: left .38s cubic-bezier(.3,1.35,.5,1), width .2s, color .35s; }
+.water-switch[data-on="fresh"] .ws-knob { left: calc(100% - 35px); color: #12804a; }
+.water-switch:active .ws-knob { width: 38px; }
+.water-switch[data-on="fresh"]:active .ws-knob { left: calc(100% - 41px); }
+.ws-ic { grid-area: 1 / 1; width: 18px; height: 18px; transition: opacity .25s, transform .35s; }
+.ws-ic-fresh { opacity: 0; transform: rotate(-60deg) scale(.6); }
+.water-switch[data-on="fresh"] .ws-ic-sea { opacity: 0; transform: rotate(60deg) scale(.6); }
+.water-switch[data-on="fresh"] .ws-ic-fresh { opacity: 1; transform: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ws-track { background: linear-gradient(160deg, #2a7fd6 0%, #0b3f82 100%); box-shadow: inset 0 1px 2px rgba(0,0,0,.4); }
+  :root:not([data-theme="light"]) .water-switch[data-on="fresh"] .ws-track { background: linear-gradient(160deg, #2fae62 0%, #0e5a35 100%); box-shadow: inset 0 1px 2px rgba(0,0,0,.4); }
+  :root:not([data-theme="light"]) .ws-knob { background: #f1f5f9; }
+}
+@media (prefers-reduced-motion: reduce) { .ws-wave { animation: none; } .ws-knob, .ws-label, .ws-ic { transition: none; } }
+.badge.fresh { background: #e8f8ef; color: #12804a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.fresh { background: #12301f; color: #5ee09a; } }
+.water-empty { margin: 4px 2px 0; font-size: 13.5px; color: var(--muted); text-align: center; }
+.yt[data-ratio="16/9"] { width: 100%; aspect-ratio: 16 / 9; }
+
+/* 让开关一看就能点：下方提示文字 + 没点过时圆钮探两下、外圈呼吸光 */
+.ws-wrap { flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ws-hint { display: inline-flex; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 700; color: var(--primary);
+  white-space: nowrap; pointer-events: none; transition: color .35s; }
+.ws-hint svg { width: 12px; height: 12px; }
+.ws-wrap:has(.water-switch[data-on="fresh"]) .ws-hint { color: #12804a; }
+.water-switch.nudge .ws-knob { animation: ws-peek 1.6s .4s cubic-bezier(.4,0,.2,1) 2; }
+.water-switch[data-on="fresh"].nudge .ws-knob { animation-name: ws-peek-back; }
+@keyframes ws-peek { 0%, 55%, 100% { transform: none; } 20%, 35% { transform: translateX(12px); } }
+@keyframes ws-peek-back { 0%, 55%, 100% { transform: none; } 20%, 35% { transform: translateX(-12px); } }
+.water-switch:not(.used) { position: relative; }
+.water-switch:not(.used)::before { content: ""; position: absolute; inset: 4px; border-radius: 999px; pointer-events: none;
+  animation: ws-halo 2.4s ease-out infinite; }
+@keyframes ws-halo { 0% { box-shadow: 0 0 0 0 rgba(58,160,255,.5); } 70%, 100% { box-shadow: 0 0 0 9px rgba(58,160,255,0); } }
+.water-switch[data-on="fresh"]:not(.used)::before { animation-name: ws-halo-g; }
+@keyframes ws-halo-g { 0% { box-shadow: 0 0 0 0 rgba(79,210,127,.5); } 70%, 100% { box-shadow: 0 0 0 9px rgba(79,210,127,0); } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ws-wrap:has(.water-switch[data-on="fresh"]) .ws-hint { color: #5ee09a; }
+}
+@media (prefers-reduced-motion: reduce) { .water-switch.nudge .ws-knob, .water-switch::before { animation: none !important; } }
+
+/* 钓点详情里多个视频：每个视频上面一个小标题，编号颜色和钓点列表对应 */
+.yt-cap { display: flex; align-items: center; gap: 8px; margin: 14px 0 8px; font-size: 14.5px; font-weight: 700; color: var(--text); }
+.yt-cap:first-of-type { margin-top: 4px; }
+.yt-cap-n { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 999px; font-size: 12px; color: #fff; background: #16a34a; }
+.yt-link + .yt-cap .yt-cap-n { background: #1d63e0; }
+.yt-link + .yt-cap { margin-top: 22px; }
+
+/* 萨默维尔湖：USGS 放水 / 水位外链，样式和地址行一致 */
+.detail a.usgs-link { margin-top: 8px; align-items: center; padding: 10px 12px; font-size: 14px; color: var(--text); text-decoration: none;
+  background: var(--card); box-shadow: var(--shadow); transition: transform .1s, background .15s; -webkit-tap-highlight-color: transparent; }
+.detail a.usgs-link:active { transform: scale(.98); background: var(--primary-soft); }
+.detail a.usgs-link svg { margin-top: 0; flex: 0 0 20px; }
+.usgs-link .addr-text { white-space: normal; }
+.usgs-link .addr-sub { display: block; }
+.usgs-link .chev { font-size: 15px; color: var(--primary); }
+
+/* 横版地图（萨默维尔湖）：按原图比例显示，不裁掉两头的钓点标记 */
+.zone-map.zone-wide { aspect-ratio: 1600 / 610; height: auto; }
+.zone-map.zone-wide img { object-fit: contain; }

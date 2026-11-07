@@ -472,7 +472,7 @@
     const poster = box.querySelector('.yt-poster');
     poster.addEventListener('click', () => {
       const f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + box.dataset.id + '?autoplay=1&playsinline=1&rel=0';
+      f.src = 'https://www.youtube-nocookie.com/embed/' + box.dataset.id + '?autoplay=1&playsinline=1&rel=0' + (box.dataset.start ? '&start=' + box.dataset.start : '');
       f.title = 'YouTube 视频';
       f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
       f.allowFullscreen = true;
@@ -812,3 +812,53 @@
       if (k) open(k);
     }));
   })();
+
+// ---------- 钓点页：海水 / 淡水开关（每次打开默认海水） ----------
+(() => {
+  const sw = document.querySelector('.water-switch'); if (!sw) return;
+  const items = document.querySelectorAll('#spots [data-water]');
+  function setWater(w, user) {
+    sw.dataset.on = w;
+    sw.setAttribute('aria-checked', w === 'fresh');
+    items.forEach(el => { el.hidden = el.dataset.water !== w; });
+    if (user && window.umami && window.umami.track) { try { window.umami.track('钓点水域', { 选择: w === 'fresh' ? '淡水' : '海水' }); } catch (_) {} }
+  }
+  sw.addEventListener('click', () => {
+    setWater(sw.dataset.on === 'fresh' ? 'sea' : 'fresh', true);
+    sw.classList.remove('nudge'); sw.classList.add('used');
+    try { localStorage.setItem('waterUsed', String(Date.now())); } catch (_) {}
+  });
+  // 没点过（或上次点已超过 3 天）的用户：每次看到开关时，圆钮往另一边"探"两下，提示可以点
+  let used = false; try { const t = +localStorage.getItem('waterUsed'); used = t > 1 && Date.now() - t < 3 * 864e5; } catch (_) {}
+  if (used) sw.classList.add('used');
+  else if ('IntersectionObserver' in window) {
+    // 看得到开关时先探一次，之后只要还没点，每隔 8 秒再探一次；滑走或切页就停
+    let timer = 0;
+    const peek = () => {
+      if (sw.classList.contains('used')) { clearInterval(timer); timer = 0; return; }
+      sw.classList.remove('nudge'); void sw.offsetWidth; sw.classList.add('nudge');
+    };
+    new IntersectionObserver(es => es.forEach(e => {
+      clearInterval(timer); timer = 0;
+      if (!e.isIntersecting || sw.classList.contains('used')) return;
+      peek(); timer = setInterval(peek, 8000);
+    }), { threshold: 1 }).observe(sw);
+  }
+  setWater('sea', false); // 每次打开都默认海水
+})();
+
+// ---------- 萨默维尔湖：放水记录链接，每次打开都拼成"过去 3 个月到今天" ----------
+(() => {
+  const a = document.getElementById('usgs-flow'); if (!a) return;
+  const d = x => x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+  const set = () => {
+    const end = new Date(), start = new Date(end); start.setMonth(start.getMonth() - 3);
+    a.href = 'https://waterservices.usgs.gov/nwis/dv/?format=rdb&sites=08110000&parameterCd=00060&startDT=' + d(start) + '&endDT=' + d(end);
+  };
+  set(); a.addEventListener('pointerdown', set); a.addEventListener('click', set);
+  // 统计：点了 放水记录 还是 当前水位
+  document.querySelectorAll('.usgs-link').forEach(l => l.addEventListener('click', () => {
+    const name = (l.querySelector('.addr-text') || l).textContent.trim();
+    if (window.umami && window.umami.track) { try { window.umami.track('萨默维尔湖水情', { 链接: name }); } catch (_) {} }
+  }));
+})();
