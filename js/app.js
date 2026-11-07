@@ -14,6 +14,7 @@
     stat(u => u.track(p => ({ ...p, url: path + (ref ? '?ref=' + encodeURIComponent(ref) : ''), title })));
   }
   window.statPage = statPage;
+  window.statEvent = (n, d) => stat(u => u.track(n, d));
 
   // 钓位导航：点了哪个钓位（比如 比目鱼钓点 4 · 海狼公园）
   document.addEventListener('click', e => {
@@ -50,6 +51,7 @@
   const views = document.querySelectorAll('.view');
 
   function show(id) {
+    id = String(id || '').split('/')[0];
     if (!document.getElementById(id)) id = 'fish';
     views.forEach(v => v.classList.toggle('active', v.id === id));
     tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === id));
@@ -62,7 +64,12 @@
     show(t.dataset.tab);
     try { history.replaceState(null, '', '#' + t.dataset.tab); } catch (_) {}
   }));
-  window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+  // 返回 / 前进时 # 变了：页签不同才切换（避免关详情页时列表被滚回顶部），带详情的就打开详情
+  window.addEventListener('hashchange', () => {
+    const h = location.hash.slice(1), v = h.split('/')[0] || 'fish';
+    if (v !== show._last) show(v);
+    if (h.includes('/') && window.openDetailFromHash) window.openDetailFromHash(h);
+  });
   let start = 'fish';
   try { start = location.hash.slice(1) || 'fish'; } catch (_) {}
   show(start);
@@ -351,18 +358,37 @@
       d.hidden = false; d.offsetHeight;
       d.classList.add('open'); root.classList.add('lock');
       d.querySelector('.detail-scroll').scrollTop = 0; d.classList.remove('scrolled');
-      if (push) history.pushState({ detail: id }, '');
+      if (push) {
+        const u = detailUrl(id);
+        try { u ? history.pushState({ detail: id }, '', u) : history.pushState({ detail: id }, ''); } catch (_) {}
+      }
       setTimeout(() => d.querySelector('.detail-back').focus({ preventScroll: true }), 350);
     }
     function closeDetail(fromPop = false) {
       const d = top(); if (!d) return;
       if (!fromPop && history.state && history.state.detail) { history.back(); return; }
+      // 没有对应的历史记录（比如手动改了网址）：把网址改回页签本身
+      if (!fromPop && location.hash.includes('/')) { try { history.replaceState(null, '', '#' + location.hash.slice(1).split('/')[0]); } catch (_) {} }
       stack.pop();
       d.classList.remove('open', 'dragging'); d.style.transform = '';
       if (!stack.length) root.classList.remove('lock');
       d._closeT = setTimeout(() => { d.hidden = true; }, 360);
     }
     window.openDetail = openDetail;
+    // 详情页的专属网址：#spots/somerville、#howto/spoon（天气潮汐页不单独占网址）
+    function detailUrl(id) {
+      if (id === 'detail-fc') return '';
+      const opener = document.querySelector('[data-detail="' + id + '"]');
+      const view = opener && opener.closest('.view');
+      return view ? '#' + view.id + '/' + id.replace('detail-', '') : '';
+    }
+    window.openDetailFromHash = h => {
+      const id = 'detail-' + h.split('/')[1];
+      const d = document.getElementById(id);
+      if (!d || id === 'detail-fc' || stack.includes(d)) return false;
+      openDetail(id, false);
+      return true;
+    };
     try { history.scrollRestoration = 'manual'; } catch (_) {}  // 返回时别让浏览器自己改滚动位置
     window.addEventListener('popstate', () => { if (stack.length) closeDetail(true); });
     document.querySelectorAll('[data-detail]').forEach(b => {
@@ -845,6 +871,7 @@
     }), { threshold: 1 }).observe(sw);
   }
   setWater('sea', false); // 每次打开都默认海水
+  window.setWater = w => setWater(w === 'fresh' ? 'fresh' : 'sea', false);
 })();
 
 // ---------- 萨默维尔湖：放水记录链接，每次打开都拼成"过去 3 个月到今天" ----------
@@ -861,4 +888,18 @@
     const name = (l.querySelector('.addr-text') || l).textContent.trim();
     if (window.umami && window.umami.track) { try { window.umami.track('萨默维尔湖水情', { 链接: name }); } catch (_) {} }
   }));
+})();
+
+// ---------- 分享链接直接打开某个钓点 / 钓组：比如 texashook.com/#spots/somerville ----------
+(() => {
+  const h = location.hash.slice(1); if (!h.includes('/')) return;
+  const id = 'detail-' + h.split('/')[1], d = document.getElementById(id);
+  if (!d || id === 'detail-fc') { try { history.replaceState(null, '', '#' + h.split('/')[0]); } catch (_) {} return; }
+  // 淡水钓点：列表也切到淡水，返回时能看到它
+  const card = document.querySelector('[data-detail="' + id + '"][data-water]');
+  if (card && window.setWater) window.setWater(card.dataset.water);
+  // 先把当前这一条历史改成列表页，再推入详情页：这样点返回会回到列表，而不是离开网站
+  try { history.replaceState(null, '', '#' + h.split('/')[0]); } catch (_) {}
+  window.openDetail(id);
+  if (window.statEvent) { const t = d.querySelector('.detail-bar-title'); window.statEvent('钓点详情', { 钓点: t ? t.textContent.trim() : id, 方式: '分享链接' }); }
 })();
