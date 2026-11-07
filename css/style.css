@@ -1337,3 +1337,4 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 /* 横版地图（萨默维尔湖）：按原图比例显示，不裁掉两头的钓点标记 */
 .zone-map.zone-wide { aspect-ratio: 1600 / 610; height: auto; }
 .zone-map.zone-wide img { object-fit: contain; }
+.ws-wrap { padding-top: 6px; }
