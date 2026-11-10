@@ -922,3 +922,26 @@
     try { toast('🎣 发现隐藏钓点！'); } catch (_) {}
   }));
 })();
+
+// ---------- Instagram 官方内嵌视频：打开详情页时才加载，关掉就移除；高度跟着 Instagram 自己报的内容高度走 ----------
+document.querySelectorAll('.ig-embed[data-ig]').forEach(box => {
+  const page = box.closest('.detail'); if (!page) return;
+  new MutationObserver(() => {
+    const f = box.querySelector('iframe');
+    if (page.classList.contains('open')) {
+      if (f) return;
+      const n = document.createElement('iframe');
+      n.src = 'https://www.instagram.com/reel/' + box.dataset.ig + '/embed/';
+      n.title = 'Instagram 视频'; n.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      n.allowFullscreen = true; n.setAttribute('scrolling', 'no');
+      n.addEventListener('load', () => box.classList.add('loaded'));
+      box.appendChild(n);
+    } else if (f) setTimeout(() => { if (!page.classList.contains('open')) { f.remove(); box.classList.remove('loaded'); box.style.height = ''; } }, 400);
+  }).observe(page, { attributes: true, attributeFilter: ['class'] });
+});
+window.addEventListener('message', e => {
+  if (!/^https:\/\/www\.instagram\.com$/.test(e.origin)) return;
+  let d = e.data; try { if (typeof d === 'string') d = JSON.parse(d); } catch (_) { return; }
+  if (!d || d.type !== 'MEASURE' || !d.details || !(d.details.height > 100)) return;
+  document.querySelectorAll('.ig-embed iframe').forEach(f => { if (f.contentWindow === e.source) f.parentNode.style.height = Math.ceil(d.details.height) + 'px'; });
+});
