@@ -358,6 +358,7 @@
       d.hidden = false; d.offsetHeight;
       d.classList.add('open'); root.classList.add('lock');
       d.querySelector('.detail-scroll').scrollTop = 0; d.classList.remove('scrolled');
+      setDocTitle();
       if (push) {
         const u = detailUrl(id);
         try { u ? history.pushState({ detail: id }, '', u) : history.pushState({ detail: id }, ''); } catch (_) {}
@@ -373,8 +374,16 @@
       d.classList.remove('open', 'dragging'); d.style.transform = '';
       if (!stack.length) root.classList.remove('lock');
       d._closeT = setTimeout(() => { d.hidden = true; }, 360);
+      setDocTitle();
     }
     window.openDetail = openDetail;
+    // 网页标题跟着当前打开的钓点 / 钓组变：微信「转发给朋友」的卡片标题用的就是它
+    const SITE = '德州钓鱼宝典';
+    function setDocTitle() {
+      const d = [...stack].reverse().find(x => x.id !== 'detail-fc');
+      const t = d && d.querySelector('.detail-bar-title');
+      document.title = t ? t.textContent.trim() + ' · ' + SITE : SITE;
+    }
     // 详情页的专属网址：#spots/somerville、#howto/spoon（天气潮汐页不单独占网址）
     function detailUrl(id) {
       if (id === 'detail-fc') return '';
