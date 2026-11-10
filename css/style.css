@@ -1354,3 +1354,4 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .ig-embed.loaded iframe { opacity: 1; }
 .ig-loading { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; color: #94a3b8; }
 .ig-embed.loaded .ig-loading { display: none; }
+a.sp-act { text-decoration: none; } .sp-act .ext { margin-left: 2px; }

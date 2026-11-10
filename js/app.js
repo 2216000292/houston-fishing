@@ -945,3 +945,9 @@ window.addEventListener('message', e => {
   if (!d || d.type !== 'MEASURE' || !d.details || !(d.details.height > 100)) return;
   document.querySelectorAll('.ig-embed iframe').forEach(f => { if (f.contentWindow === e.source) f.parentNode.style.height = Math.ceil(d.details.height) + 'px'; });
 });
+
+// ---------- 淡水钓点的天气按钮：直接去 weather.com（没有潮汐站），也记一下点击 ----------
+document.querySelectorAll('a.sp-wx').forEach(a => a.addEventListener('click', () => {
+  const card = a.closest('[data-detail]'), t = card && card.querySelector('h3');
+  if (window.statEvent) window.statEvent('天气潮汐', { 钓点: t ? t.textContent.trim() : '未知', 位置: '钓点卡片' });
+}));
