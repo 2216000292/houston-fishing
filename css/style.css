@@ -1355,3 +1355,9 @@ button.wx { border: 0; font: inherit; cursor: pointer; }
 .ig-loading { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; color: #94a3b8; }
 .ig-embed.loaded .ig-loading { display: none; }
 a.sp-act { text-decoration: none; } .sp-act .ext { margin-left: 2px; }
+
+/* 视频还没有时的占位框 */
+.vid-soon { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 6px; padding: 26px 16px; border-radius: 14px;
+  border: 1.5px dashed var(--line); color: var(--muted); font-size: 14px; font-weight: 600; background: var(--card); }
+.vid-soon + .yt-cap .yt-cap-n { background: #1d63e0; }
+.vid-soon + .yt-cap { margin-top: 18px; }
